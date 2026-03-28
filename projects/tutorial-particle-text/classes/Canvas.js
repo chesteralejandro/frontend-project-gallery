@@ -100,14 +100,18 @@ class Canvas {
 	}
 
 	render() {
+		this.animationId = requestAnimationFrame(() => this.render());
+
 		this.runCanvasClear();
 
 		this.particles.forEach((particle) => {
 			particle.update();
 			particle.draw();
 		});
+	}
 
-		requestAnimationFrame(() => this.render());
+	destroy() {
+		cancelAnimationFrame(this.animationId);
 	}
 
 	runCanvasClear() {

@@ -19,7 +19,13 @@ const CANVAS = {
 window.addEventListener('load', drawCanvas);
 window.addEventListener('resize', drawCanvas);
 
+let canvasInstance;
+
 function drawCanvas() {
+	if (canvasInstance) {
+		canvasInstance.destroy();
+	}
+
 	const canvas = new Canvas(CANVAS.ID);
 	const input = new Input();
 
@@ -31,25 +37,20 @@ function drawCanvas() {
 
 	canvas.setTextGradient('#74ebd5', 'fuchsia', '#9face6');
 
-	// canvas.setFillText(CANVAS.MESSAGE);
-	// canvas.setFillColor(CANVAS.TEXT.COLOR);
-
-	// canvas.setStrokeText(CANVAS.MESSAGE);
-	// canvas.setStrokeColor(CANVAS.STROKE.COLOR);
-	// canvas.setStrokeWidth(CANVAS.STROKE.WIDTH);
-
-	// canvas.drawVerticalLine();
-	// canvas.drawHorizontalLine();
-
 	canvas.wrapText(CANVAS.MESSAGE, CANVAS.TEXT.SIZE);
 	canvas.render();
 
+	// Debounce keyup
+	let timeout;
 	input.element.addEventListener('keyup', (event) => {
 		if (event.code === 'Space') return;
+		clearTimeout(timeout);
 
-		canvas.setTextGradient('#74ebd5', 'fuchsia', '#9face6');
-		canvas.wrapText(event.target.value, CANVAS.TEXT.SIZE);
-		canvas.render();
+		timeout = setTimeout(() => {
+			canvas.setTextGradient('#74ebd5', 'fuchsia', '#9face6');
+			canvas.wrapText(event.target.value, CANVAS.TEXT.SIZE);
+			canvas.render();
+		}, 500);
 	});
 
 	window.addEventListener('mousemove', (event) => {
