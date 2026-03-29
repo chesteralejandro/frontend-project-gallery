@@ -12,9 +12,9 @@ class Canvas {
 		};
 		this.particles = [];
 		this.verticalOffset = 0;
-		this.gap = 3;
+		this.gap = 2;
 		this.mouse = {
-			radius: 20000,
+			radius: 8000,
 			x: 0,
 			y: 0,
 		};

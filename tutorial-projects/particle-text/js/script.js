@@ -1,9 +1,10 @@
 import Canvas from '../classes/Canvas.js';
-import Input from '../classes/Input.js';
+
+const input = document.getElementById('text-input');
 
 const CANVAS = {
 	ID: 'canvas',
-	MESSAGE: 'This is how you can do multiline centered text',
+	MESSAGE: 'Hover Over the Text to See Animation',
 	TEXT: {
 		FAMILY: 'arial',
 		SIZE: 80,
@@ -16,9 +17,6 @@ const CANVAS = {
 	},
 };
 
-window.addEventListener('load', drawCanvas);
-window.addEventListener('resize', drawCanvas);
-
 let canvasInstance;
 
 function drawCanvas() {
@@ -27,7 +25,6 @@ function drawCanvas() {
 	}
 
 	const canvas = new Canvas(CANVAS.ID);
-	const input = new Input();
 
 	canvas.setScreenFull();
 	canvas.setTextCenter();
@@ -35,19 +32,19 @@ function drawCanvas() {
 	canvas.setFontStyle(CANVAS.TEXT.SIZE, CANVAS.TEXT.FAMILY);
 	canvas.setLetterSpacing(CANVAS.TEXT.SPACING);
 
-	canvas.setTextGradient('#74ebd5', 'fuchsia', '#9face6');
+	canvas.setTextGradient('#74ebd5', '#ff00ff', '#9face6');
 
 	canvas.wrapText(CANVAS.MESSAGE, CANVAS.TEXT.SIZE);
 	canvas.render();
 
 	// Debounce keyup
 	let timeout;
-	input.element.addEventListener('keyup', (event) => {
+	input.addEventListener('keyup', (event) => {
 		if (event.code === 'Space') return;
 		clearTimeout(timeout);
 
 		timeout = setTimeout(() => {
-			canvas.setTextGradient('#74ebd5', 'fuchsia', '#9face6');
+			canvas.setTextGradient('#74ebd5', '#ff00ff', '#9face6');
 			canvas.wrapText(event.target.value, CANVAS.TEXT.SIZE);
 			canvas.render();
 		}, 500);
@@ -57,3 +54,6 @@ function drawCanvas() {
 		canvas.setMouseAxis(event);
 	});
 }
+
+window.addEventListener('load', drawCanvas);
+window.addEventListener('resize', drawCanvas);

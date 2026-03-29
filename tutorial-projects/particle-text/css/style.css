@@ -1,34 +1,85 @@
 :root {
-	--color-dark: hsl(0, 0%, 20%);
+	--bg-dark: #0f172a;
+	--bg-gradient: radial-gradient(circle at top, #1e293b, #020617);
+	--accent: #38bdf8;
+	--text-light: #e2e8f0;
+	--glass: rgba(255, 255, 255, 0.08);
+	--border: rgba(255, 255, 255, 0.15);
 }
 
 * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+	font-family:
+		'Inter',
+		system-ui,
+		-apple-system,
+		sans-serif;
 }
 
-html {
-	font-size: 100%;
+body {
+	background: var(--bg-gradient);
+	color: var(--text-light);
+	overflow: hidden;
+	animation: fadeIn 0.8s ease-out;
 }
 
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+	to {
+		opacity: 1;
+	}
+}
+
+/* Canvas stays as background */
 #canvas {
-	background: var(--color-dark);
-	position: absolute;
-	left: 0;
-	top: 0;
+	position: fixed;
+	inset: 0;
+	z-index: 0;
 }
 
-#text-input {
-	outline: none;
-	font-size: 1rem;
-	display: block;
+/* Input wrapper for better layout */
+.input-wrapper {
 	position: relative;
-	width: calc(50%);
-	min-width: 400px;
-	padding: 0.5em 1em;
-	margin: 2em auto;
+	z-index: 10;
+	display: flex;
+	justify-content: center;
+	margin-top: 3rem;
+}
+
+/* Modern glass input */
+#text-input {
+	width: 50%;
+	min-width: 320px;
+	max-width: 600px;
+
+	padding: 0.75rem 1.25rem;
+	font-size: 1rem;
 	text-align: center;
-	z-index: 100;
+
+	color: var(--text-light);
+	background: var(--glass);
+	border: 1px solid var(--border);
+	border-radius: 999px;
+
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+
+	outline: none;
+	transition: all 0.25s ease;
+}
+
+/* Focus effect */
+#text-input:focus {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.2);
+	transform: scale(1.02);
+}
+
+/* Placeholder */
+#text-input::placeholder {
+	color: rgba(226, 232, 240, 0.5);
 }
