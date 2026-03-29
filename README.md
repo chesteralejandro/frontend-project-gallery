@@ -1,6 +1,6 @@
 # Frontend Project Gallery ![Status](https://img.shields.io/badge/status-active-brightgreen)
 
-A personal collection of mini frontend projects built using **HTML, CSS, and JavaScript.** <br />
+A personal collection of mini front-end projects built using **HTML, CSS, and JavaScript.** <br />
 This repository is a centralized space to store, explore, and improve small projects, UI components, layouts, and interactive experiments without cluttering my main repo list. Projects are progressively improved through refactoring and style/UX enhancements.
 
 <br />
@@ -38,18 +38,18 @@ root/
 ├── js/
 │   └── main.js
 │
-├── projects/
+├── tutorial-projects/
 │   └── particle-text/
-│       ├── index.html
-│       ├── style.css
-│       ├── script.js
-│       └── README.md
+│
+├── personal-projects/
+│   └── nft-card/
 ```
 
 - `assets/` → images, thumbnails, or media assets for the gallery
 - `css/` → global or gallery-wide styles
 - `js/` → global scripts for gallery interactions
-- `projects/` individual project folders with their own HTML, CSS, JS, and README
+- `tutorial-projects/` individual tutorial project folders
+- `personal-projects/` individual personal project folders
 
 ## 🛠️ Tech Stack
 
