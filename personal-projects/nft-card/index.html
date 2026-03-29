@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link
+			rel="icon"
+			type="image/png"
+			sizes="32x32"
+			href="./images/favicon-32x32.png"
+		/>
+		<link rel="stylesheet" href="style.css" />
+		<title>Frontend Mentor | NFT preview card component</title>
+	</head>
+
+	<body>
+		<main>
+			<article class="card">
+				<div class="card__container">
+					<header class="card__image-container">
+						<figure class="card__image-overlay">
+							<img src="./images/icon-view.svg" alt="Eye Icon" />
+						</figure>
+						<figure>
+							<img
+								src="./images/image-equilibrium.jpg"
+								alt="NFT Image"
+							/>
+						</figure>
+					</header>
+					<section class="card__content">
+						<h3 class="card__title">Equilibrium #3429</h3>
+						<p class="card__description">
+							Our Equilibrium collection promotes balance and
+							calm.
+						</p>
+						<ul class="card__details">
+							<li class="card__detail card__detail--active">
+								<img
+									class="card__detail-icon card__detail-icon--active"
+									src="./images/icon-ethereum.svg"
+									alt="Ethereum Icon"
+								/>
+								0.041 ETH
+							</li>
+							<li class="card__detail">
+								<img
+									class="card__detail-icon"
+									src="./images/icon-clock.svg"
+									alt="Clock Icon"
+								/>
+								3 days left
+							</li>
+						</ul>
+					</section>
+					<hr />
+					<footer class="card__footer">
+						<figure class="card__creator-image">
+							<img
+								src="./images/image-avatar.png"
+								alt="Creator Avatar"
+							/>
+						</figure>
+						<p>
+							Creation of
+							<span class="card__creator-name">Jules Wyvern</span>
+						</p>
+					</footer>
+				</div>
+			</article>
+		</main>
+
+		<footer class="attribution">
+			Challenge by
+			<a
+				href="https://www.frontendmentor.io?ref=challenge"
+				target="_blank"
+				>Frontend Mentor</a
+			>. Coded by <a href="#">Chester Alejandro</a>.
+		</footer>
+	</body>
+</html>
