@@ -32,25 +32,7 @@ class Canvas {
 		gradient.addColorStop(0.5, color2);
 		gradient.addColorStop(0.7, color3);
 
-		this.setFillColor(gradient);
-	}
-
-	drawVerticalLine() {
-		this.context.strokeStyle = 'red';
-
-		this.context.beginPath();
-		this.context.moveTo(this.width / 2, 0);
-		this.context.lineTo(this.width / 2, this.height);
-		this.context.stroke();
-	}
-
-	drawHorizontalLine() {
-		this.context.strokeStyle = 'green';
-
-		this.context.beginPath();
-		this.context.moveTo(0, this.height / 2);
-		this.context.lineTo(this.width, this.height / 2);
-		this.context.stroke();
+		this.context.fillStyle = gradient;
 	}
 
 	setMouseAxis(event) {
@@ -77,26 +59,6 @@ class Canvas {
 
 	setFontStyle(size, family) {
 		this.context.font = `${size}px ${family}`;
-	}
-
-	setFillColor(fillColor) {
-		this.context.fillStyle = fillColor;
-	}
-
-	setFillText(textProvided) {
-		this.context.fillText(textProvided, this.textAxis.x, this.textAxis.y);
-	}
-
-	setStrokeColor(strokeColor) {
-		this.context.strokeStyle = strokeColor;
-	}
-
-	setStrokeWidth(lineWidth) {
-		this.context.lineWidth = lineWidth;
-	}
-
-	setStrokeText(textProvided) {
-		this.context.strokeText(textProvided, this.textAxis.x, this.textAxis.y);
 	}
 
 	render() {
