@@ -20,29 +20,66 @@ class Canvas {
 		};
 	}
 
-	setTextGradient(color1, color2, color3) {
-		const gradient = this.context.createLinearGradient(
-			0,
-			0,
-			this.width,
-			this.height,
-		);
+	clear() {
+		this.context.clearRect(0, 0, this.width, this.height);
+	}
 
-		gradient.addColorStop(0.3, color1);
-		gradient.addColorStop(0.5, color2);
-		gradient.addColorStop(0.7, color3);
+	clearParticles() {
+		this.particles = [];
+	}
 
-		this.context.fillStyle = gradient;
+	destroy() {
+		cancelAnimationFrame(this.animationId);
+	}
+
+	render() {
+		this.animationId = requestAnimationFrame(() => this.render());
+
+		this.clear();
+
+		this.particles.forEach((particle) => {
+			particle.update();
+			particle.draw();
+		});
+	}
+
+	generateParticlesFromText() {
+		const { gap, height, width } = this;
+
+		const imageData = this.context.getImageData(0, 0, width, height);
+		const pixels = imageData.data;
+
+		this.clear();
+		this.clearParticles();
+
+		for (let y = 0; y < height; y += gap) {
+			for (let x = 0; x < width; x += gap) {
+				const index = (y * width + x) * 4;
+				const alpha = pixels[index + 3];
+
+				if (alpha == 0) continue;
+
+				const red = pixels[index];
+				const green = pixels[index + 1];
+				const blue = pixels[index + 2];
+				const color = `rgb(${red}, ${green}, ${blue})`;
+
+				this.particles.push(new Particle(this, x, y, color));
+			}
+		}
+	}
+
+	setFontStyle(size, family) {
+		this.context.font = `${size}px ${family}`;
+	}
+
+	setLetterSpacing(letterSpacing) {
+		this.context.letterSpacing = `${letterSpacing}px`;
 	}
 
 	setMouseAxis(event) {
 		this.mouse.x = event.x;
 		this.mouse.y = event.y;
-	}
-
-	setTextCenter() {
-		this.context.textAlign = 'center';
-		this.context.textBaseline = 'middle';
 	}
 
 	setScreenFull() {
@@ -53,65 +90,25 @@ class Canvas {
 		this.element.height = this.height;
 	}
 
-	setLetterSpacing(letterSpacing) {
-		this.context.letterSpacing = `${letterSpacing}px`;
+	setTextCenter() {
+		this.context.textAlign = 'center';
+		this.context.textBaseline = 'middle';
 	}
 
-	setFontStyle(size, family) {
-		this.context.font = `${size}px ${family}`;
-	}
+	setTextGradient(color1, color2, color3) {
+		const { height, width } = this;
 
-	render() {
-		this.animationId = requestAnimationFrame(() => this.render());
+		const gradient = this.context.createLinearGradient(0, 0, width, height);
 
-		this.runCanvasClear();
+		gradient.addColorStop(0.3, color1);
+		gradient.addColorStop(0.5, color2);
+		gradient.addColorStop(0.7, color3);
 
-		this.particles.forEach((particle) => {
-			particle.update();
-			particle.draw();
-		});
-	}
-
-	destroy() {
-		cancelAnimationFrame(this.animationId);
-	}
-
-	runCanvasClear() {
-		this.context.clearRect(0, 0, this.width, this.height);
-	}
-
-	runParticlesConversion() {
-		this.particles = [];
-
-		const imageData = this.context.getImageData(
-			0,
-			0,
-			this.width,
-			this.height,
-		);
-		const pixels = imageData.data;
-
-		this.runCanvasClear();
-
-		for (let y = 0; y < this.height; y += this.gap) {
-			for (let x = 0; x < this.width; x += this.gap) {
-				const index = (y * this.width + x) * 4;
-				const alpha = pixels[index + 3];
-
-				if (alpha == 0) continue;
-
-				const red = pixels[index];
-				const green = pixels[index + 1];
-				const blue = pixels[index + 2];
-
-				const color = `rgb(${red}, ${green}, ${blue})`;
-				this.particles.push(new Particle(this, x, y, color));
-			}
-		}
+		this.context.fillStyle = gradient;
 	}
 
 	wrapText(words, lineHeight) {
-		this.runCanvasClear();
+		this.clear();
 
 		const maxTextWidth = this.width * (lineHeight / 100);
 
@@ -144,7 +141,7 @@ class Canvas {
 			),
 		);
 
-		this.runParticlesConversion();
+		this.generateParticlesFromText();
 	}
 }
 
