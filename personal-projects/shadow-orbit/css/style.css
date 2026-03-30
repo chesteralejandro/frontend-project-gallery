@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap');
+
+:root {
+	--color-blue-base: #00aeef;
+	--color-black-base: #05070a;
+	--color-gray-base: #8a9ba8;
+}
+
+:root {
+	--rem: calc(1rem / 16);
+}
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-family: 'Orbitron', sans-serif;
+	font-size: 100%;
+}
+
+body {
+	background: var(--color-black-base);
+	color: var(--color-gray-base);
+	overflow: hidden;
+}
+
+.splash-screen {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	.title {
+		font-size: clamp(calc(64 * var(--rem)), 10vw, calc(84 * var(--rem)));
+		letter-spacing: 0.3em;
+		text-align: center;
+		text-transform: uppercase;
+		color: var(--color-blue-base);
+		text-shadow: 0 0 10px var(--color-blue-base);
+		margin-bottom: 50px;
+		margin-top: -50px;
+		animation: subtlePulse 4s ease-in-out infinite;
+	}
+
+	.menu {
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+
+		button {
+			width: calc(250 * var(--rem));
+			background: transparent;
+			border: 1px solid #1c2a35;
+			color: var(--color-gray-base);
+			padding: 12px 30px;
+			letter-spacing: 2px;
+			cursor: pointer;
+			position: relative;
+			overflow: hidden;
+			transition: all 0.2s ease;
+		}
+
+		button:hover {
+			color: var(--color-blue-base);
+			border-color: var(--color-blue-base);
+			box-shadow: 0 0 10px var(--color-blue-base);
+			padding-left: 40px;
+			transform: translateX(2px);
+		}
+
+		/* Left arrow indicator */
+		button::before {
+			content: '>';
+			position: absolute;
+			left: 10px;
+			opacity: 0;
+			color: #00aeef;
+			transition: 0.2s;
+		}
+
+		/* Scan line effect */
+		button::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: -100%;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(
+				120deg,
+				transparent,
+				rgba(0, 174, 239, 0.4),
+				transparent
+			);
+			transition: 0.4s;
+		}
+
+		/* Show arrow */
+		button:hover::before {
+			opacity: 1;
+		}
+
+		/* Sweep animation */
+		button:hover::after {
+			left: 100%;
+		}
+	}
+}
+
+@keyframes subtlePulse {
+	0%,
+	100% {
+		text-shadow: 0 0 6px #00aeef;
+		opacity: 0.85;
+	}
+	50% {
+		text-shadow: 0 0 14px #00aeef;
+		opacity: 1;
+	}
+}
+
+#starfield {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	background: #05070a;
+}
