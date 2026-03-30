@@ -8,52 +8,33 @@ const CANVAS = {
 	TEXT: {
 		FAMILY: 'arial',
 		SIZE: 80,
-		COLOR: '#FFF',
+		COLORS: ['#74ebd5', '#ff00ff', '#9face6'],
 		SPACING: 5,
 	},
-	STROKE: {
-		COLOR: 'orange',
-		WIDTH: 3,
-	},
 };
+const DEBOUNCE_DELAY = 500;
 
-let canvasInstance;
+const canvas = new Canvas(CANVAS.ID);
+let timeout; // Debounce Drawing
 
 function drawCanvas() {
-	if (canvasInstance) {
-		canvasInstance.destroy();
-	}
+	clearTimeout(timeout);
 
-	const canvas = new Canvas(CANVAS.ID);
+	timeout = setTimeout(() => {
+		canvas.setScreenFull();
+		canvas.setTextCenter();
 
-	canvas.setScreenFull();
-	canvas.setTextCenter();
+		canvas.setFontStyle(CANVAS.TEXT.SIZE, CANVAS.TEXT.FAMILY);
+		canvas.setLetterSpacing(CANVAS.TEXT.SPACING);
 
-	canvas.setFontStyle(CANVAS.TEXT.SIZE, CANVAS.TEXT.FAMILY);
-	canvas.setLetterSpacing(CANVAS.TEXT.SPACING);
+		canvas.setTextGradient(...CANVAS.TEXT.COLORS);
 
-	canvas.setTextGradient('#74ebd5', '#ff00ff', '#9face6');
-
-	canvas.wrapText(CANVAS.MESSAGE, CANVAS.TEXT.SIZE);
-	canvas.render();
-
-	// Debounce keyup
-	let timeout;
-	input.addEventListener('keyup', (event) => {
-		if (event.code === 'Space') return;
-		clearTimeout(timeout);
-
-		timeout = setTimeout(() => {
-			canvas.setTextGradient('#74ebd5', '#ff00ff', '#9face6');
-			canvas.wrapText(event.target.value, CANVAS.TEXT.SIZE);
-			canvas.render();
-		}, 500);
-	});
-
-	window.addEventListener('mousemove', (event) => {
-		canvas.setMouseAxis(event);
-	});
+		canvas.wrapText(input.value || CANVAS.MESSAGE, CANVAS.TEXT.SIZE);
+		canvas.render();
+	}, DEBOUNCE_DELAY);
 }
 
+input.addEventListener('keyup', drawCanvas);
 window.addEventListener('load', drawCanvas);
 window.addEventListener('resize', drawCanvas);
+window.addEventListener('mousemove', (e) => canvas.setMouseAxis(e));
