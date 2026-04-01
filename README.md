@@ -1,7 +1,6 @@
 # Frontend Project Gallery ![Status](https://img.shields.io/badge/status-active-brightgreen)
 
-A personal collection of mini front-end projects built using **HTML, CSS, and JavaScript.** <br />
-This repository is a centralized space to store, explore, and improve small projects, UI components, layouts, and interactive experiments without cluttering my main repo list. Projects are progressively improved through refactoring and style/UX enhancements.
+A curated collection of mini frontend projects exploring UI, layout, and interaction—continuously refined for better code and user experience.
 
 <br />
 
@@ -9,16 +8,19 @@ This repository is a centralized space to store, explore, and improve small proj
 
 [https://chesteralejandro.github.io/frontend-project-gallery/](https://chesteralejandro.github.io/frontend-project-gallery/)
 
+⚠️ Each project is presented as a card with a preview, making it easy to browse and interact with.
+
 ## ⚙️ Installation & Setup
 
 1. Clone the repository
 
-```bash
-git clone https://github.com/chesteralejandro/frontend-project-gallery.git
-```
+    ```bash
+    git clone https://github.com/chesteralejandro/frontend-project-gallery.git
+    ```
 
 2. Open the main page
-    - Navigate to `index.html` in your browser
+    - Navigate to `index.html`
+    - Open it in your browser
     - Explore the project links
 
 ## 📂 Folder Structure
@@ -29,8 +31,8 @@ root/
 ├── README.md
 │
 ├── assets/
-│   └── thumbnails/
-│       └── particle-text.webp
+│   ├── thumbnails/
+│   └── icons/
 │
 ├── css/
 │   └── style.css
@@ -39,32 +41,35 @@ root/
 │   └── main.js
 │
 ├── tutorial-projects/
-│   └── particle-text/
+│   └── ...
 │
-├── personal-projects/
-│   └── nft-card/
+└── personal-projects/
+    └── ...
 ```
 
-- `assets/` → images, thumbnails, or media assets for the gallery
-- `css/` → global or gallery-wide styles
-- `js/` → global scripts for gallery interactions
-- `tutorial-projects/` individual tutorial project folders
-- `personal-projects/` individual personal project folders
-
-## 🛠️ Tech Stack
-
-- HTML5
-- CSS3
-- Vanilla JavaScript
+- `assets/` — thumbnails and media assets for project previews
+- `css/` — global styles for the gallery
+- `js/` — scripts powering gallery interactions
+- `tutorial-projects/` — projects built by following tutorials
+- `personal-projects/` — independently built projects
 
 ## 🎯 Purpose & Goals
 
-- **Centralized archive:** Keep all small front-end projects in one repository
-- **Learning and improvement:** Experiment with new techniques, refactor code, and improve UI/UX
-- **Cloud backup:** Save local projects on Github for future reference
-- **Portfolio-ready:** Showcase projects in a clean, navigable structure
+- **Centralized Archive:** — Keep all small front-end projects in one repository
+- **Cloud Backup:** — Save local projects on Github for future reference
+- **Continuous Improvement:** — Refactor and enhance projects over time
+- **Portfolio Presentation:** — Maintain a clean, structured showcase of work
+
+## 📚 Project Types
+
+This gallery includes:
+
+- **Tutorial-based Projects** <br /> Built to learn concepts, techniques, and best practices
+- **Personal Projects** <br /> Created independently to apply and reinforce knowledge
+
+⚠️ Each project includes its own README for additional context and details.
 
 ## 🤝 Acknowledgement
 
-Some projects were inspired by or built alongside online tutorials. <br />
-Credits belong to the original creators where applicable.
+Some projects are inspired by or built alongside online tutorials. <br />
+Credit is given to original creators within each respective project.
