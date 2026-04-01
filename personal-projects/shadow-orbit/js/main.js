@@ -1,6 +1,7 @@
 const canvas = document.getElementById('starfield');
 const btnHowTo = document.getElementById('btn-how-to');
 const btnClosePanel = document.getElementById('btn-close-panel');
+const btnExitGame = document.getElementById('btn-exit');
 const panelOverlay = document.getElementById('panel-screen-overlay');
 
 const ctx = canvas.getContext('2d');
@@ -54,6 +55,8 @@ animate();
 
 // Resize Fix
 window.addEventListener('resize', setCanvasSize);
+
+btnExitGame.addEventListener('click', () => window.close());
 
 btnHowTo.addEventListener('click', () =>
 	panelOverlay.classList.remove('hidden'),
