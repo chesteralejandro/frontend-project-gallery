@@ -1,34 +1,41 @@
 const canvas = document.getElementById('starfield');
+const btnHowTo = document.getElementById('btn-how-to');
+const btnClosePanel = document.getElementById('btn-close-panel');
+const panelOverlay = document.getElementById('panel-screen-overlay');
+
 const ctx = canvas.getContext('2d');
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-const layers = [
+const STAR_COLOR = 'white';
+const STAR_LAYERS = [
 	{ count: 80, speed: 0.3, size: 1 },
 	{ count: 50, speed: 0.6, size: 1.5 },
 	{ count: 30, speed: 1, size: 2 },
 ];
 
-const stars = [];
+const STARS = [];
 
-layers.forEach((layer) => {
+STAR_LAYERS.forEach((layer) => {
 	for (let i = 0; i < layer.count; i++) {
-		stars.push({
-			x: Math.random() * canvas.width,
-			y: Math.random() * canvas.height,
+		STARS.push({
+			x: Math.random() * window.innerWidth,
+			y: Math.random() * window.innerHeight,
 			speed: layer.speed,
 			size: layer.size,
 		});
 	}
 });
 
+function setCanvasSize() {
+	canvas.width = window.innerWidth;
+	canvas.height = window.innerHeight;
+}
+
 function animate() {
 	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-	ctx.fillStyle = 'white';
+	ctx.fillStyle = STAR_COLOR;
 
-	stars.forEach((star) => {
+	STARS.forEach((star) => {
 		star.y += star.speed;
 
 		if (star.y > canvas.height) {
@@ -42,10 +49,16 @@ function animate() {
 	requestAnimationFrame(animate);
 }
 
+setCanvasSize();
 animate();
 
-/* Resize fix */
-window.addEventListener('resize', () => {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
-});
+// Resize Fix
+window.addEventListener('resize', setCanvasSize);
+
+btnHowTo.addEventListener('click', () =>
+	panelOverlay.classList.remove('hidden'),
+);
+
+btnClosePanel.addEventListener('click', () =>
+	panelOverlay.classList.add('hidden'),
+);

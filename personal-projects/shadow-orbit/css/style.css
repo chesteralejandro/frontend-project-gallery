@@ -27,10 +27,20 @@ body {
 	background: var(--color-black-base);
 	color: var(--color-gray-base);
 	overflow: hidden;
+	position: relative;
+}
+
+#starfield {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	background: var(--color-black-base);
 }
 
 .splash-screen {
-	position: relative;
 	width: 100%;
 	height: 100vh;
 	display: flex;
@@ -45,8 +55,8 @@ body {
 		text-transform: uppercase;
 		color: var(--color-blue-base);
 		text-shadow: 0 0 10px var(--color-blue-base);
-		margin-bottom: 50px;
-		margin-top: -50px;
+		margin-bottom: 1em;
+		margin-top: -20vh;
 		animation: subtlePulse 4s ease-in-out infinite;
 	}
 
@@ -66,51 +76,51 @@ body {
 			position: relative;
 			overflow: hidden;
 			transition: all 0.2s ease;
-		}
 
-		button:hover {
-			color: var(--color-blue-base);
-			border-color: var(--color-blue-base);
-			box-shadow: 0 0 10px var(--color-blue-base);
-			padding-left: 40px;
-			transform: translateX(2px);
-		}
+			&:hover {
+				color: var(--color-blue-base);
+				border-color: var(--color-blue-base);
+				box-shadow: 0 0 10px var(--color-blue-base);
+				padding-left: 40px;
+				transform: translateX(2px);
+			}
 
-		/* Left arrow indicator */
-		button::before {
-			content: '>';
-			position: absolute;
-			left: 10px;
-			opacity: 0;
-			color: #00aeef;
-			transition: 0.2s;
-		}
+			/* Left arrow indicator */
+			&::before {
+				content: '>';
+				position: absolute;
+				left: 10px;
+				opacity: 0;
+				color: #00aeef;
+				transition: 0.2s;
+			}
 
-		/* Scan line effect */
-		button::after {
-			content: '';
-			position: absolute;
-			top: 0;
-			left: -100%;
-			width: 100%;
-			height: 100%;
-			background: linear-gradient(
-				120deg,
-				transparent,
-				rgba(0, 174, 239, 0.4),
-				transparent
-			);
-			transition: 0.4s;
-		}
+			/* Scan line effect */
+			&::after {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: -100%;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(
+					120deg,
+					transparent,
+					rgba(0, 174, 239, 0.4),
+					transparent
+				);
+				transition: 0.4s;
+			}
 
-		/* Show arrow */
-		button:hover::before {
-			opacity: 1;
-		}
+			/* Show arrow */
+			&:hover::before {
+				opacity: 1;
+			}
 
-		/* Sweep animation */
-		button:hover::after {
-			left: 100%;
+			/* Sweep animation */
+			&:hover::after {
+				left: 100%;
+			}
 		}
 	}
 }
@@ -127,12 +137,109 @@ body {
 	}
 }
 
-#starfield {
+/* ======================== */
+
+/* Panel overlay */
+.panel-screen-overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
 	width: 100%;
 	height: 100%;
-	z-index: -1;
-	background: #05070a;
+	background: rgba(5, 7, 10, 0.85);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(6px);
+	z-index: 10;
+
+	&.hidden {
+		display: none;
+	}
+}
+
+.panel-screen {
+	width: 400px;
+	padding: 30px;
+	background: rgba(10, 15, 20, 0.9);
+	border: 1px solid var(--color-blue-base);
+	box-shadow: 0 0 20px rgba(0, 174, 239, 0.3);
+	color: var(--color-gray-base);
+	animation: panelEnter 0.4s ease;
+	position: relative;
+	overflow: hidden;
+
+	h2 {
+		color: var(--color-blue-base);
+		margin-bottom: 10px;
+		letter-spacing: 3px;
+	}
+
+	article {
+		margin-top: 15px;
+
+		h3 {
+			color: var(--color-blue-base);
+			font-size: calc(14 * var(--rem));
+			margin: 16px 0 5px;
+		}
+
+		.keys {
+			display: grid;
+			grid-template-columns: repeat(3, 50px);
+			gap: 8px;
+			justify-content: center;
+			margin-top: 10px;
+		}
+
+		.key {
+			width: 50px;
+			height: 50px;
+			border: 1px solid var(--color-blue-base);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			color: var(--color-blue-base);
+			font-size: 18px;
+			box-shadow: 0 0 8px rgba(0, 174, 239, 0.3);
+			transition: 0.2s;
+
+			&:hover {
+				background: var(--color-blue-base);
+				color: var(--color-black-base);
+				box-shadow: 0 0 15px var(--color-blue-base);
+			}
+		}
+
+		.spacebar {
+			margin-top: 15px;
+			border: 1px solid var(--color-blue-base);
+			padding: 10px;
+			text-align: center;
+			color: var(--color-blue-base);
+			letter-spacing: 2px;
+			box-shadow: 0 0 8px rgba(0, 174, 239, 0.3);
+		}
+
+		.enemy {
+			color: #39ff14;
+		}
+	}
+
+	#btn-close-panel {
+		display: block;
+		margin-left: auto;
+		background: transparent;
+		border: 1px solid var(--color-blue-base);
+		color: var(--color-blue-base);
+		padding: 10px;
+		cursor: pointer;
+		transition: 0.2s;
+
+		&:hover {
+			background: var(--color-blue-base);
+			color: var(--color-black-base);
+			box-shadow: 0 0 10px var(--color-blue-base);
+		}
+	}
 }
