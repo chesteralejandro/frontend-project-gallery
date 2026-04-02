@@ -23,10 +23,13 @@
 }
 
 :root {
-	--character-size: calc(50 * var(--rem));
+	--character-size: clamp(calc(19 * var(--rem)), 5vw, calc(50 * var(--rem)));
 
-	--map-width: calc(20 * var(--character-size));
-	--map-height: calc(10 * var(--character-size));
+	--vertical-tile-count: 11;
+	--horizontal-tile-count: 20;
+
+	--map-width: calc(var(--horizontal-tile-count) * var(--character-size));
+	--map-height: calc(var(--vertical-tile-count) * var(--character-size));
 }
 
 *,
@@ -137,7 +140,7 @@ section.hidden {
 	position: relative;
 	width: var(--map-width);
 	height: var(--map-height);
-	border: 1px solid var(--green-400);
+	outline: 1px solid var(--green-400);
 
 	.map {
 		position: absolute;
@@ -147,8 +150,13 @@ section.hidden {
 	}
 
 	.tiles {
+		display: inline-block;
 		width: var(--character-size);
 		height: var(--character-size);
+
+		&.wall {
+			background: url('../assets/images/cell.png') no-repeat center/cover;
+		}
 	}
 
 	.white-cell {
