@@ -134,9 +134,29 @@ section.hidden {
 }
 
 .game-screen {
+	position: relative;
+	width: var(--map-width);
+	height: var(--map-height);
+	border: 1px solid var(--green-400);
+
 	.map {
-		width: var(--map-width);
-		height: var(--map-height);
-		border: 1px solid var(--green-400);
+		position: absolute;
+		top: 0;
+		left: 0;
+		z-index: -100;
+	}
+
+	.tiles {
+		width: var(--character-size);
+		height: var(--character-size);
+	}
+
+	.white-cell {
+		position: relative;
+		z-index: 100;
+		width: var(--character-size);
+		height: var(--character-size);
+		background: url('../assets/images/white-blood.gif') no-repeat
+			center/cover;
 	}
 }
