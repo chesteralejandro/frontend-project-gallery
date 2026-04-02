@@ -30,8 +30,22 @@ body {
 	position: relative;
 }
 
+#starfield-container {
+	position: relative;
+	min-width: 450px;
+	box-shadow: 0 30px 60px var(--color-gray-base);
+	width: 60vw;
+	height: 100vh;
+	margin: 0 auto;
+	overflow: hidden;
+
+	.hidden {
+		display: none;
+	}
+}
+
 #starfield {
-	position: fixed;
+	position: absolute;
 	top: 0;
 	left: 0;
 	width: 100%;
