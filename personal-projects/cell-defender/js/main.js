@@ -2,14 +2,18 @@ import { TILES_CONTAINER, SCREENS, CHARACTERS } from './constants/elements.js';
 import { TILE_LAYOUT_1 } from './constants/tilesLayouts.js';
 import { TILES_ELEMENTS } from './constants/tiles.js';
 import WHITE_CELL_CONFIG from './constants/whiteCellConfig.js';
+import { BIRU_CONFIG } from './constants/enemyConfig.js';
 
 import WhiteCell from './entities/whiteCell.js';
+import Enemy from './entities/enemy.js';
 
 const whiteCell = new WhiteCell(
 	WHITE_CELL_CONFIG,
 	CHARACTERS.WHITE_CELL,
 	TILE_LAYOUT_1,
 );
+
+const biru = new Enemy(BIRU_CONFIG, CHARACTERS.BIRU, TILE_LAYOUT_1);
 
 function drawTilesLayout() {
 	let tilesString = '';
@@ -26,6 +30,9 @@ function drawTilesLayout() {
 function loop(time) {
 	whiteCell.update(time, TILE_LAYOUT_1, drawTilesLayout);
 	whiteCell.animate();
+
+	biru.update(time, TILE_LAYOUT_1);
+	biru.animate();
 
 	requestAnimationFrame(loop);
 }
