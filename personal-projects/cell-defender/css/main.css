@@ -142,7 +142,7 @@ section.hidden {
 	height: var(--map-height);
 	outline: 1px solid var(--green-400);
 
-	.map {
+	.tiles-container {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -155,7 +155,8 @@ section.hidden {
 		height: var(--character-size);
 
 		&.wall {
-			background: url('../assets/images/cell.png') no-repeat center/cover;
+			background: url('../assets/images/moving-cell.gif') no-repeat
+				center/cover;
 		}
 	}
 

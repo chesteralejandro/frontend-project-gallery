@@ -1,28 +1,45 @@
-import { MAP1 } from './constants/maps.js';
-import TILES from './constants/tiles.js';
+import { TILES_CONTAINER, SCREENS, CHARACTERS } from './constants/elements.js';
+import { TILE_LAYOUT_1 } from './constants/tilesLayouts.js';
+import { TILES_ELEMENTS } from './constants/tiles.js';
+import WHITE_CELL_CONFIG from './constants/whiteCellConfig.js';
 
-const gameScreen = document.getElementById('game-screen');
-const startScreen = document.getElementById('start-screen');
-const map = document.getElementById('map');
+import WhiteCell from './entities/whiteCell.js';
 
-window.addEventListener('keyup', (e) => {
-	if (e.code !== 'Enter') return;
+const whiteCell = new WhiteCell(
+	WHITE_CELL_CONFIG,
+	CHARACTERS.WHITE_CELL,
+	TILE_LAYOUT_1,
+);
 
-	startScreen.classList.add('hidden');
-	gameScreen.classList.remove('hidden');
-});
-
-function drawMap() {
+function drawTilesLayout() {
 	let tilesString = '';
 
-	for (const arr of MAP1) {
-		for (const tile of arr) {
-			tilesString += TILES[tile];
+	for (const tileRow of TILE_LAYOUT_1) {
+		for (const tile of tileRow) {
+			tilesString += TILES_ELEMENTS[tile];
 		}
-		tilesString += '<br />';
 	}
 
-	map.innerHTML = tilesString;
+	TILES_CONTAINER.innerHTML = tilesString;
 }
 
-drawMap();
+function loop(time) {
+	whiteCell.update(TILE_LAYOUT_1, time);
+	whiteCell.animate();
+
+	requestAnimationFrame(loop);
+}
+
+drawTilesLayout();
+loop();
+
+window.addEventListener('keydown', (e) => {
+	if (e.code === 'Enter') {
+		SCREENS.START.classList.add('hidden');
+		SCREENS.GAME.classList.remove('hidden');
+	}
+
+	if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
+		whiteCell.changeDirection(e.code);
+	}
+});

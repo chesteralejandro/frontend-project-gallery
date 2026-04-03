@@ -1,7 +1,11 @@
-const TILES = {
-	0: '<article class="tiles empty">&nbsp;</article>',
-	1: '<article class="tiles wall">&nbsp;</article>',
-	2: '<article class="tiles pill">&nbsp;</article>',
+export const TILES_CODES = {
+	NONE: 0,
+	WALL: 1,
+	PILL: 8,
 };
 
-export default TILES;
+export const TILES_ELEMENTS = {
+	[TILES_CODES.NONE]: '<article class="tiles none">&nbsp;</article>',
+	[TILES_CODES.WALL]: '<article class="tiles wall">&nbsp;</article>',
+	[TILES_CODES.PILL]: '<article class="tiles pill">&nbsp;</article>',
+};
