@@ -6,14 +6,14 @@ export default class WhiteCell {
 		this.x = WHITE_CELL_CONFIG.X;
 		this.y = WHITE_CELL_CONFIG.Y;
 		this.z = WHITE_CELL_CONFIG.Z;
+		this.size = WHITE_CELL_CONFIG.SIZE;
 
 		this.renderX = this.x;
 		this.renderY = this.y;
 
-		this.size = WHITE_CELL_CONFIG.SIZE;
 		this.keys = WHITE_CELL_CONFIG.KEYS;
-		this.currentDirection = 'no_direction';
-
+		this.currentDirection = null;
+		this.nextDirection = null;
 		this.moveDelay = 150;
 		this.lastMove = 0;
 	}
@@ -22,12 +22,50 @@ export default class WhiteCell {
 		return this.map[y][x] === 1;
 	}
 
+	canMove(direction, tileLayout) {
+		let testX = this.x;
+		let testY = this.y;
+
+		switch (direction) {
+			case this.keys.ArrowUp:
+				testY--;
+				break;
+			case this.keys.ArrowDown:
+				testY++;
+				break;
+			case this.keys.ArrowLeft:
+				testX--;
+				break;
+			case this.keys.ArrowRight:
+				testX++;
+				break;
+		}
+
+		const maxX = tileLayout[0].length - 1;
+		const maxY = tileLayout.length - 1;
+
+		// Boundary Check
+		if (testX < 0 || testX > maxX || testY < 0 || testY > maxY) {
+			return false;
+		}
+
+		// Wall Check
+		if (this.isWall(testX, testY)) return false;
+
+		return true;
+	}
+
 	update(tileLayout, time) {
 		if (time - this.lastMove < this.moveDelay) return;
 		this.lastMove = time;
 
-		const maxX = tileLayout[0].length - 1;
-		const maxY = tileLayout.length - 1;
+		if (
+			this.nextDirection &&
+			this.canMove(this.nextDirection, tileLayout)
+		) {
+			this.currentDirection = this.nextDirection;
+			this.nextDirection = null;
+		}
 
 		let nextX = this.x;
 		let nextY = this.y;
@@ -50,6 +88,9 @@ export default class WhiteCell {
 				this.z = 0;
 				break;
 		}
+
+		const maxX = tileLayout[0].length - 1;
+		const maxY = tileLayout.length - 1;
 
 		// Boundary Check
 		if (nextX < 0 || nextX > maxX || nextY < 0 || nextY > maxY) return;
@@ -75,6 +116,6 @@ export default class WhiteCell {
 	}
 
 	changeDirection(newDirection) {
-		this.currentDirection = newDirection;
+		this.nextDirection = newDirection;
 	}
 }
