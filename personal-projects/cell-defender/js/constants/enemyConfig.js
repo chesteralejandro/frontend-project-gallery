@@ -5,13 +5,13 @@ export const BIRU_CONFIG = {
 	SIZE: 50,
 };
 export const BACU_CONFIG = {
-	X: 5,
+	X: 6,
 	Y: 6,
 	Z: 0,
 	SIZE: 50,
 };
 export const GEMRU_CONFIG = {
-	X: 5,
+	X: 7,
 	Y: 6,
 	Z: 0,
 	SIZE: 50,

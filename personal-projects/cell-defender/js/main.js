@@ -40,15 +40,9 @@ function loop(time) {
 	whiteCell.animate();
 
 	for (const enemy of enemies) {
-		enemy.update(time, TILE_LAYOUT_1);
+		enemy.update(time, TILE_LAYOUT_1, whiteCell);
 		enemy.animate();
 	}
-	// biru.update(time, TILE_LAYOUT_1);
-	// biru.animate();
-
-	// if (biru.x === whiteCell.x && biru.y === whiteCell.y) {
-	// 	alert('Game Over');
-	// }
 
 	requestAnimationFrame(loop);
 }

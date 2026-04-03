@@ -12,7 +12,13 @@ export default class Enemy {
 		this.renderX = this.x;
 		this.renderY = this.y;
 
-		this.direction = null;
+		this.direction = 'ArrowRight'; // default
+		this.opposites = {
+			ArrowUp: 'ArrowDown',
+			ArrowDown: 'ArrowUp',
+			ArrowLeft: 'ArrowRight',
+			ArrowRight: 'ArrowLeft',
+		};
 
 		this.moveDelay = 200;
 		this.lastMove = 0;
@@ -22,9 +28,59 @@ export default class Enemy {
 		return this.map[y][x] === 1;
 	}
 
-	getRandomDirection() {
+	getValidDirections(tileLayout) {
 		const directions = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
-		return directions[Math.floor(Math.random() * directions.length)];
+
+		return directions.filter((dir) => {
+			// ❌ don't reverse unless no choice
+			if (dir === this.opposites[this.direction]) return false;
+
+			return this.canMove(dir, tileLayout);
+		});
+	}
+
+	getBestDirection(player, tileLayout) {
+		const validDirs = this.getValidDirections(tileLayout);
+
+		if (validDirs.length === 0) {
+			// allow reverse if stuck
+			return this.opposites[this.direction];
+		}
+
+		let bestDir = validDirs[0];
+		let shortestDistance = Infinity;
+
+		for (const dir of validDirs) {
+			let x = this.x;
+			let y = this.y;
+
+			switch (dir) {
+				case 'ArrowUp':
+					y--;
+					break;
+				case 'ArrowDown':
+					y++;
+					break;
+				case 'ArrowLeft':
+					x--;
+					break;
+				case 'ArrowRight':
+					x++;
+					break;
+			}
+
+			// distance to player
+			const dx = player.x - x;
+			const dy = player.y - y;
+			const distance = Math.abs(dx) + Math.abs(dy); // Manhattan distance
+
+			if (distance < shortestDistance) {
+				shortestDistance = distance;
+				bestDir = dir;
+			}
+		}
+
+		return bestDir;
 	}
 
 	canMove(direction, tileLayout) {
@@ -56,20 +112,12 @@ export default class Enemy {
 		return true;
 	}
 
-	update(time, tileLayout) {
+	update(time, tileLayout, player) {
 		if (time - this.lastMove < this.moveDelay) return;
 		this.lastMove = time;
 
-		// pick a valid random direction
-		let tries = 0;
-		let newDir;
-
-		do {
-			newDir = this.getRandomDirection();
-			tries++;
-		} while (!this.canMove(newDir, tileLayout) && tries < 10);
-
-		this.direction = newDir;
+		// 👻 choose smarter direction
+		this.direction = this.getBestDirection(player, tileLayout);
 
 		let nextX = this.x;
 		let nextY = this.y;
@@ -99,7 +147,6 @@ export default class Enemy {
 		if (nextX < 0 || nextX > maxX || nextY < 0 || nextY > maxY) return;
 
 		if (this.isWall(nextX, nextY)) {
-			console.log('wall');
 			return;
 		}
 
