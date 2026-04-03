@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/style.css" />
+		<script defer type="module" src="./js/main.js"></script>
+		<title>Shadow Orbit</title>
+	</head>
+	<body>
+		<div id="panel-screen-overlay" class="panel-screen-overlay hidden">
+			<section class="panel-screen">
+				<h2>HOW TO PLAY</h2>
+
+				<p>
+					Pilot a stealth spacecraft. Eliminate enemy forces and
+					survive.
+				</p>
+
+				<article>
+					<h3>CONTROLS</h3>
+
+					<div class="keys">
+						<div>&nbsp;</div>
+						<div class="key">W</div>
+						<div>&nbsp;</div>
+
+						<div class="key">A</div>
+						<div class="key">S</div>
+						<div class="key">D</div>
+					</div>
+
+					<div class="spacebar">SPACE — FIRE</div>
+				</article>
+
+				<article>
+					<h3>ENEMIES</h3>
+					<p><span class="enemy">Light</span> — Fast, fragile</p>
+					<p><span class="enemy">Normal</span> — Balanced</p>
+					<p><span class="enemy">Heavy</span> — Slow, durable</p>
+				</article>
+
+				<button id="btn-close-panel">CLOSE</button>
+			</section>
+		</div>
+
+		<section class="splash-screen">
+			<h1 class="title">Shadow Orbit</h1>
+			<div class="menu">
+				<button>Start Mission</button>
+				<button id="btn-how-to">How To Play</button>
+				<button id="btn-exit">Exit</button>
+			</div>
+		</section>
+
+		<section id="starfield-container">
+			<canvas id="starfield"></canvas>
+		</section>
+	</body>
+</html>
