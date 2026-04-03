@@ -183,5 +183,13 @@ section.hidden {
 		&.biru {
 			background: url('../assets/images/biru.gif') no-repeat center/cover;
 		}
+
+		&.bacu {
+			background: url('../assets/images/bacu.gif') no-repeat center/cover;
+		}
+
+		&.gemru {
+			background: url('../assets/images/gemru.gif') no-repeat center/cover;
+		}
 	}
 }
