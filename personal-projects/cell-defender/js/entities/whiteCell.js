@@ -1,3 +1,5 @@
+import { TILES_CODES } from '../constants/tiles.js';
+
 export default class WhiteCell {
 	constructor(WHITE_CELL_CONFIG, WHITE_CELL_ELEMENT, MAP) {
 		this.element = WHITE_CELL_ELEMENT;
@@ -55,7 +57,7 @@ export default class WhiteCell {
 		return true;
 	}
 
-	update(tileLayout, time) {
+	update(time, tileLayout, drawTilesLayout) {
 		if (time - this.lastMove < this.moveDelay) return;
 		this.lastMove = time;
 
@@ -99,6 +101,11 @@ export default class WhiteCell {
 
 		this.x = nextX;
 		this.y = nextY;
+
+		if (this.map[this.y][this.x] === TILES_CODES.PILL) {
+			this.map[this.y][this.x] = TILES_CODES.NONE;
+			drawTilesLayout();
+		}
 	}
 
 	animate() {
