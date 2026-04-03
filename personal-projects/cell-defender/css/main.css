@@ -158,6 +158,10 @@ section.hidden {
 			background: url('../assets/images/moving-cell.gif') no-repeat
 				center/cover;
 		}
+
+		&.pill {
+			background: url('../assets/images/pill.png') no-repeat center/cover;
+		}
 	}
 
 	.white-cell {

@@ -24,7 +24,7 @@ function drawTilesLayout() {
 }
 
 function loop(time) {
-	whiteCell.update(TILE_LAYOUT_1, time);
+	whiteCell.update(time, TILE_LAYOUT_1, drawTilesLayout);
 	whiteCell.animate();
 
 	requestAnimationFrame(loop);
