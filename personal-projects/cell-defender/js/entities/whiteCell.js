@@ -6,6 +6,10 @@ export default class WhiteCell {
 		this.x = WHITE_CELL_CONFIG.X;
 		this.y = WHITE_CELL_CONFIG.Y;
 		this.z = WHITE_CELL_CONFIG.Z;
+
+		this.renderX = this.x;
+		this.renderY = this.y;
+
 		this.size = WHITE_CELL_CONFIG.SIZE;
 		this.keys = WHITE_CELL_CONFIG.KEYS;
 		this.currentDirection = 'no_direction';
@@ -57,8 +61,14 @@ export default class WhiteCell {
 	}
 
 	animate() {
-		const positionX = this.x * this.size;
-		const positionY = this.y * this.size;
+		const lerpFactor = 0.2;
+
+		this.renderX += (this.x - this.renderX) * lerpFactor;
+		this.renderY += (this.y - this.renderY) * lerpFactor;
+
+		const positionX = this.renderX * this.size;
+		const positionY = this.renderY * this.size;
+
 		const style = `transform: translate(${positionX}px, ${positionY}px) rotateZ(${this.z}deg)`;
 
 		this.element.setAttribute('style', style);
