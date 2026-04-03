@@ -3,7 +3,7 @@ const WHITE_CELL_CONFIG = {
 	Y: 0,
 	Z: 0,
 	SIZE: 50,
-	KEY: {
+	KEYS: {
 		ArrowRight: 'ArrowRight',
 		ArrowLeft: 'ArrowLeft',
 		ArrowUp: 'ArrowUp',
