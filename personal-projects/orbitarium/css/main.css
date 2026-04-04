@@ -139,6 +139,13 @@ body {
 		height: 650px;
 		animation-duration: 20s;
 	}
+
+	&.jupiter-orbit {
+		width: 820px;
+		height: 820px;
+		animation-duration: 28s;
+		filter: blur(0.3px);
+	}
 }
 
 @keyframes orbitRotate {
@@ -194,5 +201,14 @@ body {
 		box-shadow:
 			inset -8px -8px 14px rgba(0, 0, 0, 0.7),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.1);
+	}
+
+	&.jupiter {
+		width: 70px;
+		height: 70px;
+		background-image: url('https://www.solarsystemscope.com/textures/download/2k_jupiter.jpg');
+		box-shadow:
+			inset -12px -12px 20px rgba(0, 0, 0, 0.7),
+			inset 6px 6px 14px rgba(255, 255, 255, 0.2);
 	}
 }
