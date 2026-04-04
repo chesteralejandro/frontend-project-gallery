@@ -153,6 +153,12 @@ body {
 		animation-duration: 36s;
 		filter: blur(0.4px);
 	}
+
+	&.uranus-orbit {
+		width: 1150px;
+		height: 1150px;
+		animation: orbitRotate 44s linear infinite;
+	}
 }
 
 @keyframes orbitRotate {
@@ -169,7 +175,7 @@ body {
 	position: absolute;
 	top: 50%;
 	left: 0;
-	transform: translate(-50%, -50%) rotate(10deg);
+	transform: translate(-50%, -50%);
 	box-shadow:
 		inset -6px -6px 12px rgba(0, 0, 0, 0.7),
 		inset 6px 6px 12px rgba(255, 255, 255, 0.15);
@@ -272,6 +278,28 @@ body {
 			border-radius: 50%;
 			background: transparent;
 			box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+		}
+	}
+
+	&.uranus {
+		width: 50px;
+		height: 50px;
+		background-image: url('https://www.solarsystemscope.com/textures/download/2k_uranus.jpg');
+		transform: translate(-50%, -50%) rotate(90deg);
+		box-shadow:
+			inset -6px -6px 10px rgba(0, 0, 0, 0.5),
+			inset 4px 4px 8px rgba(255, 255, 255, 0.2);
+
+		&::after {
+			content: '';
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			width: 80px;
+			height: 80px;
+			transform: translate(-50%, -50%) rotate(75deg);
+			border-radius: 50%;
+			border: 2px solid rgba(200, 220, 255, 0.2);
 		}
 	}
 }
