@@ -126,15 +126,18 @@ body {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-
 			width: 70px;
 			height: 70px;
-
 			transform: translate(-50%, -50%);
 			border-radius: 50%;
-
 			animation: orbitRotate 6s linear infinite;
 		}
+	}
+
+	&.mars-orbit {
+		width: 650px;
+		height: 650px;
+		animation-duration: 20s;
 	}
 }
 
@@ -182,5 +185,14 @@ body {
 			height: 10px;
 			background-image: url('https://www.solarsystemscope.com/textures/download/2k_moon.jpg');
 		}
+	}
+
+	&.mars {
+		width: 26px;
+		height: 26px;
+		background-image: url('https://www.solarsystemscope.com/textures/download/2k_mars.jpg');
+		box-shadow:
+			inset -8px -8px 14px rgba(0, 0, 0, 0.7),
+			inset 4px 4px 10px rgba(255, 255, 255, 0.1);
 	}
 }
