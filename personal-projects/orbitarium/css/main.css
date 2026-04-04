@@ -116,6 +116,26 @@ body {
 		height: 400px;
 		animation-duration: 12s;
 	}
+
+	&.earth-orbit {
+		width: 520px;
+		height: 520px;
+		animation-duration: 16s;
+
+		.moon-orbit {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+
+			width: 70px;
+			height: 70px;
+
+			transform: translate(-50%, -50%);
+			border-radius: 50%;
+
+			animation: orbitRotate 6s linear infinite;
+		}
+	}
 }
 
 @keyframes orbitRotate {
@@ -148,5 +168,19 @@ body {
 		width: 28px;
 		height: 28px;
 		background-image: url('https://www.solarsystemscope.com/textures/download/2k_venus_surface.jpg');
+	}
+
+	&.earth {
+		width: 32px;
+		height: 32px;
+		background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg');
+		/* For Moon Orbit */
+		position: relative;
+
+		.moon {
+			width: 10px;
+			height: 10px;
+			background-image: url('https://www.solarsystemscope.com/textures/download/2k_moon.jpg');
+		}
 	}
 }
