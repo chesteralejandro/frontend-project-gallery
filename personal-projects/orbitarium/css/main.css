@@ -14,6 +14,14 @@ body {
 	height: 100vh;
 	overflow: hidden;
 	background: radial-gradient(circle, #000 60%, #020617 100%);
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: url('https://www.transparenttextures.com/patterns/stardust.png');
+		opacity: 0.3;
+	}
 }
 
 .space {
@@ -22,7 +30,6 @@ body {
 	height: 100vh;
 }
 
-/* SUN */
 .sun {
 	position: absolute;
 	top: 50%;
@@ -34,17 +41,15 @@ body {
 
 	background: url('https://www.solarsystemscope.com/textures/download/2k_sun.jpg');
 	background-size: cover;
-
-	/* rotation illusion */
-	animation: rotateSun 25s linear infinite;
-
-	/* glow */
 	box-shadow:
 		0 0 40px #ffcc33,
 		0 0 80px #ff9900,
 		0 0 140px #ff6600;
+	animation:
+		sunRotate 25s linear infinite,
+		sunPulse 4s ease-in-out infinite;
 
-	::before {
+	&::before {
 		content: '';
 		position: absolute;
 		inset: 0;
@@ -60,7 +65,7 @@ body {
 	}
 }
 
-@keyframes rotateSun {
+@keyframes sunRotate {
 	from {
 		background-position: 0% 0%;
 	}
@@ -69,7 +74,7 @@ body {
 	}
 }
 
-@keyframes pulse {
+@keyframes sunPulse {
 	0% {
 		box-shadow:
 			0 0 30px #ffcc33,
@@ -94,36 +99,22 @@ body {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	border: 1px dashed rgba(255, 255, 255, 0.2);
 	border-radius: 50%;
+	border: 1px dashed rgba(255, 255, 255, 0.2);
 	transform: translate(-50%, -50%);
-}
-
-/* Mercury orbit size */
-.mercury-orbit {
-	width: 300px;
-	height: 300px;
 	filter: blur(0.2px);
-	animation: orbitRotate 8s linear infinite;
+	animation: orbitRotate linear infinite;
 
-	.mercury {
-		position: absolute;
-		top: 50%;
-		left: 0;
+	&.mercury-orbit {
+		width: 300px;
+		height: 300px;
+		animation-duration: 8s;
+	}
 
-		width: 20px;
-		height: 20px;
-		border-radius: 50%;
-
-		background: url('https://www.solarsystemscope.com/textures/download/2k_mercury.jpg');
-		background-size: cover;
-
-		transform: translate(-50%, -50%) rotate(10deg);
-
-		/* fake shading */
-		box-shadow:
-			inset -5px -5px 10px rgba(0, 0, 0, 0.6),
-			inset 5px 5px 10px rgba(255, 255, 255, 0.2);
+	&.venus-orbit {
+		width: 400px;
+		height: 400px;
+		animation-duration: 12s;
 	}
 }
 
@@ -133,5 +124,29 @@ body {
 	}
 	to {
 		transform: translate(-50%, -50%) rotate(360deg);
+	}
+}
+
+.planet {
+	border-radius: 50%;
+	position: absolute;
+	top: 50%;
+	left: 0;
+	transform: translate(-50%, -50%) rotate(10deg);
+	box-shadow:
+		inset -6px -6px 12px rgba(0, 0, 0, 0.7),
+		inset 6px 6px 12px rgba(255, 255, 255, 0.15);
+	background-size: cover;
+
+	&.mercury {
+		width: 20px;
+		height: 20px;
+		background: url('https://www.solarsystemscope.com/textures/download/2k_mercury.jpg');
+	}
+
+	&.venus {
+		width: 28px;
+		height: 28px;
+		background-image: url('https://www.solarsystemscope.com/textures/download/2k_venus_surface.jpg');
 	}
 }
