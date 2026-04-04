@@ -7,4 +7,7 @@ export const SCREENS = {
 
 export const CHARACTERS = {
 	WHITE_CELL: document.getElementById('white-cell'),
+	BIRU: document.getElementById('biru'),
+	BACU: document.getElementById('bacu'),
+	GEMRU: document.getElementById('gemru'),
 };

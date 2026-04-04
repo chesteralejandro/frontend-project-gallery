@@ -147,29 +147,49 @@ section.hidden {
 		top: 0;
 		left: 0;
 		z-index: -100;
-	}
 
-	.tiles {
-		display: inline-block;
-		width: var(--character-size);
-		height: var(--character-size);
+		.tiles {
+			display: inline-block;
+			width: var(--character-size);
+			height: var(--character-size);
 
-		&.wall {
-			background: url('../assets/images/moving-cell.gif') no-repeat
-				center/cover;
-		}
+			&.wall {
+				background: url('../assets/images/moving-cell.gif') no-repeat
+					center/cover;
+			}
 
-		&.pill {
-			background: url('../assets/images/pill.png') no-repeat center/cover;
+			&.pill {
+				background: url('../assets/images/pill.png') no-repeat
+					center/cover;
+			}
 		}
 	}
 
 	.white-cell {
-		position: relative;
+		position: absolute;
 		z-index: 100;
 		width: var(--character-size);
 		height: var(--character-size);
 		background: url('../assets/images/white-blood.gif') no-repeat
 			center/cover;
+	}
+
+	.enemy {
+		position: absolute;
+		z-index: 100;
+		width: var(--character-size);
+		height: var(--character-size);
+
+		&.biru {
+			background: url('../assets/images/biru.gif') no-repeat center/cover;
+		}
+
+		&.bacu {
+			background: url('../assets/images/bacu.gif') no-repeat center/cover;
+		}
+
+		&.gemru {
+			background: url('../assets/images/gemru.gif') no-repeat center/cover;
+		}
 	}
 }
