@@ -86,14 +86,14 @@ body {
 	}
 
 	&.venus-orbit {
-		width: 400px;
-		height: 400px;
+		width: 420px;
+		height: 420px;
 		animation-duration: 12s;
 	}
 
 	&.earth-orbit {
-		width: 520px;
-		height: 520px;
+		width: 560px;
+		height: 560px;
 		animation-duration: 16s;
 
 		.moon-orbit {
@@ -109,37 +109,37 @@ body {
 	}
 
 	&.mars-orbit {
-		width: 650px;
-		height: 650px;
+		width: 720px;
+		height: 720px;
 		animation-duration: 20s;
 	}
 
 	&.jupiter-orbit {
-		width: 780px;
-		height: 780px;
+		width: 920px;
+		height: 920px;
 		animation-duration: 28s;
 		filter: blur(0.3px);
 		border-color: rgba(255, 255, 255, 0.1);
 	}
 
 	&.saturn-orbit {
-		width: 920px;
-		height: 920px;
+		width: 1150px;
+		height: 1150px;
 		animation-duration: 36s;
 		border-color: rgba(255, 255, 255, 0.08);
 	}
 
 	&.uranus-orbit {
-		width: 1100px;
-		height: 1100px;
-		animation-duration: 44s;
+		width: 1400px;
+		height: 1400px;
+		animation-duration: 46s;
 		border-color: rgba(255, 255, 255, 0.06);
 	}
 
 	&.neptune-orbit {
-		width: 1300px;
-		height: 1300px;
-		animation-duration: 52s;
+		width: 1650px;
+		height: 1650px;
+		animation-duration: 58s;
 		border-color: rgba(255, 255, 255, 0.04);
 	}
 }
@@ -228,8 +228,8 @@ body {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			width: 120px;
-			height: 120px;
+			width: 110px;
+			height: 110px;
 			border-radius: 50%;
 			border: 10px solid rgba(200, 180, 140, 0.6);
 			transform: translate(-50%, -50%) rotateX(65deg);
