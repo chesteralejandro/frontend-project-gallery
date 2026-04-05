@@ -14,20 +14,24 @@ body {
 	height: 100vh;
 	overflow: hidden;
 	background: radial-gradient(circle, #000 60%, #020617 100%);
+	position: relative;
 
 	&::before {
 		content: '';
-		position: absolute;
 		inset: 0;
 		background: url('https://www.transparenttextures.com/patterns/stardust.png');
 		opacity: 0.3;
+		position: absolute;
+		z-index: 0;
 	}
 }
 
 .space {
 	position: relative;
+	z-index: 1;
 	width: 100vw;
 	height: 100vh;
+	perspective: 1000px;
 }
 
 .sun {
@@ -42,12 +46,12 @@ body {
 	background: url('https://www.solarsystemscope.com/textures/download/2k_sun.jpg');
 	background-size: cover;
 	box-shadow:
-		0 0 40px #ffcc33,
-		0 0 80px #ff9900,
-		0 0 140px #ff6600;
+		0 0 30px #ffcc33,
+		0 0 60px #ff9900,
+		0 0 120px #ff6600;
 	animation:
-		rotate 25s linear infinite,
-		sunPulse 4s ease-in-out infinite;
+		texture-shift 25s linear infinite,
+		sunPulse 6s ease-in-out infinite;
 
 	&::before {
 		content: '';
@@ -70,7 +74,7 @@ body {
 	top: 50%;
 	left: 50%;
 	border-radius: 50%;
-	border: 1px dashed rgba(255, 255, 255, 0.2);
+	border: 1px dashed rgba(255, 255, 255, 0.12);
 	transform: translate(-50%, -50%);
 	filter: blur(0.2px);
 	animation: orbitRotate linear infinite;
@@ -111,31 +115,32 @@ body {
 	}
 
 	&.jupiter-orbit {
-		width: 820px;
-		height: 820px;
+		width: 780px;
+		height: 780px;
 		animation-duration: 28s;
 		filter: blur(0.3px);
+		border-color: rgba(255, 255, 255, 0.1);
 	}
 
 	&.saturn-orbit {
-		width: 1000px;
-		height: 1000px;
+		width: 920px;
+		height: 920px;
 		animation-duration: 36s;
-		filter: blur(0.4px);
+		border-color: rgba(255, 255, 255, 0.08);
 	}
 
 	&.uranus-orbit {
-		width: 1150px;
-		height: 1150px;
+		width: 1100px;
+		height: 1100px;
 		animation-duration: 44s;
+		border-color: rgba(255, 255, 255, 0.06);
 	}
 
 	&.neptune-orbit {
 		width: 1300px;
 		height: 1300px;
 		animation-duration: 52s;
-		border: 1px dashed rgba(255, 255, 255, 0.08);
-		filter: blur(0.5px);
+		border-color: rgba(255, 255, 255, 0.04);
 	}
 }
 
@@ -149,6 +154,7 @@ body {
 		inset -6px -6px 12px rgba(0, 0, 0, 0.7),
 		inset 6px 6px 12px rgba(255, 255, 255, 0.15);
 	background-size: cover;
+	will-change: transform;
 
 	&.mercury {
 		width: 20px;
@@ -168,12 +174,12 @@ body {
 		background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg');
 		/* For Moon Orbit */
 		position: relative;
+	}
 
-		.moon {
-			width: 10px;
-			height: 10px;
-			background-image: url('https://www.solarsystemscope.com/textures/download/2k_moon.jpg');
-		}
+	&.moon {
+		width: 10px;
+		height: 10px;
+		background-image: url('https://www.solarsystemscope.com/textures/download/2k_moon.jpg');
 	}
 
 	&.mars {
@@ -204,17 +210,15 @@ body {
 		box-shadow: none;
 
 		.saturn-body {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
 			width: 65px;
 			height: 65px;
 			border-radius: 50%;
 			background-image: url('https://www.solarsystemscope.com/textures/download/2k_saturn.jpg');
 			background-size: cover;
-
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-
 			box-shadow:
 				inset -10px -10px 18px rgba(0, 0, 0, 0.7),
 				inset 6px 6px 12px rgba(255, 255, 255, 0.2);
@@ -224,13 +228,11 @@ body {
 			position: absolute;
 			top: 50%;
 			left: 50%;
-
 			width: 120px;
 			height: 120px;
-
-			transform: translate(-50%, -50%) rotateX(65deg);
 			border-radius: 50%;
-			border: 12px solid rgba(200, 180, 140, 0.6);
+			border: 10px solid rgba(200, 180, 140, 0.6);
+			transform: translate(-50%, -50%) rotateX(65deg);
 			box-shadow:
 				0 0 10px rgba(255, 255, 255, 0.2),
 				inset 0 0 20px rgba(0, 0, 0, 0.5);
@@ -247,6 +249,14 @@ body {
 			border-radius: 50%;
 			background: transparent;
 			box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			inset: 20%;
+			border-radius: 50%;
+			background: rgba(0, 0, 0, 0.15);
 		}
 	}
 
@@ -279,13 +289,14 @@ body {
 		box-shadow:
 			inset -10px -10px 18px rgba(0, 0, 0, 0.75),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.15);
+		filter: saturate(1.2);
 	}
 }
 
-.rotate {
-	animation: rotate linear infinite;
+.texture-shift {
+	animation: texture-shift linear infinite;
 
-	.mercury.rotate {
+	&.mercury {
 		animation-duration: 6s;
 	}
 	&.venus {
@@ -301,17 +312,17 @@ body {
 		animation-duration: 22s;
 	}
 	&.saturn-body {
-		animation-duration: 26s;
+		animation-duration: 28s;
 	}
 	&.uranus {
-		animation-duration: 30s;
+		animation-duration: 32s;
 	}
 	&.neptune {
-		animation-duration: 34s;
+		animation-duration: 36s;
 	}
 }
 
-@keyframes rotate {
+@keyframes texture-shift {
 	from {
 		background-position: 0% 0%;
 	}
