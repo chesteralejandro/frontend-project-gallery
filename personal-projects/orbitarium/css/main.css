@@ -58,7 +58,7 @@ body {
 	&::before {
 		content: '';
 		inset: 0;
-		background: url('https://www.transparenttextures.com/patterns/stardust.png');
+		background: url('../assets/images/background/stars.png');
 		opacity: 0.3;
 		position: absolute;
 		z-index: 0;
@@ -94,7 +94,7 @@ body {
 	transform: translate(-50%, -50%);
 	border-radius: 50%;
 
-	background: url('https://www.solarsystemscope.com/textures/download/2k_sun.jpg');
+	background: url('../assets/images/textures/sun.webp');
 	background-size: cover;
 	box-shadow:
 		0 0 30px #ffcc33,
@@ -215,7 +215,7 @@ body {
 	&.mercury {
 		width: var(--mercury-size);
 		height: var(--mercury-size);
-		background: url('https://www.solarsystemscope.com/textures/download/2k_mercury.jpg');
+		background: url('../assets/images/textures/mercury.webp');
 		box-shadow:
 			inset -10px -10px 16px rgba(0, 0, 0, 0.75),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.2);
@@ -224,7 +224,7 @@ body {
 	&.venus {
 		width: var(--venus-size);
 		height: var(--venus-size);
-		background-image: url('https://www.solarsystemscope.com/textures/download/2k_venus_surface.jpg');
+		background-image: url('../assets/images/textures/venus.webp');
 		box-shadow:
 			inset -10px -10px 16px rgba(0, 0, 0, 0.75),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.2);
@@ -233,7 +233,7 @@ body {
 	&.earth {
 		width: var(--earth-size);
 		height: var(--earth-size);
-		background-image: url('https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg');
+		background-image: url('../assets/images/textures/earth.webp');
 		box-shadow:
 			inset -8px -8px 14px rgba(0, 0, 0, 0.7),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.2);
@@ -244,13 +244,13 @@ body {
 	&.moon {
 		width: var(--moon-size);
 		height: var(--moon-size);
-		background-image: url('https://www.solarsystemscope.com/textures/download/2k_moon.jpg');
+		background-image: url('../assets/images/textures/moon.webp');
 	}
 
 	&.mars {
 		width: var(--mars-size);
 		height: var(--mars-size);
-		background-image: url('https://www.solarsystemscope.com/textures/download/2k_mars.jpg');
+		background-image: url('../assets/images/textures/mars.webp');
 		box-shadow:
 			inset -8px -8px 14px rgba(0, 0, 0, 0.7),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.2);
@@ -259,7 +259,7 @@ body {
 	&.jupiter {
 		width: var(--jupiter-size);
 		height: var(--jupiter-size);
-		background-image: url('https://www.solarsystemscope.com/textures/download/2k_jupiter.jpg');
+		background-image: url('../assets/images/textures/jupiter.webp');
 		box-shadow:
 			inset -6px -6px 12px rgba(0, 0, 0, 0.6),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.2);
@@ -283,7 +283,7 @@ body {
 			width: var(--saturn-body-size);
 			height: var(--saturn-body-size);
 			border-radius: 50%;
-			background-image: url('https://www.solarsystemscope.com/textures/download/2k_saturn.jpg');
+			background-image: url('../assets/images/textures/saturn.webp');
 			background-size: cover;
 			box-shadow:
 				inset -6px -6px 12px rgba(0, 0, 0, 0.6),
@@ -332,7 +332,7 @@ body {
 	&.uranus {
 		width: var(--uranus-size);
 		height: var(--uranus-size);
-		background-image: url('https://www.solarsystemscope.com/textures/download/2k_uranus.jpg');
+		background-image: url('../assets/images/textures/uranus.webp');
 		transform: translate(-50%, -50%) rotate(82deg);
 		box-shadow:
 			inset -5px -5px 10px rgba(0, 0, 0, 0.5),
@@ -354,7 +354,7 @@ body {
 	&.neptune {
 		width: var(--neptune-size);
 		height: var(--neptune-size);
-		background-image: url('https://www.solarsystemscope.com/textures/download/2k_neptune.jpg');
+		background-image: url('../assets/images/textures/neptune.webp');
 		box-shadow:
 			inset -5px -5px 10px rgba(0, 0, 0, 0.5),
 			inset 4px 4px 10px rgba(255, 255, 255, 0.2);
