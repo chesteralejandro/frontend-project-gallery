@@ -10,9 +10,6 @@ function readFile(file) {
 		return;
 	}
 
-	dropzone.textContent = `Loaded: ${file.name}`;
-	dropzone.classList.add('loaded');
-
 	const reader = new FileReader();
 
 	reader.onload = (e) => {
@@ -25,10 +22,18 @@ function readFile(file) {
 			.replace(/>\s+</g, '><') // Remove spaces between tags
 			.trim();
 
-		outputTextArea.value = minified;
+		// Minified code with filename
+		outputTextArea.value = `(Filename: ${file.name})\n` + minified;
+
+		// Auto scroll to top
 		outputTextArea.scrollTop = 0;
 
+		// Enable copy button if minified content exists
 		btnCopy.disabled = !minified;
+
+		// Update dropzone text for confirmation
+		dropzone.textContent = `Loaded: ${file.name}`;
+		dropzone.classList.add('loaded');
 	};
 
 	reader.readAsText(file);
