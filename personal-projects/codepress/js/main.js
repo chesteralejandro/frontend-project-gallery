@@ -2,6 +2,8 @@ const inputTextArea = document.getElementById('input-textarea');
 const outputTextArea = document.getElementById('output-textarea');
 const btnMinify = document.getElementById('btn-minify');
 const btnCopy = document.getElementById('btn-copy');
+const fileInput = document.getElementById('fileInput');
+const dropzone = document.querySelector('.dropzone');
 
 btnMinify.addEventListener('click', () => {
 	let code = inputTextArea.value;
@@ -28,6 +30,28 @@ inputTextArea.addEventListener('input', () => {
 	btnCopy.disabled = !inputTextArea.value.trim();
 });
 
+fileInput.addEventListener('change', (e) => {
+	const file = e.target.files[0];
+	if (file) readFile(file);
+});
+
+// Handle drag events
+dropzone.addEventListener('dragover', (e) => {
+	e.preventDefault();
+	dropzone.classList.add('dragover');
+});
+
+dropzone.addEventListener('dragleave', () => {
+	dropzone.classList.remove('dragover');
+});
+
+dropzone.addEventListener('drop', (e) => {
+	e.preventDefault();
+	dropzone.classList.remove('dragover');
+	const file = e.dataTransfer.files[0];
+	if (file) readFile(file);
+});
+
 btnCopy.addEventListener('click', async () => {
 	const minifiedCode = outputTextArea.value;
 
@@ -47,3 +71,21 @@ btnCopy.addEventListener('click', async () => {
 		alert('Failed to copy. Try Manually.');
 	}
 });
+
+// Read file content
+function readFile(file) {
+	if (file.type !== 'text/html') {
+		alert('Please upload a valid HTML file!');
+		return;
+	}
+
+	const reader = new FileReader();
+
+	reader.onload = (e) => {
+		inputTextArea.value = e.target.result;
+		// auto-minify after upload
+		btnMinify.click();
+	};
+
+	reader.readAsText(file);
+}

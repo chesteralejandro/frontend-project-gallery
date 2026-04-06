@@ -54,6 +54,35 @@ header {
 	}
 }
 
+.file-upload {
+	margin-bottom: 1rem;
+
+	.dropzone {
+		display: block;
+		width: 100%;
+		padding: 1.5rem;
+		border: 2px dashed rgba(148, 163, 184, 0.5);
+		border-radius: 12px;
+		text-align: center;
+		color: #94a3b8;
+		cursor: pointer;
+		transition:
+			background 0.2s ease,
+			border-color 0.2s ease;
+		background: rgba(255, 255, 255, 0.03);
+
+		&:hover {
+			background: rgba(255, 255, 255, 0.06);
+		}
+
+		&.dragover {
+			border-color: #3b82f6;
+			background: rgba(59, 130, 246, 0.1);
+			color: #ffffff;
+		}
+	}
+}
+
 .editor {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
