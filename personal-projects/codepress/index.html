@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<script src="./js/main.js" defer></script>
+		<link rel="stylesheet" href="./css/main.css" />
+		<title>CodePress</title>
+	</head>
+	<body>
+		<main class="app">
+			<article class="card">
+				<header>
+					<h1 class="title">CodePress</h1>
+					<p class="subtitle">
+						Minify HTML, CSS, JS, and Markdown instantly
+					</p>
+				</header>
+
+				<section class="tabs">
+					<button class="active" data-type="html">HTML</button>
+					<button data-type="css">CSS</button>
+					<button data-type="js">JS</button>
+					<button data-type="md">MD</button>
+				</section>
+
+				<section class="file-upload">
+					<label for="fileInput" class="dropzone">
+						Drop your HTML file here
+					</label>
+					<input
+						type="file"
+						id="fileInput"
+						accept=".html,.css,.js,.md"
+						hidden
+					/>
+				</section>
+
+				<section class="editor">
+					<label class="editor-label">Output</label>
+					<textarea
+						readonly
+						id="output-textarea"
+						placeholder="Minified code will appear here..."
+					></textarea>
+				</section>
+
+				<footer class="actions">
+					<button id="btn-copy" disabled>Copy</button>
+					<button id="btn-clear">Clear</button>
+				</footer>
+			</article>
+		</main>
+	</body>
+</html>
