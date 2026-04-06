@@ -4,10 +4,22 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./css/main.css" />
+		<script src="./js/main.js" defer></script>
 		<title>Orbitarium</title>
 	</head>
 	<body>
-		<main class="space">
+		<header id="start-screen" class="start-screen active">
+			<article class="glass-card">
+				<h1>Orbitarium</h1>
+				<p>
+					Explore the Solar System through an interactive visual
+					experience.
+				</p>
+				<button id="start-btn">Start Experience</button>
+			</article>
+		</header>
+
+		<main id="orbitarium-screen" class="space">
 			<article class="sun">&nbsp;</article>
 
 			<section class="orbit mercury-orbit">
@@ -49,5 +61,7 @@
 				<article class="planet neptune texture-shift">&nbsp;</article>
 			</section>
 		</main>
+
+		<audio id="bg-music" src="./assets/audio/music/cosmos.mp3" loop></audio>
 	</body>
 </html>
