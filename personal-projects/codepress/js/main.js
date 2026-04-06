@@ -2,6 +2,7 @@ const fileInput = document.getElementById('fileInput');
 const dropzone = document.querySelector('.dropzone');
 const outputTextArea = document.getElementById('output-textarea');
 const btnCopy = document.getElementById('btn-copy');
+const btnClear = document.getElementById('btn-clear');
 
 // Read file content and auto-minify
 function readFile(file) {
@@ -45,7 +46,7 @@ function readFile(file) {
 		outputTextArea.scrollTop = outputTextArea.scrollHeight;
 
 		// Enable copy button if minified content exists
-		btnCopy.disabled = !minified;
+		btnCopy.disabled = false;
 
 		// Update dropzone text for confirmation
 		dropzone.textContent = `Loaded: ${file.name}`;
@@ -98,4 +99,14 @@ btnCopy.addEventListener('click', async () => {
 		console.error('Failed to copy:', error.message);
 		alert('Failed to copy. Try Manually.');
 	}
+});
+
+btnClear.addEventListener('click', () => {
+	outputTextArea.value = '';
+
+	btnCopy.disabled = true;
+
+	dropzone.textContent =
+		'Drag & Drop HTML/CSS/JS file here, or click to upload';
+	dropzone.classList.remove('loaded');
 });
