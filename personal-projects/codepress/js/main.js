@@ -3,6 +3,21 @@ const dropzone = document.querySelector('.dropzone');
 const outputTextArea = document.getElementById('output-textarea');
 const btnCopy = document.getElementById('btn-copy');
 const btnClear = document.getElementById('btn-clear');
+const tabs = document.querySelectorAll('.tabs button');
+
+let currentMode = 'html';
+
+tabs.forEach((tab) => {
+	tab.addEventListener('click', () => {
+		tabs.forEach((tab) => tab.classList.remove('active'));
+		tab.classList.add('active');
+
+		currentMode = tab.dataset.type;
+
+		// Update dropzone text for clarity
+		dropzone.textContent = `Drop your ${currentMode.toUpperCase()} file here`;
+	});
+});
 
 // Handle Drag events
 dropzone.addEventListener('dragover', (e) => {
@@ -54,8 +69,7 @@ btnClear.addEventListener('click', () => {
 
 	btnCopy.disabled = true;
 
-	dropzone.textContent =
-		'Drag & Drop HTML/CSS/JS file here, or click to upload';
+	dropzone.textContent = `Drop your ${currentMode.toUpperCase()} file here`;
 	dropzone.classList.remove('loaded');
 });
 
@@ -68,17 +82,25 @@ function readFile(file) {
 
 		let minified = '';
 
-		if (file.name.endsWith('.html')) {
+		// Validate file type based on active tab
+		if (!file.name.endsWith(`.${currentMode}`)) {
+			alert(
+				`You're in ${currentMode.toUpperCase()} mode. Please upload the correct file type.`,
+			);
+			return;
+		}
+
+		if (currentMode === 'html') {
 			minified = code
 				.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
 				.replace(/>\s+</g, '><'); // Remove spaces between tags
-		} else if (file.name.endsWith('.css')) {
+		} else if (currentMode === 'css') {
 			minified = code
 				.replace(/\/\*[\s\S]*?\*\//g, '')
 				.replace(/\s*([{}:;,])\s*/g, '$1');
-		} else if (file.name.endsWith('.js')) {
+		} else if (currentMode === 'js') {
 			minified = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
-		} else if (file.name.endsWith('.md')) {
+		} else if (currentMode === 'md') {
 			minified = minifyMarkdown(code);
 		} else {
 			alert('Unsupported file type!');
@@ -91,7 +113,7 @@ function readFile(file) {
 			.trim();
 
 		// Minified code with filename
-		const formatted = `(Filename: ${file.name})\n${minified}\n\n`;
+		const formatted = `(Filename: ${file.name} | Type: ${currentMode.toUpperCase()})\n${minified}\n\n`;
 
 		if (outputTextArea.value.trim() !== '') {
 			outputTextArea.value += formatted;
@@ -108,6 +130,11 @@ function readFile(file) {
 		// Update dropzone text for confirmation
 		dropzone.textContent = `Loaded: ${file.name}`;
 		dropzone.classList.add('loaded');
+
+		setTimeout(() => {
+			dropzone.textContent = `Drop your ${currentMode.toUpperCase()} file here`;
+			dropzone.classList.remove('loaded');
+		}, 2000);
 	};
 
 	reader.readAsText(file);
