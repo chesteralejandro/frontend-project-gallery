@@ -9,24 +9,28 @@
 	</head>
 	<body>
 		<main class="app">
-			<header>
-				<h1 class="title">CodePress</h1>
-				<p class="subtitle">Minify your HTML code instantly</p>
-			</header>
+			<section class="card">
+				<header>
+					<h1 class="title">CodePress</h1>
+					<p class="subtitle">Minify your HTML code instantly</p>
+				</header>
 
-			<section class="editor">
-				<textarea
-					id="input-textarea"
-					placeholder="Paste your HTML here..."
-				></textarea>
-				<textarea
-					id="output-textarea"
-					placeholder="Minified output..."
-					readonly
-				></textarea>
+				<section class="editor">
+					<textarea
+						id="input-textarea"
+						placeholder="Paste your HTML here..."
+					></textarea>
+					<textarea
+						id="output-textarea"
+						placeholder="Minified output..."
+						readonly
+					></textarea>
+				</section>
+
+				<footer class="actions">
+					<button id="btn-minify">Minify HTML</button>
+				</footer>
 			</section>
-
-			<button id="btn-minify">Minify HTML</button>
 		</main>
 	</body>
 </html>
