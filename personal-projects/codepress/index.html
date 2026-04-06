@@ -9,15 +9,24 @@
 	</head>
 	<body>
 		<main class="app">
-			<section class="card">
+			<article class="card">
 				<header>
 					<h1 class="title">CodePress</h1>
-					<p class="subtitle">Minify your HTML code instantly</p>
+					<p class="subtitle">
+						Minify HTML, CSS, JS, and Markdown instantly
+					</p>
 				</header>
+
+				<section class="tabs">
+					<button class="active" data-type="html">HTML</button>
+					<button data-type="css">CSS</button>
+					<button data-type="js">JS</button>
+					<button data-type="md">MD</button>
+				</section>
 
 				<section class="file-upload">
 					<label for="fileInput" class="dropzone">
-						Drag & Drop HTML file here, or click to upload
+						Drop your HTML file here, or click to upload
 					</label>
 					<input
 						type="file"
@@ -28,10 +37,11 @@
 				</section>
 
 				<section class="editor">
+					<label class="editor-label">Output</label>
 					<textarea
-						id="output-textarea"
-						placeholder="Minified output..."
 						readonly
+						id="output-textarea"
+						placeholder="Minified code will appear here..."
 					></textarea>
 				</section>
 
@@ -39,7 +49,7 @@
 					<button id="btn-copy" disabled>Copy</button>
 					<button id="btn-clear">Clear</button>
 				</footer>
-			</section>
+			</article>
 		</main>
 	</body>
 </html>
