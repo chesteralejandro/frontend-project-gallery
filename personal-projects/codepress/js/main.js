@@ -4,58 +4,6 @@ const outputTextArea = document.getElementById('output-textarea');
 const btnCopy = document.getElementById('btn-copy');
 const btnClear = document.getElementById('btn-clear');
 
-// Read file content and auto-minify
-function readFile(file) {
-	const reader = new FileReader();
-
-	reader.onload = (e) => {
-		const code = e.target.result;
-
-		let minified = '';
-
-		if (file.name.endsWith('.html')) {
-			minified = code
-				.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
-				.replace(/>\s+</g, '><'); // Remove spaces between tags
-		} else if (file.name.endsWith('.css')) {
-			minified = code
-				.replace(/\/\*[\s\S]*?\*\//g, '')
-				.replace(/\s*([{}:;,])\s*/g, '$1');
-		} else if (file.name.endsWith('.js')) {
-			minified = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
-		} else {
-			alert('Unsupported file type!');
-			return;
-		}
-
-		minified = minified
-			.replace(/\n/g, '') // Remove line breaks
-			.replace(/\s{2,}/g, ' ') // Collapse multiple spaces into one
-			.trim();
-
-		// Minified code with filename
-		const formatted = `(Filename: ${file.name})\n${minified}\n\n`;
-
-		if (outputTextArea.value.trim() !== '') {
-			outputTextArea.value += formatted;
-		} else {
-			outputTextArea.value = formatted;
-		}
-
-		// Auto scroll to bottom
-		outputTextArea.scrollTop = outputTextArea.scrollHeight;
-
-		// Enable copy button if minified content exists
-		btnCopy.disabled = false;
-
-		// Update dropzone text for confirmation
-		dropzone.textContent = `Loaded: ${file.name}`;
-		dropzone.classList.add('loaded');
-	};
-
-	reader.readAsText(file);
-}
-
 // Handle Drag events
 dropzone.addEventListener('dragover', (e) => {
 	e.preventDefault();
@@ -110,3 +58,96 @@ btnClear.addEventListener('click', () => {
 		'Drag & Drop HTML/CSS/JS file here, or click to upload';
 	dropzone.classList.remove('loaded');
 });
+
+// Read file content and auto-minify
+function readFile(file) {
+	const reader = new FileReader();
+
+	reader.onload = (e) => {
+		const code = e.target.result;
+
+		let minified = '';
+
+		if (file.name.endsWith('.html')) {
+			minified = code
+				.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
+				.replace(/>\s+</g, '><'); // Remove spaces between tags
+		} else if (file.name.endsWith('.css')) {
+			minified = code
+				.replace(/\/\*[\s\S]*?\*\//g, '')
+				.replace(/\s*([{}:;,])\s*/g, '$1');
+		} else if (file.name.endsWith('.js')) {
+			minified = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
+		} else if (file.name.endsWith('.md')) {
+			minified = minifyMarkdown(code);
+		} else {
+			alert('Unsupported file type!');
+			return;
+		}
+
+		minified = minified
+			.replace(/\n/g, '') // Remove line breaks
+			.replace(/\s{2,}/g, ' ') // Collapse multiple spaces into one
+			.trim();
+
+		// Minified code with filename
+		const formatted = `(Filename: ${file.name})\n${minified}\n\n`;
+
+		if (outputTextArea.value.trim() !== '') {
+			outputTextArea.value += formatted;
+		} else {
+			outputTextArea.value = formatted;
+		}
+
+		// Auto scroll to bottom
+		outputTextArea.scrollTop = outputTextArea.scrollHeight;
+
+		// Enable copy button if minified content exists
+		btnCopy.disabled = false;
+
+		// Update dropzone text for confirmation
+		dropzone.textContent = `Loaded: ${file.name}`;
+		dropzone.classList.add('loaded');
+	};
+
+	reader.readAsText(file);
+}
+
+function minifyMarkdown(content) {
+	const lines = content.split('\n');
+	let result = [];
+
+	let inCodeBlock = false;
+
+	for (let i = 0; i < lines.length; i++) {
+		let line = lines[i];
+
+		// Detect code block start/end
+		if (line.trim().startsWith('```')) {
+			inCodeBlock = !inCodeBlock;
+			result.push(line);
+			continue;
+		}
+
+		// Preserve code blocks exactly
+		if (inCodeBlock) {
+			result.push(line);
+			continue;
+		}
+
+		// Remove HTML comments
+		line = line.replace(/<!--[\s\S]*?-->/g, '');
+
+		// Trim whitespace
+		line = line.trim();
+
+		// Skip multiple blank lines
+		if (line === '' && result[result.length - 1] === '') {
+			continue;
+		}
+
+		result.push(line);
+	}
+
+	return result.join('\n').trim();
+}
