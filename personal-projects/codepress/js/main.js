@@ -1,41 +1,40 @@
-const inputTextArea = document.getElementById('input-textarea');
-const outputTextArea = document.getElementById('output-textarea');
-const btnMinify = document.getElementById('btn-minify');
-const btnCopy = document.getElementById('btn-copy');
 const fileInput = document.getElementById('fileInput');
 const dropzone = document.querySelector('.dropzone');
+const outputTextArea = document.getElementById('output-textarea');
+const btnCopy = document.getElementById('btn-copy');
 
-btnMinify.addEventListener('click', () => {
-	let code = inputTextArea.value;
+// Read file content and auto-minify
+function readFile(file) {
+	if (file.type !== 'text/html') {
+		alert('Please upload a valid HTML file!');
+		return;
+	}
 
-	// 1. Remove HTML comments
-	code = code.replace(/<!--[\s\S]*?-->/g, '');
+	dropzone.textContent = `Loaded: ${file.name}`;
+	dropzone.classList.add('loaded');
 
-	// 2. Remove line breaks
-	code = code.replace(/\n/g, '');
+	const reader = new FileReader();
 
-	// 3. Collapse multiple spaces into one
-	code = code.replace(/\s{2,}/g, ' ');
+	reader.onload = (e) => {
+		const code = e.target.result;
 
-	// 4. Remove spaces between tags
-	code = code.replace(/>\s+</g, '><');
+		let minified = code
+			.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
+			.replace(/\n/g, '') // Remove line breaks
+			.replace(/\s{2,}/g, ' ') // Collapse multiple spaces into one
+			.replace(/>\s+</g, '><') // Remove spaces between tags
+			.trim();
 
-	// 5. Trim start and end
-	code = code.trim();
+		outputTextArea.value = minified;
+		outputTextArea.scrollTop = 0;
 
-	outputTextArea.value = code;
-});
+		btnCopy.disabled = !minified;
+	};
 
-inputTextArea.addEventListener('input', () => {
-	btnCopy.disabled = !inputTextArea.value.trim();
-});
+	reader.readAsText(file);
+}
 
-fileInput.addEventListener('change', (e) => {
-	const file = e.target.files[0];
-	if (file) readFile(file);
-});
-
-// Handle drag events
+// Handle Drag events
 dropzone.addEventListener('dragover', (e) => {
 	e.preventDefault();
 	dropzone.classList.add('dragover');
@@ -49,6 +48,14 @@ dropzone.addEventListener('drop', (e) => {
 	e.preventDefault();
 	dropzone.classList.remove('dragover');
 	const file = e.dataTransfer.files[0];
+	if (file) readFile(file);
+});
+
+// Click to open file input
+dropzone.addEventListener('click', () => fileInput.click());
+
+fileInput.addEventListener('change', (e) => {
+	const file = e.target.files[0];
 	if (file) readFile(file);
 });
 
@@ -71,21 +78,3 @@ btnCopy.addEventListener('click', async () => {
 		alert('Failed to copy. Try Manually.');
 	}
 });
-
-// Read file content
-function readFile(file) {
-	if (file.type !== 'text/html') {
-		alert('Please upload a valid HTML file!');
-		return;
-	}
-
-	const reader = new FileReader();
-
-	reader.onload = (e) => {
-		inputTextArea.value = e.target.result;
-		// auto-minify after upload
-		btnMinify.click();
-	};
-
-	reader.readAsText(file);
-}
