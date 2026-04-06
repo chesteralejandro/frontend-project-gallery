@@ -16,6 +16,19 @@ tabs.forEach((tab) => {
 
 		// Update dropzone text for clarity
 		dropzone.textContent = `Drop your ${currentMode.toUpperCase()} file here`;
+
+		// Micro animation (pulse)
+		tab.animate(
+			[
+				{ transform: 'scale(1)' },
+				{ transform: 'scale(1.05)' },
+				{ transform: 'scale(1)' },
+			],
+			{
+				duration: 200,
+				easing: 'ease',
+			},
+		);
 	});
 });
 
@@ -56,8 +69,12 @@ btnCopy.addEventListener('click', async () => {
 		await navigator.clipboard.writeText(minifiedCode);
 
 		btnCopy.textContent = 'Copied!';
+		btnCopy.style.background = '#22c55e';
 
-		setTimeout(() => (btnCopy.textContent = 'Copy'), 1500);
+		setTimeout(() => {
+			btnCopy.textContent = 'Copy';
+			btnCopy.style.background = '';
+		}, 1500);
 	} catch (error) {
 		console.error('Failed to copy:', error.message);
 		alert('Failed to copy. Try Manually.');
