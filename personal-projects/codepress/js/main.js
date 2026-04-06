@@ -5,28 +5,44 @@ const btnCopy = document.getElementById('btn-copy');
 
 // Read file content and auto-minify
 function readFile(file) {
-	if (file.type !== 'text/html') {
-		alert('Please upload a valid HTML file!');
-		return;
-	}
-
 	const reader = new FileReader();
 
 	reader.onload = (e) => {
 		const code = e.target.result;
 
-		let minified = code
-			.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
+		let minified = '';
+
+		if (file.name.endsWith('.html')) {
+			minified = code
+				.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
+				.replace(/>\s+</g, '><'); // Remove spaces between tags
+		} else if (file.name.endsWith('.css')) {
+			minified = code
+				.replace(/\/\*[\s\S]*?\*\//g, '')
+				.replace(/\s*([{}:;,])\s*/g, '$1');
+		} else if (file.name.endsWith('.js')) {
+			minified = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
+		} else {
+			alert('Unsupported file type!');
+			return;
+		}
+
+		minified = minified
 			.replace(/\n/g, '') // Remove line breaks
 			.replace(/\s{2,}/g, ' ') // Collapse multiple spaces into one
-			.replace(/>\s+</g, '><') // Remove spaces between tags
 			.trim();
 
 		// Minified code with filename
-		outputTextArea.value = `(Filename: ${file.name})\n` + minified;
+		const formatted = `(Filename: ${file.name})\n${minified}\n\n`;
 
-		// Auto scroll to top
-		outputTextArea.scrollTop = 0;
+		if (outputTextArea.value.trim() !== '') {
+			outputTextArea.value += formatted;
+		} else {
+			outputTextArea.value = formatted;
+		}
+
+		// Auto scroll to bottom
+		outputTextArea.scrollTop = outputTextArea.scrollHeight;
 
 		// Enable copy button if minified content exists
 		btnCopy.disabled = !minified;
