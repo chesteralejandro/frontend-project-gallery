@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./css/main.css" />
+		<script src="./js/main.js" defer></script>
+		<title>TreeDrop</title>
+	</head>
+	<body>
+		<main class="app">
+			<h1>🌳 TreeDrop</h1>
+			<p class="subtitle">
+				Drag & drop your project folder to generate its structure
+			</p>
+
+			<!-- Drop Zone -->
+			<section id="drop-zone" class="drop-zone">
+				<p>Drop your folder here</p>
+				<p class="or">or</p>
+				<label for="folder-input" class="upload-btn">
+					Select Folder
+					<input
+						type="file"
+						id="folder-input"
+						webkitdirectory
+						multiple
+						hidden
+					/>
+				</label>
+			</section>
+
+			<!-- Output -->
+			<section class="output">
+				<h2>Generated Structure</h2>
+				<pre id="output"></pre>
+				<footer>
+					<button id="copy-btn">Copy</button>
+					<button id="clear-btn">Clear</button>
+				</footer>
+			</section>
+		</main>
+	</body>
+</html>

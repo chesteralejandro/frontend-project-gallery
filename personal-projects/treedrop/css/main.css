@@ -1,0 +1,156 @@
+/* Reset */
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+/* Base */
+body {
+	font-family:
+		system-ui,
+		-apple-system,
+		Segoe UI,
+		Roboto,
+		sans-serif;
+	background: #0f1410;
+	color: #e6f1e6;
+	line-height: 1.5;
+}
+
+/* Layout */
+.app {
+	max-width: 800px;
+	margin: 0 auto;
+	padding: 2rem 1.5rem;
+}
+
+/* Header */
+h1 {
+	font-size: 2rem;
+	margin-bottom: 0.25rem;
+}
+
+.subtitle {
+	color: #8fa68f;
+	margin-bottom: 2rem;
+}
+
+/* Drop Zone */
+.drop-zone {
+	border: 2px dashed #243c24;
+	background: #1a2a1a;
+	padding: 2rem;
+	text-align: center;
+	border-radius: 12px;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.drop-zone:hover,
+.drop-zone.hover {
+	border-color: #4f8a4f;
+	background: #203420;
+}
+
+.drop-zone p {
+	margin-bottom: 0.5rem;
+}
+
+.drop-zone .or {
+	font-size: 0.85rem;
+	color: #8fa68f;
+}
+
+/* Upload Button */
+.upload-btn {
+	display: inline-block;
+	margin-top: 0.5rem;
+	padding: 0.5rem 1rem;
+	background: #243c24;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background 0.2s ease;
+}
+
+.upload-btn:hover {
+	background: #4f8a4f;
+}
+
+/* Output Section */
+.output {
+	margin-top: 2rem;
+	background: #1a2a1a;
+	padding: 1.5rem;
+	border-radius: 12px;
+	border: 1px solid #243c24;
+}
+
+.output h2 {
+	margin-bottom: 1rem;
+}
+
+/* ASCII Display */
+pre {
+	background: #0f1410;
+	padding: 1rem;
+	border-radius: 8px;
+	overflow-x: auto;
+	font-size: 0.9rem;
+	color: #cfe6cf;
+	border: 1px solid #243c24;
+	min-height: 120px;
+}
+
+button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+/* Copy Button */
+#copy-btn {
+	margin-top: 1rem;
+	padding: 0.5rem 1rem;
+	background: #243c24;
+	border: none;
+	border-radius: 8px;
+	color: #e6f1e6;
+	cursor: pointer;
+	transition:
+		background-color 0.25s ease,
+		color 0.25s ease,
+		transform 0.1s ease;
+}
+
+#copy-btn.copied {
+	background-color: #a6e22e;
+	color: #0f1410;
+	transform: scale(1.05);
+}
+
+#copy-btn:active {
+	transform: scale(0.97);
+}
+
+#copy-btn:hover {
+	background: #4f8a4f;
+}
+
+#clear-btn {
+	margin-top: 1rem;
+	margin-left: 0.5rem;
+	padding: 0.5rem 1rem;
+	background: transparent;
+	border: 1px solid #3a4d3a;
+	border-radius: 8px;
+	color: #8fa68f;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+#clear-btn:hover {
+	border-color: #c96a6a;
+	color: #e6f1e6;
+}
