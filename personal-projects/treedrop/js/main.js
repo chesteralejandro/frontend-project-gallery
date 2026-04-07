@@ -26,8 +26,20 @@ folderInput.addEventListener('change', (e) => {
 copyBtn.addEventListener('click', () => {
 	navigator.clipboard
 		.writeText(outputEl.textContent)
-		.then(() => alert('Copied to clipboard!'))
-		.catch((err) => alert('Copy failed: ' + err));
+		.then(() => {
+			// Change text and style
+			copyBtn.textContent = 'Copied!';
+			copyBtn.classList.add('copied');
+
+			// Revert after 1.5 seconds
+			setTimeout(() => {
+				copyBtn.textContent = 'Copy';
+				copyBtn.classList.remove('copied');
+			}, 1500);
+		})
+		.catch((err) => {
+			console.error('Copy failed', err);
+		});
 });
 
 // ---------- Core Logic ----------

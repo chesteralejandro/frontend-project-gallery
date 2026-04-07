@@ -112,7 +112,20 @@ pre {
 	border-radius: 8px;
 	color: #e6f1e6;
 	cursor: pointer;
-	transition: background 0.2s ease;
+	transition:
+		background-color 0.25s ease,
+		color 0.25s ease,
+		transform 0.1s ease;
+}
+
+#copy-btn.copied {
+	background-color: #a6e22e;
+	color: #0f1410;
+	transform: scale(1.05);
+}
+
+#copy-btn:active {
+	transform: scale(0.97);
 }
 
 #copy-btn:hover {
