@@ -5,17 +5,17 @@ const btnCopy = document.getElementById('btn-copy');
 const btnClear = document.getElementById('btn-clear');
 const tabs = document.querySelectorAll('.tabs button');
 
-let currentMode = 'html';
+let fileType = 'html';
 
 tabs.forEach((tab) => {
 	tab.addEventListener('click', () => {
 		tabs.forEach((tab) => tab.classList.remove('active'));
 		tab.classList.add('active');
 
-		currentMode = tab.dataset.type;
+		fileType = tab.dataset.type;
 
 		// Update dropzone text for clarity
-		dropzone.textContent = `Drop your ${currentMode.toUpperCase()} file here`;
+		dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
 
 		// Micro animation (pulse)
 		tab.animate(
@@ -86,7 +86,7 @@ btnClear.addEventListener('click', () => {
 
 	btnCopy.disabled = true;
 
-	dropzone.textContent = `Drop your ${currentMode.toUpperCase()} file here`;
+	dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
 	dropzone.classList.remove('loaded');
 });
 
@@ -97,40 +97,23 @@ function readFile(file) {
 	reader.onload = (e) => {
 		const code = e.target.result;
 
-		let minified = '';
-
 		// Validate file type based on active tab
-		if (!file.name.endsWith(`.${currentMode}`)) {
+		if (!file.name.endsWith(`.${fileType}`)) {
 			alert(
-				`You're in ${currentMode.toUpperCase()} mode. Please upload the correct file type.`,
+				`You're in ${fileType.toUpperCase()} mode. Please upload the correct file type.`,
 			);
 			return;
 		}
 
-		if (currentMode === 'html') {
-			minified = code
-				.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
-				.replace(/>\s+</g, '><'); // Remove spaces between tags
-		} else if (currentMode === 'css') {
-			minified = code
-				.replace(/\/\*[\s\S]*?\*\//g, '')
-				.replace(/\s*([{}:;,])\s*/g, '$1');
-		} else if (currentMode === 'js') {
-			minified = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
-		} else if (currentMode === 'md') {
-			minified = minifyMarkdown(code);
-		} else {
+		minified = minifyCode(code, fileType);
+
+		if (!minified) {
 			alert('Unsupported file type!');
 			return;
 		}
 
-		minified = minified
-			.replace(/\n/g, '') // Remove line breaks
-			.replace(/\s{2,}/g, ' ') // Collapse multiple spaces into one
-			.trim();
-
 		// Minified code with filename
-		const formatted = `(Filename: ${file.name} | Type: ${currentMode.toUpperCase()})\n${minified}\n\n`;
+		const formatted = `(Filename: ${file.name} | Type: ${fileType.toUpperCase()})\n${minified}\n\n`;
 
 		if (outputTextArea.value.trim() !== '') {
 			outputTextArea.value += formatted;
@@ -149,12 +132,37 @@ function readFile(file) {
 		dropzone.classList.add('loaded');
 
 		setTimeout(() => {
-			dropzone.textContent = `Drop your ${currentMode.toUpperCase()} file here`;
+			dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
 			dropzone.classList.remove('loaded');
 		}, 2000);
 	};
 
 	reader.readAsText(file);
+}
+
+function minifyCode(code, type) {
+	let minified = '';
+
+	if (type === 'html') {
+		minified = code
+			.replace(/<!--[\s\S]*?-->/g, '') // Remove HTML comments
+			.replace(/>\s+</g, '><'); // Remove spaces between tags
+	} else if (type === 'css') {
+		minified = code
+			.replace(/\/\*[\s\S]*?\*\//g, '')
+			.replace(/\s*([{}:;,])\s*/g, '$1');
+	} else if (type === 'js') {
+		minified = code.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, '');
+	} else if (type === 'md') {
+		minified = minifyMarkdown(code);
+	} else {
+		return null;
+	}
+
+	return minified
+		.replace(/\n/g, '') // Remove line breaks
+		.replace(/\s{2,}/g, ' ') // Collapse multiple spaces into one
+		.trim();
 }
 
 function minifyMarkdown(content) {
