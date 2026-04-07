@@ -84,18 +84,26 @@ function generateASCIIFromFiles(filesArray) {
 }
 
 // ---------- Render ASCII ----------
-function renderTree(node, prefix = '') {
+function renderTree(node, prefix = '', isRoot = true) {
 	let result = '';
 	const keys = Object.keys(node);
+
 	keys.forEach((key, idx) => {
-		const isLast = idx === keys.length - 1;
-		const pointer = isLast ? '└── ' : '├── ';
-		result += prefix + pointer + key + '\n';
 		const children = node[key];
+		const isLast = idx === keys.length - 1;
+		const pointer = isRoot ? '' : isLast ? '└── ' : '├── ';
+
+		// If it has children, it's a folder
+		const displayName =
+			Object.keys(children).length > 0 ? `📁 ${key}/` : key;
+
+		result += prefix + pointer + displayName + '\n';
+
 		if (Object.keys(children).length > 0) {
-			const newPrefix = prefix + (isLast ? '    ' : '│   ');
-			result += renderTree(children, newPrefix);
+			const newPrefix = prefix + (isRoot ? '' : isLast ? '    ' : '│   ');
+			result += renderTree(children, newPrefix, false);
 		}
 	});
+
 	return result;
 }
