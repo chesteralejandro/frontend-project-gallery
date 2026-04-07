@@ -34,11 +34,7 @@ copyBtn.addEventListener('click', () => {
 			copyBtn.textContent = 'Copied!';
 			copyBtn.classList.add('copied');
 
-			// Revert after 1.5 seconds
-			setTimeout(() => {
-				copyBtn.textContent = 'Copy';
-				copyBtn.classList.remove('copied');
-			}, 1500);
+			setTimeout(resetCopyButton, 1500);
 		})
 		.catch((err) => {
 			console.error('Copy failed', err);
@@ -47,11 +43,22 @@ copyBtn.addEventListener('click', () => {
 
 clearBtn.addEventListener('click', () => {
 	outputEl.textContent = '';
+	updateButtonsState();
 
-	// Optional: reset copy button if it was in "Copied!" state
+	resetCopyButton();
+});
+
+function resetCopyButton() {
 	copyBtn.textContent = 'Copy';
 	copyBtn.classList.remove('copied');
-});
+}
+
+function updateButtonsState() {
+	const hasContent = outputEl.textContent.trim().length > 0;
+
+	copyBtn.disabled = !hasContent;
+	clearBtn.disabled = !hasContent;
+}
 
 // ---------- Core Logic ----------
 function handleFiles(items) {
@@ -109,6 +116,7 @@ function generateASCIIFromFiles(filesArray) {
 	});
 
 	outputEl.textContent = renderTree(tree);
+	updateButtonsState();
 }
 
 // ---------- Render ASCII ----------

@@ -49,7 +49,8 @@ h1 {
 	cursor: pointer;
 }
 
-.drop-zone:hover {
+.drop-zone:hover,
+.drop-zone.hover {
 	border-color: #4f8a4f;
 	background: #203420;
 }
@@ -101,6 +102,11 @@ pre {
 	color: #cfe6cf;
 	border: 1px solid #243c24;
 	min-height: 120px;
+}
+
+button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
 }
 
 /* Copy Button */
