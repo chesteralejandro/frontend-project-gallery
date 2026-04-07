@@ -2,6 +2,7 @@ const dropZone = document.getElementById('drop-zone');
 const folderInput = document.getElementById('folder-input');
 const outputEl = document.getElementById('output');
 const copyBtn = document.getElementById('copy-btn');
+const clearBtn = document.getElementById('clear-btn');
 
 const IGNORED_FOLDERS = ['node_modules', '.git', /^dist$/, /^build$/];
 
@@ -42,6 +43,14 @@ copyBtn.addEventListener('click', () => {
 		.catch((err) => {
 			console.error('Copy failed', err);
 		});
+});
+
+clearBtn.addEventListener('click', () => {
+	outputEl.textContent = '';
+
+	// Optional: reset copy button if it was in "Copied!" state
+	copyBtn.textContent = 'Copy';
+	copyBtn.classList.remove('copied');
 });
 
 // ---------- Core Logic ----------

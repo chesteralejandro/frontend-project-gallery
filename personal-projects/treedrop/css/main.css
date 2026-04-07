@@ -131,3 +131,20 @@ pre {
 #copy-btn:hover {
 	background: #4f8a4f;
 }
+
+#clear-btn {
+	margin-top: 1rem;
+	margin-left: 0.5rem;
+	padding: 0.5rem 1rem;
+	background: transparent;
+	border: 1px solid #3a4d3a;
+	border-radius: 8px;
+	color: #8fa68f;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+#clear-btn:hover {
+	border-color: #c96a6a;
+	color: #e6f1e6;
+}
