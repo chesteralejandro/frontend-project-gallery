@@ -3,6 +3,8 @@ const folderInput = document.getElementById('folder-input');
 const outputEl = document.getElementById('output');
 const copyBtn = document.getElementById('copy-btn');
 
+const IGNORED_FOLDERS = ['node_modules', '.git', /^dist$/, /^build$/];
+
 // ---------- Event Listeners ----------
 dropZone.addEventListener('dragover', (e) => {
 	e.preventDefault();
@@ -84,7 +86,12 @@ function generateASCIIFromFiles(filesArray) {
 
 	filesArray.forEach((file) => {
 		const parts = (file.relativePath || file.webkitRelativePath).split('/');
+
+		// 🚫 Skip if path contains ignored folder
+		if (parts.some((part) => IGNORED_FOLDERS.includes(part))) return;
+
 		let current = tree;
+
 		for (let i = 0; i < parts.length; i++) {
 			const part = parts[i];
 			if (!current[part]) current[part] = {};
