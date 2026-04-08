@@ -1,86 +1,44 @@
+const inputZone = document.querySelector('.input-zone');
+const inputTextarea = document.getElementById('input-textarea');
 const fileInput = document.getElementById('fileInput');
-const dropzone = document.querySelector('.dropzone');
 
 const outputTextArea = document.getElementById('output-textarea');
-const inputTextarea = document.getElementById('input-textarea');
-
-const tabs = document.querySelectorAll('.tabs button');
-const modeButtons = document.querySelectorAll('.mode-btn');
-const uploadSection = document.querySelector('.file-upload');
-const inputSection = document.querySelector('.text-input');
 const btnCopy = document.getElementById('btn-copy');
 const btnClear = document.getElementById('btn-clear');
 
-let fileType = 'html';
-let currentMode = 'upload';
+let typingTimer;
 
-tabs.forEach((tab) => {
-	tab.addEventListener('click', () => {
-		tabs.forEach((tab) => tab.classList.remove('active'));
-		tab.classList.add('active');
+inputTextarea.addEventListener('input', () => {
+	toggleOverlay();
 
-		fileType = tab.dataset.type;
+	clearTimeout(typingTimer);
 
-		// Update dropzone text for clarity
-		dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
-
-		// Micro animation (pulse)
-		tab.animate(
-			[
-				{ transform: 'scale(1)' },
-				{ transform: 'scale(1.05)' },
-				{ transform: 'scale(1)' },
-			],
-			{
-				duration: 200,
-				easing: 'ease',
-			},
-		);
-	});
+	typingTimer = setTimeout(() => {
+		const code = inputTextarea.value.trim();
+		if (code) processCode(code);
+	}, 500);
 });
 
-modeButtons.forEach((btn) => {
-	btn.addEventListener('click', () => {
-		modeButtons.forEach((b) => b.classList.remove('active'));
-		btn.classList.add('active');
-
-		currentMode = btn.dataset.mode;
-
-		// Toggle sections
-		uploadSection.classList.remove('active');
-		inputSection.classList.remove('active');
-
-		if (currentMode === 'upload') {
-			uploadSection.classList.add('active');
-		} else {
-			inputSection.classList.add('active');
-		}
-	});
-});
-
-// Handle Drag events
-dropzone.addEventListener('dragover', (e) => {
+inputZone.addEventListener('dragover', (e) => {
 	e.preventDefault();
-	dropzone.classList.add('dragover');
+	inputZone.classList.add('dragover');
 });
 
-dropzone.addEventListener('dragleave', () => {
-	dropzone.classList.remove('dragover');
+inputZone.addEventListener('dragleave', () => {
+	inputZone.classList.remove('dragover');
 });
 
-dropzone.addEventListener('drop', (e) => {
+inputZone.addEventListener('drop', (e) => {
 	e.preventDefault();
-	dropzone.classList.remove('dragover');
+	inputZone.classList.remove('dragover');
+
 	const file = e.dataTransfer.files[0];
-	if (file) processUploadCode(file);
+	if (file) handleFile(file);
 });
-
-// Click to open file input
-dropzone.addEventListener('click', () => fileInput.click());
 
 fileInput.addEventListener('change', (e) => {
 	const file = e.target.files[0];
-	if (file) processUploadCode(file);
+	if (file) handleFile(file);
 });
 
 btnCopy.addEventListener('click', async () => {
@@ -108,29 +66,68 @@ btnCopy.addEventListener('click', async () => {
 });
 
 btnClear.addEventListener('click', () => {
+	inputTextarea.value = '';
 	outputTextArea.value = '';
 
-	btnCopy.disabled = true;
+	toggleOverlay();
 
-	dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
-	dropzone.classList.remove('loaded');
+	btnCopy.disabled = true;
 });
 
-function processInputCode() {
-	const code = inputTextarea.value.trim();
+inputZone.addEventListener('click', () => fileInput.click());
 
-	if (!code) return;
+inputTextarea.addEventListener('input', toggleOverlay);
 
-	const minified = minifyCode(code, fileType);
+function toggleOverlay() {
+	if (inputTextarea.value.trim()) {
+		inputZone.classList.add('has-content');
+	} else {
+		inputZone.classList.remove('has-content');
+	}
+}
+
+function detectFileType(code, filename) {
+	if (filename.endsWith('.html')) return 'html';
+	if (filename.endsWith('.css')) return 'css';
+	if (filename.endsWith('.js')) return 'js';
+	if (filename.endsWith('.md')) return 'md';
+
+	// Fallback detection (basic)
+	if (code.includes('<html') || code.includes('<div')) return 'html';
+	if (code.includes('{') && code.includes('}')) return 'css';
+	if (code.includes('function') || code.includes('=>')) return 'js';
+
+	return 'md';
+}
+
+function handleFile(file) {
+	const reader = new FileReader();
+
+	reader.onload = (e) => {
+		const code = e.target.result;
+
+		inputTextarea.value = code;
+		toggleOverlay();
+
+		processCode(code, file.name);
+	};
+
+	reader.readAsText(file);
+}
+
+function processCode(code, filename = 'pasted.txt') {
+	const type = detectFileType(code, filename);
+
+	const minified = minifyCode(code, type);
 
 	if (!minified) {
-		alert('Unsupported input type!');
+		alert('Unsupported file type!');
 		return;
 	}
 
-	const formatted = `(Filename: pasted.${fileType} | Type: ${fileType.toUpperCase()})\n${minified}\n\n`;
+	const formatted = `(Filename: ${filename} | Type: ${type.toUpperCase()})\n${minified}\n\n`;
 
-	if (outputTextArea.value.trim() !== '') {
+	if (outputTextArea.value.trim()) {
 		outputTextArea.value += formatted;
 	} else {
 		outputTextArea.value = formatted;
@@ -138,56 +135,6 @@ function processInputCode() {
 
 	outputTextArea.scrollTop = outputTextArea.scrollHeight;
 	btnCopy.disabled = false;
-}
-
-// Read file content and auto-minify
-function processUploadCode(file) {
-	const reader = new FileReader();
-
-	reader.onload = (e) => {
-		const code = e.target.result;
-
-		// Validate file type based on active tab
-		if (!file.name.endsWith(`.${fileType}`)) {
-			alert(
-				`You're in ${fileType.toUpperCase()} mode. Please upload the correct file type.`,
-			);
-			return;
-		}
-
-		minified = minifyCode(code, fileType);
-
-		if (!minified) {
-			alert('Unsupported file type!');
-			return;
-		}
-
-		// Minified code with filename
-		const formatted = `(Filename: ${file.name} | Type: ${fileType.toUpperCase()})\n${minified}\n\n`;
-
-		if (outputTextArea.value.trim() !== '') {
-			outputTextArea.value += formatted;
-		} else {
-			outputTextArea.value = formatted;
-		}
-
-		// Auto scroll to bottom
-		outputTextArea.scrollTop = outputTextArea.scrollHeight;
-
-		// Enable copy button if minified content exists
-		btnCopy.disabled = false;
-
-		// Update dropzone text for confirmation
-		dropzone.textContent = `Loaded: ${file.name}`;
-		dropzone.classList.add('loaded');
-
-		setTimeout(() => {
-			dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
-			dropzone.classList.remove('loaded');
-		}, 2000);
-	};
-
-	reader.readAsText(file);
 }
 
 function minifyCode(code, type) {
