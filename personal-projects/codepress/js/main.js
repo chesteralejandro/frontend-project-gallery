@@ -26,7 +26,7 @@ inputTextarea.addEventListener('paste', (e) => {
 
 	inputTextarea.value = pastedCode;
 	toggleOverlay();
-	processCode(pastedCode, 'pasted.txt');
+	processCode(pastedCode);
 });
 
 inputZone.addEventListener('dragover', (e) => {
@@ -98,7 +98,7 @@ function flashInputZone(type) {
 		inputZone.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
 		inputZone.style.borderColor = 'rgba(148, 163, 184, 0.5)';
 		inputZone.classList.remove('has-content');
-	}, 1700);
+	}, 2000);
 }
 
 function toggleOverlay() {
@@ -109,17 +109,35 @@ function toggleOverlay() {
 	}
 }
 
-function detectFileType(code, filename) {
-	if (filename.endsWith('.html')) return 'html';
-	if (filename.endsWith('.css')) return 'css';
-	if (filename.endsWith('.js')) return 'js';
-	if (filename.endsWith('.md')) return 'md';
+function detectFileType(code = '', filename = '') {
+	const lowerCode = code.toLowerCase().trim();
 
-	// Fallback detection (basic)
-	if (code.includes('<html') || code.includes('<div')) return 'html';
-	if (code.includes('{') && code.includes('}')) return 'css';
-	if (code.includes('function') || code.includes('=>')) return 'js';
+	if (filename) {
+		if (filename.endsWith('.html')) return 'html';
+		if (filename.endsWith('.css')) return 'css';
+		if (filename.endsWith('.js')) return 'js';
+		if (filename.endsWith('.md')) return 'md';
+	}
 
+	// 2. Strong JS detection
+	if (
+		/\b(function|const|let|var|return|import|export)\b/.test(code) ||
+		code.includes('=>')
+	) {
+		return 'js';
+	}
+
+	// 3. Strong CSS detection
+	if (/[.#][a-zA-Z0-9_-]+\s*\{[^}]*\}/.test(code)) {
+		return 'css';
+	}
+
+	// 4. Strong HTML detection
+	if (/<(html|head|body|div|span|p|a|!doctype)/i.test(code)) {
+		return 'html';
+	}
+
+	// 5. Markdown fallback
 	return 'md';
 }
 
@@ -138,7 +156,7 @@ function handleFile(file) {
 	reader.readAsText(file);
 }
 
-function processCode(code, filename = 'pasted.txt') {
+function processCode(code, filename) {
 	const type = detectFileType(code, filename);
 
 	const minified = minifyCode(code, type);
@@ -147,9 +165,17 @@ function processCode(code, filename = 'pasted.txt') {
 		alert('Unsupported file type!');
 		return;
 	}
+
 	flashInputZone(type);
 
-	const formatted = `(Filename: ${filename} | Type: ${type.toUpperCase()})\n${minified}\n\n`;
+	let outputHeader = '';
+	if (filename) {
+		outputHeader = `(Filename: ${filename} | Filetype: ${type.toUpperCase()})`;
+	} else {
+		outputHeader = `(Filetype: ${type.toUpperCase()})`;
+	}
+
+	const formatted = `${outputHeader}\n${minified}\n\n`;
 
 	if (outputTextArea.value.trim()) {
 		outputTextArea.value += formatted;
