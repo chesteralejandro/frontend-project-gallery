@@ -1,60 +1,55 @@
+const inputZone = document.querySelector('.input-zone');
+const filetypeBadge = document.querySelector('.filetype-badge');
+const inputTextarea = document.getElementById('input-textarea');
 const fileInput = document.getElementById('fileInput');
-const dropzone = document.querySelector('.dropzone');
+
 const outputTextArea = document.getElementById('output-textarea');
 const btnCopy = document.getElementById('btn-copy');
 const btnClear = document.getElementById('btn-clear');
-const tabs = document.querySelectorAll('.tabs button');
 
-let fileType = 'html';
+const inputFeedbackColors = {
+	html: { bg: 'rgba(229, 83, 45, 0.2)', border: 'rgba(229, 83, 45, 0.6)' },
+	css: { bg: 'rgba(9, 116, 188, 0.2)', border: 'rgba(9, 116, 188, 0.6)' },
+	js: { bg: 'rgba(247, 224, 37, 0.2)', border: 'rgba(247, 224, 37, 0.6)' },
+	md: { bg: 'rgba(212, 212, 212, 0.2)', border: 'rgba(212, 212, 212, 0.6)' },
+};
 
-tabs.forEach((tab) => {
-	tab.addEventListener('click', () => {
-		tabs.forEach((tab) => tab.classList.remove('active'));
-		tab.classList.add('active');
-
-		fileType = tab.dataset.type;
-
-		// Update dropzone text for clarity
-		dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
-
-		// Micro animation (pulse)
-		tab.animate(
-			[
-				{ transform: 'scale(1)' },
-				{ transform: 'scale(1.05)' },
-				{ transform: 'scale(1)' },
-			],
-			{
-				duration: 200,
-				easing: 'ease',
-			},
-		);
-	});
+inputZone.addEventListener('click', () => {
+	inputTextarea.focus();
 });
 
-// Handle Drag events
-dropzone.addEventListener('dragover', (e) => {
+inputTextarea.addEventListener('paste', (e) => {
+	e.preventDefault(); // prevent default paste
+	const pastedCode = (e.clipboardData || window.clipboardData).getData(
+		'text',
+	);
+	if (!pastedCode) return;
+
+	inputTextarea.value = pastedCode;
+	toggleOverlay();
+	processCode(pastedCode);
+});
+
+inputZone.addEventListener('dragover', (e) => {
 	e.preventDefault();
-	dropzone.classList.add('dragover');
+	inputZone.classList.add('dragover');
 });
 
-dropzone.addEventListener('dragleave', () => {
-	dropzone.classList.remove('dragover');
+inputZone.addEventListener('dragleave', () => {
+	inputZone.classList.remove('dragover');
 });
 
-dropzone.addEventListener('drop', (e) => {
+inputZone.addEventListener('drop', (e) => {
 	e.preventDefault();
-	dropzone.classList.remove('dragover');
+	inputZone.classList.remove('dragover');
+
 	const file = e.dataTransfer.files[0];
-	if (file) readFile(file);
+	if (file) handleFile(file);
 });
-
-// Click to open file input
-dropzone.addEventListener('click', () => fileInput.click());
 
 fileInput.addEventListener('change', (e) => {
 	const file = e.target.files[0];
-	if (file) readFile(file);
+	if (file) handleFile(file);
 });
 
 btnCopy.addEventListener('click', async () => {
@@ -82,62 +77,152 @@ btnCopy.addEventListener('click', async () => {
 });
 
 btnClear.addEventListener('click', () => {
+	inputTextarea.value = '';
 	outputTextArea.value = '';
 
-	btnCopy.disabled = true;
+	toggleOverlay();
 
-	dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
-	dropzone.classList.remove('loaded');
+	btnCopy.disabled = true;
 });
 
-// Read file content and auto-minify
-function readFile(file) {
+function showFiletypeBadge(type) {
+	const colors = inputFeedbackColors[type] || {};
+
+	filetypeBadge.textContent = type.toUpperCase();
+
+	// Match color vibe (subtle)
+	filetypeBadge.style.backgroundColor = colors.bg || 'rgba(255,255,255,0.08)';
+	filetypeBadge.style.color = '#ffffff';
+
+	inputZone.classList.add('show-badge');
+}
+
+let flashTimeout;
+
+function flashInputZone(type) {
+	clearTimeout(flashTimeout);
+
+	const colors = inputFeedbackColors[type] || {
+		bg: 'rgba(255,255,255,0.03)',
+		border: 'rgba(148,163,184,0.5)',
+	};
+
+	inputZone.style.backgroundColor = colors.bg;
+	inputZone.style.borderColor = colors.border;
+
+	showFiletypeBadge(type);
+
+	flashTimeout = setTimeout(() => {
+		inputTextarea.value = '';
+		inputZone.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+		inputZone.style.borderColor = 'rgba(148, 163, 184, 0.5)';
+		inputZone.classList.remove('has-content');
+		inputZone.classList.remove('show-badge');
+	}, 2000);
+}
+
+function toggleOverlay() {
+	if (inputTextarea.value.trim()) {
+		inputZone.classList.add('has-content');
+	} else {
+		inputZone.classList.remove('has-content');
+	}
+}
+
+function detectFileType(code = '', filename = '') {
+	const text = code.trim();
+
+	// 1. Filename still overrides everything
+	if (filename) {
+		if (filename.endsWith('.html')) return 'html';
+		if (filename.endsWith('.css')) return 'css';
+		if (filename.endsWith('.js')) return 'js';
+		if (filename.endsWith('.md')) return 'md';
+	}
+
+	let scores = {
+		md: 0,
+		js: 0,
+		css: 0,
+		html: 0,
+	};
+
+	// ---- MARKDOWN SIGNALS ----
+	if (/^#{1,6}\s/m.test(text)) scores.md += 3; // headings
+	if (/^\s*[-*+]\s+/m.test(text)) scores.md += 2; // lists
+	if (/^\s*\d+\.\s+/m.test(text)) scores.md += 2; // numbered lists
+	if (/\[.*\]\(.*\)/.test(text)) scores.md += 2; // links
+	if (/```/.test(text)) scores.md += 4; // code blocks (strong signal)
+	if (/^\|.*\|/m.test(text)) scores.md += 2; // tables
+
+	// ---- JAVASCRIPT SIGNALS ----
+	if (/\b(function|const|let|var|return|import|export)\b/.test(text))
+		scores.js += 3;
+	if (/=>/.test(text)) scores.js += 2;
+	if (/console\.log/.test(text)) scores.js += 2;
+
+	// ---- CSS SIGNALS ----
+	if (/[.#][a-zA-Z0-9_-]+\s*\{[^}]*\}/.test(text)) scores.css += 3;
+	if (/\b(display|color|margin|padding|flex)\b\s*:/.test(text))
+		scores.css += 2;
+
+	// ---- HTML SIGNALS ----
+	if (/<(html|head|body|div|span|p|a|!doctype)/i.test(text)) scores.html += 3;
+	if (/<[a-z]+[\s\S]*?>/i.test(text)) scores.html += 2;
+
+	// ---- DECISION ----
+	const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+	// If everything is weak, default to MD (safe fallback for your app)
+	if (sorted[0][1] === 0) return 'md';
+
+	return sorted[0][0];
+}
+
+function handleFile(file) {
 	const reader = new FileReader();
 
 	reader.onload = (e) => {
 		const code = e.target.result;
 
-		// Validate file type based on active tab
-		if (!file.name.endsWith(`.${fileType}`)) {
-			alert(
-				`You're in ${fileType.toUpperCase()} mode. Please upload the correct file type.`,
-			);
-			return;
-		}
+		inputTextarea.value = code;
+		toggleOverlay();
 
-		minified = minifyCode(code, fileType);
-
-		if (!minified) {
-			alert('Unsupported file type!');
-			return;
-		}
-
-		// Minified code with filename
-		const formatted = `(Filename: ${file.name} | Type: ${fileType.toUpperCase()})\n${minified}\n\n`;
-
-		if (outputTextArea.value.trim() !== '') {
-			outputTextArea.value += formatted;
-		} else {
-			outputTextArea.value = formatted;
-		}
-
-		// Auto scroll to bottom
-		outputTextArea.scrollTop = outputTextArea.scrollHeight;
-
-		// Enable copy button if minified content exists
-		btnCopy.disabled = false;
-
-		// Update dropzone text for confirmation
-		dropzone.textContent = `Loaded: ${file.name}`;
-		dropzone.classList.add('loaded');
-
-		setTimeout(() => {
-			dropzone.textContent = `Drop your ${fileType.toUpperCase()} file here`;
-			dropzone.classList.remove('loaded');
-		}, 2000);
+		processCode(code, file.name);
 	};
 
 	reader.readAsText(file);
+}
+
+function processCode(code, filename) {
+	const type = detectFileType(code, filename);
+
+	const minified = minifyCode(code, type);
+
+	if (!minified) {
+		alert('Unsupported file type!');
+		return;
+	}
+
+	flashInputZone(type);
+
+	let outputHeader = '';
+	if (filename) {
+		outputHeader = `(Filename: ${filename} | Filetype: ${type.toUpperCase()})`;
+	} else {
+		outputHeader = `(Filetype: ${type.toUpperCase()})`;
+	}
+
+	const formatted = `${outputHeader}\n${minified}\n\n`;
+
+	if (outputTextArea.value.trim()) {
+		outputTextArea.value += formatted;
+	} else {
+		outputTextArea.value = formatted;
+	}
+
+	outputTextArea.scrollTop = outputTextArea.scrollHeight;
+	btnCopy.disabled = false;
 }
 
 function minifyCode(code, type) {

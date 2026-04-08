@@ -13,21 +13,24 @@
 				<header>
 					<h1 class="title">CodePress</h1>
 					<p class="subtitle">
-						Minify HTML, CSS, JS, and Markdown instantly
+						Prepare clean, AI-ready code in seconds
 					</p>
 				</header>
 
-				<section class="tabs">
-					<button class="active" data-type="html">HTML</button>
-					<button data-type="css">CSS</button>
-					<button data-type="js">JS</button>
-					<button data-type="md">MD</button>
-				</section>
+				<section class="input-zone">
+					<span class="filetype-badge">&nbsp;</span>
 
-				<section class="file-upload">
-					<label for="fileInput" class="dropzone">
-						Drop your HTML file here
-					</label>
+					<div class="input-overlay">
+						<p class="input-title">
+							Paste code or drop a file here
+						</p>
+						<span class="input-subtitle"
+							>Supports HTML, CSS, JS, and Markdown</span
+						>
+					</div>
+
+					<textarea id="input-textarea" spellcheck="false"></textarea>
+
 					<input
 						type="file"
 						id="fileInput"
@@ -36,8 +39,7 @@
 					/>
 				</section>
 
-				<section class="editor">
-					<label class="editor-label">Output</label>
+				<section class="output-zone">
 					<textarea
 						readonly
 						id="output-textarea"
