@@ -1,94 +1,130 @@
 # CodePress ![Status](https://img.shields.io/badge/status-active-brightgreen)
 
-Turn messy code into AI-ready input in seconds.
+Clean code. Better AI results.
 
-CodePress strips comments, whitespace, and clutter from your files so you can send clean, efficient context to AI tools.
+CodePress is a lightweight frontend tool that removes comments, whitespace, and unnecessary line breaks from your code, helping you prepare compact, readable input for AI tools like ChatGPT.
 
 <br />
 
 ## ✨ Features
 
-- Multi-format support
+### 🧠 Smart Auto-Detection
+
+- Automatically detects file type:
     - HTML
     - CSS
     - JavaScript
-    - Markdown (with code block preservation)
-- Smart minification
-    - Removes comments
-    - Strips extra whitespace
-    - Collapses line breaks
-    - Keeps essential structure intact
-- AI-friendly output format
+    - Markdown
+- Works from:
+    - Pasted code
+    - Uploaded files
+- Visual feedback with a **filetype badge**
 
-    ```bash
-    (Filename: main.css | Type: CSS)
-    /* minified code here */
-    ```
+---
 
-- Drag & drop upload
-    - Drop files directly into the UI
-    - Or click to upload
-- Tabbed workflow
-    - Switch between HTML, CSS, JS, and MD modes
-    - File validation per mode
-- Stacked output
-    - Multiple files are appended into a single output
-    - Perfect for bundling context before sending to AI
-- Quick actions
-    - Copy to clipboard
-    - Clear output instantly
+### ⚡ Instant Minification
+
+- Removes:
+    - Comments
+    - Extra whitespace
+    - Line breaks
+- Keeps structure readable and AI-friendly
+- Markdown support includes:
+    - Code block preservation (``` blocks stay intact)
+
+---
+
+### 🖱️ Flexible Input
+
+- Paste code directly
+- Drag & drop files
+- File upload support (`.html`, `.css`, `.js`, `.md`)
+- Click-to-focus input zone
+
+---
+
+### 📦 AI-Ready Output Format
+
+- Multiple inputs are stacked into one output
+- Perfect for sending full project context to AI
+
+#### Example Output
+
+```bash
+(Filetype: HTML)
+<!doctype html><html><head>...</head><body>...</body></html>
+
+(Filename: script.js | Filetype: JS)
+const x=10;function test(){return x;}
+```
+
+---
+
+### 🎨 Visual Feedback UI
+
+- Filetype badge appears after processing
+- Input zone briefly highlights based on detected type:
+    - HTML → orange
+    - CSS → blue
+    - JS → yellow
+    - Markdown → gray
+
+---
+
+### 🎬 Quick Actions
+
+- Copy output to clipboard
+- Clear input and output instantly
+- Copy button gives visual success feedback
+
+<br />
 
 ## 🧠 Why CodePress?
 
-AI tools work better with **clean, dense input**.
-<br />
+AI tools perform better with **clean, dense, and structured input**.
 
-Messy code with comments, spacing, and noise:
+#### Messy code:
 
 - wastes tokens
 - reduces clarity
-- hurts AI understanding
+- introduces noise
 
-CodePress solves that by giving you:
+#### CodePress helps you:
 
-- smaller input size
-- cleaner structure
-- better AI responses
+- reduce token usage
+- improve AI understanding
+- send cleaner multi-file context
 
 ## ⚙️ How It Works
 
-1. Select a mode (HTML, CSS, JS, or MD)
-2. Upload or drop your file
-3. Code is automatically minified
+1. Paste code or drop a file
+2. CodePress detects the file type automatically
+3. Code is minified instantly
 4. Output is formatted and appended
-5. Copy and paste into your AI tool
-
-## 📦 Example Output
-
-```bash
-(Filename: index.html | Type: HTML)
-<!doctype html><html><head>...</head><body>...</body></html>
-
-(Filename: styles.css | Type: CSS)
-body{margin:0;padding:0}
-```
+5. Copy and use in your AI tool
 
 ## 🚧 Current Limitations
 
 - Regex-based minification (not a full parser)
-- JavaScript minification is basic (may not handle edge cases)
-- No inline code editing (file-based input only)
-- No file renaming or manual formatting yet
+- JavaScript minification is basic (may break edge cases)
+- File type detection is heuristic (can misclassify complex inputs)
+- No syntax highlighting yet
+- No manual formatting controls
 
 ## 🛠️ Tech Stack
 
 - HTML
-- CSS (Glassmorphism UI)
+- CSS
 - Vanilla JavaScript
 
-## 💡 Use Case
+## 💡 Use Cases
 
-- Preparing code for ChatGPT or AI tools
+- Preparing code for ChatGPT and other AI tools
 - Reducing token usage
 - Sharing clean snippets quickly
-- Bundling multi-file context into one input
+- Bundling multi-file context into one input-
+
+## 🚀 Future Improvements
+
+- Stronger file type detection
+- Safer JavaScript minification
