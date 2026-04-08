@@ -1,4 +1,5 @@
 const inputZone = document.querySelector('.input-zone');
+const filetypeBadge = document.querySelector('.filetype-badge');
 const inputTextarea = document.getElementById('input-textarea');
 const fileInput = document.getElementById('fileInput');
 
@@ -84,7 +85,23 @@ btnClear.addEventListener('click', () => {
 	btnCopy.disabled = true;
 });
 
+function showFiletypeBadge(type) {
+	const colors = inputFeedbackColors[type] || {};
+
+	filetypeBadge.textContent = type.toUpperCase();
+
+	// Match color vibe (subtle)
+	filetypeBadge.style.backgroundColor = colors.bg || 'rgba(255,255,255,0.08)';
+	filetypeBadge.style.color = '#ffffff';
+
+	inputZone.classList.add('show-badge');
+}
+
+let flashTimeout;
+
 function flashInputZone(type) {
+	clearTimeout(flashTimeout);
+
 	const colors = inputFeedbackColors[type] || {
 		bg: 'rgba(255,255,255,0.03)',
 		border: 'rgba(148,163,184,0.5)',
@@ -93,11 +110,14 @@ function flashInputZone(type) {
 	inputZone.style.backgroundColor = colors.bg;
 	inputZone.style.borderColor = colors.border;
 
-	setTimeout(() => {
+	showFiletypeBadge(type);
+
+	flashTimeout = setTimeout(() => {
 		inputTextarea.value = '';
 		inputZone.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
 		inputZone.style.borderColor = 'rgba(148, 163, 184, 0.5)';
 		inputZone.classList.remove('has-content');
+		inputZone.classList.remove('show-badge');
 	}, 2000);
 }
 
