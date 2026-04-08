@@ -130,8 +130,9 @@ function toggleOverlay() {
 }
 
 function detectFileType(code = '', filename = '') {
-	const lowerCode = code.toLowerCase().trim();
+	const text = code.trim();
 
+	// 1. Filename still overrides everything
 	if (filename) {
 		if (filename.endsWith('.html')) return 'html';
 		if (filename.endsWith('.css')) return 'css';
@@ -139,26 +140,43 @@ function detectFileType(code = '', filename = '') {
 		if (filename.endsWith('.md')) return 'md';
 	}
 
-	// 2. Strong JS detection
-	if (
-		/\b(function|const|let|var|return|import|export)\b/.test(code) ||
-		code.includes('=>')
-	) {
-		return 'js';
-	}
+	let scores = {
+		md: 0,
+		js: 0,
+		css: 0,
+		html: 0,
+	};
 
-	// 3. Strong CSS detection
-	if (/[.#][a-zA-Z0-9_-]+\s*\{[^}]*\}/.test(code)) {
-		return 'css';
-	}
+	// ---- MARKDOWN SIGNALS ----
+	if (/^#{1,6}\s/m.test(text)) scores.md += 3; // headings
+	if (/^\s*[-*+]\s+/m.test(text)) scores.md += 2; // lists
+	if (/^\s*\d+\.\s+/m.test(text)) scores.md += 2; // numbered lists
+	if (/\[.*\]\(.*\)/.test(text)) scores.md += 2; // links
+	if (/```/.test(text)) scores.md += 4; // code blocks (strong signal)
+	if (/^\|.*\|/m.test(text)) scores.md += 2; // tables
 
-	// 4. Strong HTML detection
-	if (/<(html|head|body|div|span|p|a|!doctype)/i.test(code)) {
-		return 'html';
-	}
+	// ---- JAVASCRIPT SIGNALS ----
+	if (/\b(function|const|let|var|return|import|export)\b/.test(text))
+		scores.js += 3;
+	if (/=>/.test(text)) scores.js += 2;
+	if (/console\.log/.test(text)) scores.js += 2;
 
-	// 5. Markdown fallback
-	return 'md';
+	// ---- CSS SIGNALS ----
+	if (/[.#][a-zA-Z0-9_-]+\s*\{[^}]*\}/.test(text)) scores.css += 3;
+	if (/\b(display|color|margin|padding|flex)\b\s*:/.test(text))
+		scores.css += 2;
+
+	// ---- HTML SIGNALS ----
+	if (/<(html|head|body|div|span|p|a|!doctype)/i.test(text)) scores.html += 3;
+	if (/<[a-z]+[\s\S]*?>/i.test(text)) scores.html += 2;
+
+	// ---- DECISION ----
+	const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+
+	// If everything is weak, default to MD (safe fallback for your app)
+	if (sorted[0][1] === 0) return 'md';
+
+	return sorted[0][0];
 }
 
 function handleFile(file) {
