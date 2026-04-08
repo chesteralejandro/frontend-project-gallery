@@ -13,21 +13,20 @@ const inputFeedbackColors = {
 	md: { bg: 'rgba(212, 212, 212, 0.2)', border: 'rgba(212, 212, 212, 0.6)' },
 };
 
-let typingTimer;
-
 inputZone.addEventListener('click', () => {
 	inputTextarea.focus();
 });
 
-inputTextarea.addEventListener('input', () => {
+inputTextarea.addEventListener('paste', (e) => {
+	e.preventDefault(); // prevent default paste
+	const pastedCode = (e.clipboardData || window.clipboardData).getData(
+		'text',
+	);
+	if (!pastedCode) return;
+
+	inputTextarea.value = pastedCode;
 	toggleOverlay();
-
-	clearTimeout(typingTimer);
-
-	typingTimer = setTimeout(() => {
-		const code = inputTextarea.value.trim();
-		if (code) processCode(code);
-	}, 500);
+	processCode(pastedCode, 'pasted.txt');
 });
 
 inputZone.addEventListener('dragover', (e) => {
@@ -94,7 +93,6 @@ function flashInputZone(type) {
 	inputZone.style.backgroundColor = colors.bg;
 	inputZone.style.borderColor = colors.border;
 
-	// Clear text after 1.5s and reset styles
 	setTimeout(() => {
 		inputTextarea.value = '';
 		inputZone.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
