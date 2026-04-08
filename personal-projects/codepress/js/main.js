@@ -1,11 +1,18 @@
 const fileInput = document.getElementById('fileInput');
 const dropzone = document.querySelector('.dropzone');
+
 const outputTextArea = document.getElementById('output-textarea');
+const inputTextarea = document.getElementById('input-textarea');
+
+const tabs = document.querySelectorAll('.tabs button');
+const modeButtons = document.querySelectorAll('.mode-btn');
+const uploadSection = document.querySelector('.file-upload');
+const inputSection = document.querySelector('.text-input');
 const btnCopy = document.getElementById('btn-copy');
 const btnClear = document.getElementById('btn-clear');
-const tabs = document.querySelectorAll('.tabs button');
 
 let fileType = 'html';
+let currentMode = 'upload';
 
 tabs.forEach((tab) => {
 	tab.addEventListener('click', () => {
@@ -32,6 +39,25 @@ tabs.forEach((tab) => {
 	});
 });
 
+modeButtons.forEach((btn) => {
+	btn.addEventListener('click', () => {
+		modeButtons.forEach((b) => b.classList.remove('active'));
+		btn.classList.add('active');
+
+		currentMode = btn.dataset.mode;
+
+		// Toggle sections
+		uploadSection.classList.remove('active');
+		inputSection.classList.remove('active');
+
+		if (currentMode === 'upload') {
+			uploadSection.classList.add('active');
+		} else {
+			inputSection.classList.add('active');
+		}
+	});
+});
+
 // Handle Drag events
 dropzone.addEventListener('dragover', (e) => {
 	e.preventDefault();
@@ -46,7 +72,7 @@ dropzone.addEventListener('drop', (e) => {
 	e.preventDefault();
 	dropzone.classList.remove('dragover');
 	const file = e.dataTransfer.files[0];
-	if (file) readFile(file);
+	if (file) processUploadCode(file);
 });
 
 // Click to open file input
@@ -54,7 +80,7 @@ dropzone.addEventListener('click', () => fileInput.click());
 
 fileInput.addEventListener('change', (e) => {
 	const file = e.target.files[0];
-	if (file) readFile(file);
+	if (file) processUploadCode(file);
 });
 
 btnCopy.addEventListener('click', async () => {
@@ -90,8 +116,32 @@ btnClear.addEventListener('click', () => {
 	dropzone.classList.remove('loaded');
 });
 
+function processInputCode() {
+	const code = inputTextarea.value.trim();
+
+	if (!code) return;
+
+	const minified = minifyCode(code, fileType);
+
+	if (!minified) {
+		alert('Unsupported input type!');
+		return;
+	}
+
+	const formatted = `(Filename: pasted.${fileType} | Type: ${fileType.toUpperCase()})\n${minified}\n\n`;
+
+	if (outputTextArea.value.trim() !== '') {
+		outputTextArea.value += formatted;
+	} else {
+		outputTextArea.value = formatted;
+	}
+
+	outputTextArea.scrollTop = outputTextArea.scrollHeight;
+	btnCopy.disabled = false;
+}
+
 // Read file content and auto-minify
-function readFile(file) {
+function processUploadCode(file) {
 	const reader = new FileReader();
 
 	reader.onload = (e) => {

@@ -17,17 +17,16 @@
 					</p>
 				</header>
 
-				<section class="tabs">
-					<button class="active" data-type="html">HTML</button>
-					<button data-type="css">CSS</button>
-					<button data-type="js">JS</button>
-					<button data-type="md">MD</button>
-				</section>
+				<section class="input-zone">
+					<div class="input-overlay">
+						<p class="input-title">Paste or drop your code</p>
+						<span class="input-subtitle"
+							>Supports HTML, CSS, JS, and Markdown</span
+						>
+					</div>
 
-				<section class="file-upload">
-					<label for="fileInput" class="dropzone">
-						Drop your HTML file here
-					</label>
+					<textarea id="input-textarea" spellcheck="false"></textarea>
+
 					<input
 						type="file"
 						id="fileInput"
@@ -36,8 +35,7 @@
 					/>
 				</section>
 
-				<section class="editor">
-					<label class="editor-label">Output</label>
+				<section class="text-output">
 					<textarea
 						readonly
 						id="output-textarea"
