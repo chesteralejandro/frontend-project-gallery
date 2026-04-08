@@ -120,8 +120,8 @@ header {
 	}
 }
 
-.text-output {
-	margin-top: 0.5rem;
+.output-zone {
+	margin-top: 2rem;
 
 	textarea {
 		width: 100%;

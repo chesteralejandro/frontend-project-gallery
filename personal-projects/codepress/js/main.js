@@ -6,7 +6,18 @@ const outputTextArea = document.getElementById('output-textarea');
 const btnCopy = document.getElementById('btn-copy');
 const btnClear = document.getElementById('btn-clear');
 
+const inputFeedbackColors = {
+	html: { bg: 'rgba(229, 83, 45, 0.2)', border: 'rgba(229, 83, 45, 0.6)' },
+	css: { bg: 'rgba(9, 116, 188, 0.2)', border: 'rgba(9, 116, 188, 0.6)' },
+	js: { bg: 'rgba(247, 224, 37, 0.2)', border: 'rgba(247, 224, 37, 0.6)' },
+	md: { bg: 'rgba(212, 212, 212, 0.2)', border: 'rgba(212, 212, 212, 0.6)' },
+};
+
 let typingTimer;
+
+inputZone.addEventListener('click', () => {
+	inputTextarea.focus();
+});
 
 inputTextarea.addEventListener('input', () => {
 	toggleOverlay();
@@ -74,9 +85,23 @@ btnClear.addEventListener('click', () => {
 	btnCopy.disabled = true;
 });
 
-inputZone.addEventListener('click', () => fileInput.click());
+function flashInputZone(type) {
+	const colors = inputFeedbackColors[type] || {
+		bg: 'rgba(255,255,255,0.03)',
+		border: 'rgba(148,163,184,0.5)',
+	};
 
-inputTextarea.addEventListener('input', toggleOverlay);
+	inputZone.style.backgroundColor = colors.bg;
+	inputZone.style.borderColor = colors.border;
+
+	// Clear text after 1.5s and reset styles
+	setTimeout(() => {
+		inputTextarea.value = '';
+		inputZone.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
+		inputZone.style.borderColor = 'rgba(148, 163, 184, 0.5)';
+		inputZone.classList.remove('has-content');
+	}, 1700);
+}
 
 function toggleOverlay() {
 	if (inputTextarea.value.trim()) {
@@ -124,6 +149,7 @@ function processCode(code, filename = 'pasted.txt') {
 		alert('Unsupported file type!');
 		return;
 	}
+	flashInputZone(type);
 
 	const formatted = `(Filename: ${filename} | Type: ${type.toUpperCase()})\n${minified}\n\n`;
 
