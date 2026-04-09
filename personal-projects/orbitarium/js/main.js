@@ -126,13 +126,35 @@ function trackPanelPosition() {
 	if (!activePlanet) return;
 
 	const rect = activePlanet.getBoundingClientRect();
+	const panelRect = panel.getBoundingClientRect();
 
-	const x = rect.left + rect.width / 2;
-	const y = rect.top;
+	let x = rect.left + rect.width / 2;
+	let y = rect.top;
+
+	// Default: above the planet
+	let offsetY = -20;
+	let translateY = -100;
+
+	// 🧠 Flip if too close to top
+	if (y - panelRect.height < 20) {
+		offsetY = rect.height + 10;
+		translateY = 0;
+	}
+
+	// Clamp horizontally
+	const padding = 16;
+
+	if (x - panelRect.width / 2 < padding) {
+		x = panelRect.width / 2 + padding;
+	}
+
+	if (x + panelRect.width / 2 > window.innerWidth - padding) {
+		x = window.innerWidth - panelRect.width / 2 - padding;
+	}
 
 	panel.style.transform = `
-    translate(${x}px, ${y}px)
-    translate(-50%, -120%)
+    translate(${x}px, ${y + offsetY}px)
+    translate(-50%, ${translateY}%)
   `;
 
 	panelRAF = requestAnimationFrame(trackPanelPosition);
