@@ -7,6 +7,7 @@ const planets = document.querySelectorAll('.planet');
 const orbits = document.querySelectorAll('.orbit');
 
 const bgMusic = document.getElementById('bg-music');
+const welcomeVoice = document.getElementById('welcome-voice');
 const startBtn = document.getElementById('start-btn');
 const planetName = document.getElementById('planet-name');
 const planetDesc = document.getElementById('planet-description');
@@ -16,6 +17,9 @@ import PLANET_DATA from './constants/planetData.js';
 let isIntroPlaying = true;
 let activePlanet = null;
 let panelRAF = null;
+
+const BG_VOLUME = 0.09;
+const VOICE_VOLUME = 0.3;
 
 document.body.addEventListener('click', (e) => {
 	if (isIntroPlaying) return;
@@ -49,25 +53,35 @@ planets.forEach((planet) => {
 });
 
 startBtn.addEventListener('click', () => {
+	// UI transition
 	startScreen.classList.remove('active');
 	orbitariumScreen.classList.add('active');
 
+	// --- AUDIO START (user interaction safe) ---
 	bgMusic.volume = 0;
 	bgMusic.play();
 
+	welcomeVoice.currentTime = 0;
+	welcomeVoice.volume = VOICE_VOLUME;
+	welcomeVoice.play();
+
+	// --- Smooth music fade-in ---
 	const fade = setInterval(() => {
-		if (bgMusic.volume >= 0.09) {
+		if (bgMusic.volume >= BG_VOLUME) {
 			return clearInterval(fade);
 		}
-
 		bgMusic.volume += 0.01;
 	}, 300);
 
+	// --- Timing control ---
 	setTimeout(() => focusPlanetOrbitState('running'), 1500);
 
-	setTimeout(() => {
+	// Lock interaction during intro narration
+	isIntroPlaying = true;
+
+	welcomeVoice.addEventListener('ended', () => {
 		isIntroPlaying = false;
-	}, 7000);
+	});
 });
 
 function focusPlanetOrbitState(animationState) {
