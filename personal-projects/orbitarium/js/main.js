@@ -8,6 +8,7 @@ const orbits = document.querySelectorAll('.orbit');
 
 const bgMusic = document.getElementById('bg-music');
 const welcomeVoice = document.getElementById('welcome-voice');
+const planetVoice = document.getElementById('planet-voice');
 const startBtn = document.getElementById('start-btn');
 const planetName = document.getElementById('planet-name');
 const planetDesc = document.getElementById('planet-description');
@@ -20,6 +21,10 @@ let panelRAF = null;
 
 const BG_VOLUME = 0.09;
 const VOICE_VOLUME = 0.3;
+
+planetVoice.onended = () => {
+	bgMusic.volume = BG_VOLUME;
+};
 
 document.body.addEventListener('click', (e) => {
 	if (isIntroPlaying) return;
@@ -136,6 +141,13 @@ function resetView() {
 	activePlanet = null;
 	orbitariumCamera.style.transform = `translate(0, 0) scale(1)`;
 	planets.forEach((planet) => planet.classList.remove('dim'));
+
+	// 🔊 stop voice
+	planetVoice.pause();
+	planetVoice.currentTime = 0;
+
+	bgMusic.volume = BG_VOLUME;
+
 	hidePanel();
 }
 
@@ -147,6 +159,20 @@ function showPanel(planet) {
 	planetDesc.textContent = data.desc;
 
 	panel.classList.add('active');
+
+	// 🔊 STOP previous voice
+	planetVoice.pause();
+	planetVoice.currentTime = 0;
+
+	bgMusic.volume = 0.02;
+
+	// 🔊 PLAY new voice
+	if (data.name) {
+		console.log(data.name);
+		planetVoice.src = `./assets/audio/voice/${key}.mp3`;
+		planetVoice.volume = VOICE_VOLUME;
+		planetVoice.play();
+	}
 
 	cancelAnimationFrame(panelRAF);
 	trackPanelPosition();
