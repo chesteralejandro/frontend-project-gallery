@@ -153,21 +153,38 @@ body {
 	}
 }
 
-.space {
+.orbitarium-screen {
 	position: relative;
 	z-index: 1;
 	width: 100vw;
 	height: 100vh;
 	perspective: 1000px;
 	filter: brightness(0.4) blur(2px);
-	transform: scale(0.5);
 
-	transition: all 5s ease;
+	/* transition: all 5s ease; */
+	transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+	will-change: transform;
+
+	&.zoomed {
+		transform: scale(1.4);
+	}
 
 	&.active {
-		transform: scale(1);
 		filter: brightness(1) blur(0px);
 	}
+}
+
+.orbitarium-screen.focus-active .orbit {
+	animation-play-state: paused;
+}
+
+.orbitarium-screen.focus-active .planet {
+	opacity: 0.3;
+	transition: opacity 0.3s ease;
+}
+
+.orbitarium-screen.focus-active .planet.active {
+	opacity: 1;
 }
 
 .sun {
@@ -214,6 +231,7 @@ body {
 	filter: blur(0.2px);
 	transform: translate(-50%, -50%);
 	animation: orbitRotate linear infinite;
+	pointer-events: none;
 
 	&.mercury-orbit {
 		width: var(--mercury-orbit-size);
@@ -296,6 +314,8 @@ body {
 	transform: translate(-50%, -50%);
 	background-size: cover;
 	will-change: transform;
+	pointer-events: auto;
+	cursor: pointer;
 
 	&.mercury {
 		width: var(--mercury-size);
