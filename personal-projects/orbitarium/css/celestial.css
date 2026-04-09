@@ -1,7 +1,7 @@
 .sun {
 	position: absolute;
 	top: 50%;
-	left: 50%;
+	left: 50% !important;
 	width: var(--sun-size);
 	height: var(--sun-size);
 	transform: translate(-50%, -50%);

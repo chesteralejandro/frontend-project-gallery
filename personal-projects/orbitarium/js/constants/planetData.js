@@ -1,4 +1,8 @@
 const PLANET_DATA = {
+	sun: {
+		name: 'Sun',
+		desc: 'The Sun is a massive star at the center of our Solar System. It is composed mostly of hydrogen and helium, and its energy powers life on Earth while governing the orbits of all planets.',
+	},
 	mercury: {
 		name: 'Mercury',
 		desc: 'Mercury is the smallest planet in our Solar System and closest to the Sun. Its surface is rocky, covered with craters, and it has virtually no atmosphere, causing extreme temperatures between day and night.',

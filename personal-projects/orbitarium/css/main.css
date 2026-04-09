@@ -2,8 +2,8 @@
 @import url(https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900,100italic,200italic,300italic,italic,500italic,600italic,700italic,800italic,900italic);
 
 :root {
-	--sun-scale: 0.85;
-	--planet-scale: 0.75;
+	--sun-scale: 0.9;
+	--planet-scale: 0.9;
 
 	--sun-size: calc(220px * var(--sun-scale));
 
