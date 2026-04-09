@@ -3,9 +3,11 @@ const startBtn = document.getElementById('start-btn');
 
 const startScreen = document.querySelector('.start-screen');
 const orbitariumScreen = document.querySelector('.orbitarium-screen');
+const orbitariumCamera = document.querySelector('.orbitarium-camera');
 
 const planets = document.querySelectorAll('.planet');
 
+let isIntroPlaying = true;
 let activePlanet = null;
 
 document.body.addEventListener('click', () => {
@@ -16,6 +18,7 @@ planets.forEach((planet) => {
 	planet.addEventListener('click', (e) => {
 		e.stopPropagation();
 
+		if (isIntroPlaying) return;
 		if (activePlanet === planet) return resetView();
 
 		activePlanet = planet;
@@ -25,6 +28,9 @@ planets.forEach((planet) => {
 });
 
 startBtn.addEventListener('click', () => {
+	startScreen.classList.remove('active');
+	orbitariumScreen.classList.add('active');
+
 	bgMusic.volume = 0;
 	bgMusic.play();
 
@@ -36,8 +42,9 @@ startBtn.addEventListener('click', () => {
 		bgMusic.volume += 0.01;
 	}, 300);
 
-	startScreen.classList.remove('active');
-	orbitariumScreen.classList.add('active');
+	setTimeout(() => {
+		isIntroPlaying = false;
+	}, 7000);
 });
 
 function focusView(focusPlanet) {
@@ -57,18 +64,18 @@ function focusView(focusPlanet) {
 	const offsetY = centerY - planetY;
 
 	// apply transform
-	orbitariumScreen.style.transform = `
+	orbitariumCamera.style.transform = `
 			translate(${offsetX}px, ${offsetY}px) scale(1.4)
 		`;
 
-	orbitariumScreen.classList.add('focus-active');
+	orbitariumCamera.classList.add('focus-active');
 }
 
 function resetView() {
 	activePlanet = null;
 
-	orbitariumScreen.style.transform = `translate(0, 0) scale(1)`;
-	orbitariumScreen.classList.remove('focus-active');
+	orbitariumCamera.style.transform = `translate(0, 0) scale(1)`;
+	orbitariumCamera.classList.remove('focus-active');
 
 	planets.forEach((planet) => planet.classList.remove('active'));
 }

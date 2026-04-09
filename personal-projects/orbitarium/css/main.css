@@ -78,22 +78,23 @@ body {
 			transparent 60%
 		);
 		z-index: 0;
+		pointer-events: none;
 	}
 }
 
 .start-screen {
+	opacity: 0;
+	pointer-events: none;
 	position: absolute;
 	inset: 0;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	z-index: 10;
-	opacity: 0;
-	pointer-events: none;
 
 	&.active {
 		opacity: 1;
-		pointer-events: all;
+		pointer-events: auto;
 	}
 
 	.glass-card {
@@ -152,34 +153,34 @@ body {
 }
 
 .orbitarium-screen {
+	transform: scale(0.8);
+	filter: brightness(0.4) blur(6px);
+}
+
+.orbitarium-screen.active {
+	animation: introReveal 7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.orbitarium-camera {
 	position: relative;
 	z-index: 1;
 	width: 100vw;
 	height: 100vh;
 	perspective: 1000px;
-	filter: brightness(0.4) blur(2px);
 	transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 	will-change: transform;
-
-	&.zoomed {
-		transform: scale(1.4);
-	}
-
-	&.active {
-		filter: brightness(1) blur(0px);
-	}
 }
 
-.orbitarium-screen.focus-active .orbit {
+.orbitarium-camera.focus-active .orbit {
 	animation-play-state: paused;
 }
 
-.orbitarium-screen.focus-active .planet {
+.orbitarium-camera.focus-active .planet {
 	transition: opacity 0.3s ease;
 	opacity: 0.3;
 }
 
-.orbitarium-screen.focus-active .planet.active {
+.orbitarium-camera.focus-active .planet.active {
 	opacity: 1;
 }
 
@@ -229,6 +230,21 @@ body {
 		text-shadow:
 			0 0 20px rgba(255, 255, 255, 0.6),
 			0 0 30px rgba(99, 102, 241, 0.8);
+	}
+}
+
+@keyframes introReveal {
+	0% {
+		transform: scale(0.8) translateY(20px);
+		filter: brightness(0.4) blur(6px);
+	}
+	80% {
+		transform: scale(1.05);
+		filter: brightness(1.05) blur(1px);
+	}
+	100% {
+		transform: scale(1) translateY(0);
+		filter: brightness(1) blur(0);
 	}
 }
 
