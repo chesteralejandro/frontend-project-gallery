@@ -53,35 +53,56 @@ planets.forEach((planet) => {
 });
 
 startBtn.addEventListener('click', () => {
-	// UI transition
-	startScreen.classList.remove('active');
-	orbitariumScreen.classList.add('active');
+	startBtn.style.transform = 'scale(0.95)';
 
-	// --- AUDIO START (user interaction safe) ---
+	// UI transition
+	setTimeout(() => {
+		startScreen.classList.remove('active');
+		orbitariumScreen.classList.add('active');
+	}, 150);
+
+	// Lock interaction
+	isIntroPlaying = true;
+
+	// --- Background music ---
 	bgMusic.volume = 0;
 	bgMusic.play();
 
-	welcomeVoice.currentTime = 0;
-	welcomeVoice.volume = VOICE_VOLUME;
-	welcomeVoice.play();
-
-	// --- Smooth music fade-in ---
+	// Smooth fade-in (very subtle, cinematic)
 	const fade = setInterval(() => {
-		if (bgMusic.volume >= BG_VOLUME) {
+		if (bgMusic.volume >= 0.05) {
 			return clearInterval(fade);
 		}
-		bgMusic.volume += 0.01;
+		bgMusic.volume += 0.005;
 	}, 300);
 
-	// --- Timing control ---
-	setTimeout(() => focusPlanetOrbitState('running'), 1500);
+	// --- Start orbital motion slightly delayed ---
+	setTimeout(() => {
+		focusPlanetOrbitState('running');
+	}, 1200);
 
-	// Lock interaction during intro narration
-	isIntroPlaying = true;
+	// --- Voice timing (key part) ---
+	setTimeout(() => {
+		welcomeVoice.currentTime = 0;
+		welcomeVoice.volume = VOICE_VOLUME;
+		welcomeVoice.play();
 
-	welcomeVoice.addEventListener('ended', () => {
+		// Lower music under narration
+		bgMusic.volume = 0.03;
+	}, 800);
+
+	// --- When narration ends ---
+	welcomeVoice.onended = () => {
 		isIntroPlaying = false;
-	});
+
+		// Bring music back up slightly
+		const rise = setInterval(() => {
+			if (bgMusic.volume >= BG_VOLUME) {
+				return clearInterval(rise);
+			}
+			bgMusic.volume += 0.005;
+		}, 200);
+	};
 });
 
 function focusPlanetOrbitState(animationState) {
