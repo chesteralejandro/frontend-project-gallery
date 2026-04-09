@@ -153,12 +153,9 @@ body {
 }
 
 .orbitarium-screen {
-	transform: scale(0.8);
-	filter: brightness(0.4) blur(6px);
-}
-
-.orbitarium-screen.active {
-	animation: introReveal 7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+	&.active {
+		animation: cosmicEntry 7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
 }
 
 .orbitarium-camera {
@@ -169,19 +166,6 @@ body {
 	perspective: 1000px;
 	transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
 	will-change: transform;
-}
-
-.orbitarium-camera.focus-active .orbit {
-	animation-play-state: paused;
-}
-
-.orbitarium-camera.focus-active .planet {
-	transition: opacity 0.3s ease;
-	opacity: 0.3;
-}
-
-.orbitarium-camera.focus-active .planet.active {
-	opacity: 1;
 }
 
 .texture-shift {
@@ -233,18 +217,25 @@ body {
 	}
 }
 
-@keyframes introReveal {
+@keyframes cosmicEntry {
 	0% {
-		transform: scale(0.8) translateY(20px);
-		filter: brightness(0.4) blur(6px);
+		transform: scale(0.75) translateY(30px);
+		filter: brightness(0.35) blur(8px);
 	}
-	80% {
-		transform: scale(1.05);
-		filter: brightness(1.05) blur(1px);
+
+	60% {
+		transform: scale(0.92) translateY(10px);
+		filter: brightness(0.9) blur(0px);
 	}
+
+	85% {
+		transform: scale(1.02) translateY(2px);
+		filter: brightness(1.05);
+	}
+
 	100% {
 		transform: scale(1) translateY(0);
-		filter: brightness(1) blur(0);
+		filter: brightness(1);
 	}
 }
 

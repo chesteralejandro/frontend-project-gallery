@@ -6,12 +6,19 @@ const orbitariumScreen = document.querySelector('.orbitarium-screen');
 const orbitariumCamera = document.querySelector('.orbitarium-camera');
 
 const planets = document.querySelectorAll('.planet');
+const orbits = document.querySelectorAll('.orbit');
 
-let isIntroPlaying = true;
 let activePlanet = null;
+let isIntroPlaying = true;
 
-document.body.addEventListener('click', () => {
-	resetView();
+document.body.addEventListener('click', (e) => {
+	if (isIntroPlaying) return;
+
+	// only reset if clicking outside planets
+	if (!e.target.closest('.planet')) {
+		focusPlanetOrbitState('running');
+		resetView();
+	}
 });
 
 planets.forEach((planet) => {
@@ -19,11 +26,16 @@ planets.forEach((planet) => {
 		e.stopPropagation();
 
 		if (isIntroPlaying) return;
-		if (activePlanet === planet) return resetView();
+		if (activePlanet === planet) {
+			focusPlanetOrbitState('running');
+			return resetView();
+		}
 
 		activePlanet = planet;
 
-		focusView(planet);
+		focusPlanetOrbitState('paused');
+		focusPlanetDim(planet);
+		focusCamera(planet);
 	});
 });
 
@@ -42,16 +54,23 @@ startBtn.addEventListener('click', () => {
 		bgMusic.volume += 0.01;
 	}, 300);
 
+	setTimeout(() => focusPlanetOrbitState('running'), 1500);
+
 	setTimeout(() => {
 		isIntroPlaying = false;
 	}, 7000);
 });
 
-function focusView(focusPlanet) {
-	// mark focusPlanet as active
-	planets.forEach((p) => p.classList.remove('active'));
-	focusPlanet.classList.add('active');
+function focusPlanetOrbitState(animationState) {
+	orbits.forEach((o) => (o.style.animationPlayState = animationState));
+}
 
+function focusPlanetDim(focusPlanet) {
+	planets.forEach((p) => p.classList.add('dim'));
+	focusPlanet.classList.remove('dim');
+}
+
+function focusCamera(focusPlanet) {
 	// get focusPlanet's position
 	const rect = focusPlanet.getBoundingClientRect();
 	const centerX = window.innerWidth / 2;
@@ -67,15 +86,10 @@ function focusView(focusPlanet) {
 	orbitariumCamera.style.transform = `
 			translate(${offsetX}px, ${offsetY}px) scale(1.4)
 		`;
-
-	orbitariumCamera.classList.add('focus-active');
 }
 
 function resetView() {
 	activePlanet = null;
-
 	orbitariumCamera.style.transform = `translate(0, 0) scale(1)`;
-	orbitariumCamera.classList.remove('focus-active');
-
-	planets.forEach((planet) => planet.classList.remove('active'));
+	planets.forEach((planet) => planet.classList.remove('dim'));
 }

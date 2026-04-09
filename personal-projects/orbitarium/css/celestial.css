@@ -45,6 +45,11 @@
 	cursor: pointer;
 }
 
+.planet.dim {
+	transition: opacity 0.3s ease;
+	opacity: 0.3;
+}
+
 .planet.mercury {
 	width: var(--mercury-size);
 	height: var(--mercury-size);
