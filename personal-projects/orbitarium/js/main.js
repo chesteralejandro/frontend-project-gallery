@@ -13,13 +13,14 @@ const planetDesc = document.getElementById('planet-description');
 
 import PLANET_DATA from './constants/planetData.js';
 
-let activePlanet = null;
 let isIntroPlaying = true;
+let activePlanet = null;
+let panelRAF = null;
 
 document.body.addEventListener('click', (e) => {
 	if (isIntroPlaying) return;
 
-	// only reset if clicking outside planets
+	// Only reset if clicking outside planets
 	if (!e.target.closest('.planet')) {
 		focusPlanetOrbitState('running');
 		resetView();
@@ -79,7 +80,7 @@ function focusPlanetDim(focusPlanet) {
 }
 
 function focusCamera(focusPlanet) {
-	// get focusPlanet's position
+	// Get focusPlanet's position
 	const rect = focusPlanet.getBoundingClientRect();
 	const centerX = window.innerWidth / 2;
 	const centerY = window.innerHeight / 2;
@@ -90,7 +91,7 @@ function focusCamera(focusPlanet) {
 	const offsetX = centerX - planetX;
 	const offsetY = centerY - planetY;
 
-	// apply transform
+	// Focus camera effect
 	orbitariumCamera.style.transform = `
 			translate(${offsetX}px, ${offsetY}px) scale(1.4)
 		`;
@@ -111,8 +112,28 @@ function showPanel(planet) {
 	planetDesc.textContent = data.desc;
 
 	panel.classList.add('active');
+
+	cancelAnimationFrame(panelRAF);
+	trackPanelPosition();
 }
 
 function hidePanel() {
 	panel.classList.remove('active');
+	cancelAnimationFrame(panelRAF);
+}
+
+function trackPanelPosition() {
+	if (!activePlanet) return;
+
+	const rect = activePlanet.getBoundingClientRect();
+
+	const x = rect.left + rect.width / 2;
+	const y = rect.top;
+
+	panel.style.transform = `
+    translate(${x}px, ${y}px)
+    translate(-50%, -120%)
+  `;
+
+	panelRAF = requestAnimationFrame(trackPanelPosition);
 }
