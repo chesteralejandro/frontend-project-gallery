@@ -1,12 +1,17 @@
-const bgMusic = document.getElementById('bg-music');
-const startBtn = document.getElementById('start-btn');
-
 const startScreen = document.querySelector('.start-screen');
 const orbitariumScreen = document.querySelector('.orbitarium-screen');
 const orbitariumCamera = document.querySelector('.orbitarium-camera');
+const panel = document.querySelector('.planet-panel');
 
 const planets = document.querySelectorAll('.planet');
 const orbits = document.querySelectorAll('.orbit');
+
+const bgMusic = document.getElementById('bg-music');
+const startBtn = document.getElementById('start-btn');
+const planetName = document.getElementById('planet-name');
+const planetDesc = document.getElementById('planet-description');
+
+import PLANET_DATA from './constants/planetData.js';
 
 let activePlanet = null;
 let isIntroPlaying = true;
@@ -24,11 +29,13 @@ document.body.addEventListener('click', (e) => {
 planets.forEach((planet) => {
 	planet.addEventListener('click', (e) => {
 		e.stopPropagation();
-
 		if (isIntroPlaying) return;
+
 		if (activePlanet === planet) {
 			focusPlanetOrbitState('running');
-			return resetView();
+			hidePanel();
+			resetView();
+			return;
 		}
 
 		activePlanet = planet;
@@ -36,6 +43,7 @@ planets.forEach((planet) => {
 		focusPlanetOrbitState('paused');
 		focusPlanetDim(planet);
 		focusCamera(planet);
+		showPanel(planet);
 	});
 });
 
@@ -92,4 +100,19 @@ function resetView() {
 	activePlanet = null;
 	orbitariumCamera.style.transform = `translate(0, 0) scale(1)`;
 	planets.forEach((planet) => planet.classList.remove('dim'));
+	hidePanel();
+}
+
+function showPanel(planet) {
+	const key = planet.dataset.planet;
+	const data = PLANET_DATA[key];
+
+	planetName.textContent = data.name;
+	planetDesc.textContent = data.desc;
+
+	panel.classList.add('active');
+}
+
+function hidePanel() {
+	panel.classList.remove('active');
 }

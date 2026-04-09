@@ -198,3 +198,41 @@
 		inset 4px 4px 10px rgba(255, 255, 255, 0.2);
 	filter: saturate(1.3) brightness(1.05);
 }
+
+.planet-panel {
+	position: absolute;
+	bottom: 40px;
+	left: 50%;
+	transform: translateX(-50%) translateY(20px);
+	opacity: 0;
+	pointer-events: none;
+	transition: all 0.5s ease;
+	z-index: 20;
+}
+
+.planet-panel.active {
+	opacity: 1;
+	transform: translateX(-50%) translateY(0);
+	pointer-events: auto;
+}
+
+.panel-card {
+	padding: 1.5rem 2rem;
+	background: rgba(255, 255, 255, 0.05);
+	backdrop-filter: blur(20px);
+	border-radius: 16px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+	text-align: center;
+	max-width: 320px;
+}
+
+.panel-card h2 {
+	font-family: 'Space Grotesk', sans-serif;
+	margin-bottom: 0.5rem;
+}
+
+.panel-card p {
+	font-size: 0.9rem;
+	color: rgba(255, 255, 255, 0.7);
+}
