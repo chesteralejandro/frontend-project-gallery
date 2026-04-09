@@ -16,34 +16,11 @@ planets.forEach((planet) => {
 	planet.addEventListener('click', (e) => {
 		e.stopPropagation();
 
-		// reset if clicking same planet
-		if (activePlanet === planet) {
-			return resetView();
-		}
+		if (activePlanet === planet) return resetView();
 
 		activePlanet = planet;
 
-		// mark active
-		planets.forEach((p) => p.classList.remove('active'));
-		planet.classList.add('active');
-
-		// get position
-		const rect = planet.getBoundingClientRect();
-		const centerX = window.innerWidth / 2;
-		const centerY = window.innerHeight / 2;
-
-		const planetX = rect.left + rect.width / 2;
-		const planetY = rect.top + rect.height / 2;
-
-		const offsetX = centerX - planetX;
-		const offsetY = centerY - planetY;
-
-		// apply transform
-		orbitariumScreen.style.transform = `
-			translate(${offsetX}px, ${offsetY}px) scale(1.4)
-		`;
-
-		orbitariumScreen.classList.add('focus-active');
+		focusView(planet);
 	});
 });
 
@@ -63,13 +40,35 @@ startBtn.addEventListener('click', () => {
 	orbitariumScreen.classList.add('active');
 });
 
+function focusView(focusPlanet) {
+	// mark focusPlanet as active
+	planets.forEach((p) => p.classList.remove('active'));
+	focusPlanet.classList.add('active');
+
+	// get focusPlanet's position
+	const rect = focusPlanet.getBoundingClientRect();
+	const centerX = window.innerWidth / 2;
+	const centerY = window.innerHeight / 2;
+
+	const planetX = rect.left + rect.width / 2;
+	const planetY = rect.top + rect.height / 2;
+
+	const offsetX = centerX - planetX;
+	const offsetY = centerY - planetY;
+
+	// apply transform
+	orbitariumScreen.style.transform = `
+			translate(${offsetX}px, ${offsetY}px) scale(1.4)
+		`;
+
+	orbitariumScreen.classList.add('focus-active');
+}
+
 function resetView() {
 	activePlanet = null;
 
 	orbitariumScreen.style.transform = `translate(0, 0) scale(1)`;
 	orbitariumScreen.classList.remove('focus-active');
 
-	document
-		.querySelectorAll('.planet')
-		.forEach((p) => p.classList.remove('active'));
+	planets.forEach((planet) => planet.classList.remove('active'));
 }
