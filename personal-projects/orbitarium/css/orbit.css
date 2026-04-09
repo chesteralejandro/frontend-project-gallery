@@ -1,0 +1,84 @@
+.orbit {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	border-radius: 50%;
+	border: 1px dashed rgba(255, 255, 255, 0.1);
+	filter: blur(0.2px);
+	transform: translate(-50%, -50%);
+	animation: orbitRotate linear infinite;
+	animation-play-state: paused;
+	pointer-events: none;
+}
+
+.mercury-orbit {
+	width: var(--mercury-orbit-size);
+	height: var(--mercury-orbit-size);
+	animation-duration: var(--mercury-orbit-time);
+	filter: blur(0.1px);
+}
+
+.venus-orbit {
+	width: var(--venus-orbit-size);
+	height: var(--venus-orbit-size);
+	animation-duration: var(--venus-orbit-time);
+	filter: blur(0.15px);
+}
+
+.earth-orbit {
+	width: var(--earth-orbit-size);
+	height: var(--earth-orbit-size);
+	animation-duration: var(--earth-orbit-time);
+	filter: blur(0.2px);
+
+	.moon-orbit {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		width: var(--moon-orbit-size);
+		height: var(--moon-orbit-size);
+		transform: translate(-50%, -50%);
+		border-radius: 50%;
+		animation: orbitRotate var(--moon-orbit-time) linear infinite;
+	}
+}
+
+.mars-orbit {
+	width: var(--mars-orbit-size);
+	height: var(--mars-orbit-size);
+	animation-duration: var(--mars-orbit-time);
+	border-color: rgba(255, 255, 255, 0.09);
+	filter: blur(0.25px);
+}
+
+.jupiter-orbit {
+	width: var(--jupiter-orbit-size);
+	height: var(--jupiter-orbit-size);
+	animation-duration: var(--jupiter-orbit-time);
+	border-color: rgba(255, 255, 255, 0.07);
+	filter: blur(0.3px);
+}
+
+.saturn-orbit {
+	width: var(--saturn-orbit-size);
+	height: var(--saturn-orbit-size);
+	animation-duration: var(--saturn-orbit-time);
+	border-color: rgba(255, 255, 255, 0.05);
+	filter: blur(0.35px);
+}
+
+.uranus-orbit {
+	width: var(--uranus-orbit-size);
+	height: var(--uranus-orbit-size);
+	animation-duration: var(--uranus-orbit-time);
+	border-color: rgba(255, 255, 255, 0.04);
+	filter: blur(0.4px);
+}
+
+.neptune-orbit {
+	width: var(--neptune-orbit-size);
+	height: var(--neptune-orbit-size);
+	animation-duration: var(--neptune-orbit-time);
+	border-color: rgba(255, 255, 255, 0.03);
+	filter: blur(0.5px);
+}

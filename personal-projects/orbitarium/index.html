@@ -4,11 +4,13 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="stylesheet" href="./css/main.css" />
-		<script src="./js/main.js" defer></script>
+		<link rel="stylesheet" href="./css/orbit.css" />
+		<link rel="stylesheet" href="./css/celestial.css" />
+		<script type="module" src="./js/main.js" defer></script>
 		<title>Orbitarium</title>
 	</head>
 	<body>
-		<header id="start-screen" class="start-screen active">
+		<header class="start-screen active">
 			<article class="glass-card">
 				<h1>Orbitarium</h1>
 				<p>
@@ -19,48 +21,78 @@
 			</article>
 		</header>
 
-		<main id="orbitarium-screen" class="space">
-			<article class="sun">&nbsp;</article>
+		<main class="orbitarium-screen">
+			<article class="orbitarium-camera">
+				<article class="sun"></article>
 
-			<section class="orbit mercury-orbit">
-				<article class="planet mercury texture-shift">&nbsp;</article>
-			</section>
+				<section class="orbit mercury-orbit">
+					<article
+						class="planet mercury texture-shift"
+						data-planet="mercury"
+					></article>
+				</section>
 
-			<section class="orbit venus-orbit">
-				<article class="planet venus texture-shift">&nbsp;</article>
-			</section>
+				<section class="orbit venus-orbit">
+					<article
+						class="planet venus texture-shift"
+						data-planet="venus"
+					></article>
+				</section>
 
-			<section class="orbit earth-orbit">
-				<article class="planet earth texture-shift">
-					<section class="orbit moon-orbit">
-						<article class="planet moon">&nbsp;</article>
-					</section>
-				</article>
-			</section>
+				<section class="orbit earth-orbit">
+					<article
+						class="planet earth texture-shift"
+						data-planet="earth"
+					>
+						<section class="orbit moon-orbit">
+							<article class="planet moon"></article>
+						</section>
+					</article>
+				</section>
 
-			<section class="orbit mars-orbit">
-				<article class="planet mars texture-shift">&nbsp;</article>
-			</section>
+				<section class="orbit mars-orbit">
+					<article
+						class="planet mars texture-shift"
+						data-planet="mars"
+					></article>
+				</section>
 
-			<section class="orbit jupiter-orbit">
-				<article class="planet jupiter texture-shift">&nbsp;</article>
-			</section>
+				<section class="orbit jupiter-orbit">
+					<article
+						class="planet jupiter texture-shift"
+						data-planet="jupiter"
+					></article>
+				</section>
 
-			<section class="orbit saturn-orbit">
-				<article class="planet saturn">
-					<div class="saturn-body texture-shift">&nbsp;</div>
-					<div class="saturn-ring">&nbsp;</div>
-				</article>
-			</section>
+				<section class="orbit saturn-orbit">
+					<article class="planet saturn" data-planet="saturn">
+						<div class="saturn-body texture-shift"></div>
+						<div class="saturn-ring"></div>
+					</article>
+				</section>
 
-			<section class="orbit uranus-orbit">
-				<article class="planet uranus texture-shift">&nbsp;</article>
-			</section>
+				<section class="orbit uranus-orbit">
+					<article
+						class="planet uranus texture-shift"
+						data-planet="uranus"
+					></article>
+				</section>
 
-			<section class="orbit neptune-orbit">
-				<article class="planet neptune texture-shift">&nbsp;</article>
-			</section>
+				<section class="orbit neptune-orbit">
+					<article
+						class="planet neptune texture-shift"
+						data-planet="neptune"
+					></article>
+				</section>
+			</article>
 		</main>
+
+		<aside class="planet-panel">
+			<div class="panel-card">
+				<h2 id="planet-name">Celestial Body Name</h2>
+				<p id="planet-description">Celestial Body Description</p>
+			</div>
+		</aside>
 
 		<audio id="bg-music" src="./assets/audio/music/cosmos.mp3" loop></audio>
 	</body>
