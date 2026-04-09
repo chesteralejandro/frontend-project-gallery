@@ -199,6 +199,36 @@
 	filter: saturate(1.3) brightness(1.05);
 }
 
+.texture-shift {
+	animation: texture-shift linear infinite;
+
+	&.mercury {
+		animation-duration: 6s;
+	}
+	&.venus {
+		animation-duration: 10s;
+		animation-direction: reverse;
+	}
+	&.earth {
+		animation-duration: 14s;
+	}
+	&.mars {
+		animation-duration: 18s;
+	}
+	&.jupiter {
+		animation-duration: 22s;
+	}
+	&.saturn-body {
+		animation-duration: 28s;
+	}
+	&.uranus {
+		animation-duration: 32s;
+	}
+	&.neptune {
+		animation-duration: 36s;
+	}
+}
+
 .planet-panel {
 	position: fixed;
 	top: 0;

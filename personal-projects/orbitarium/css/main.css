@@ -168,35 +168,6 @@ body {
 	will-change: transform;
 }
 
-.texture-shift {
-	animation: texture-shift linear infinite;
-
-	&.mercury {
-		animation-duration: 6s;
-	}
-	&.venus {
-		animation-duration: 10s;
-	}
-	&.earth {
-		animation-duration: 14s;
-	}
-	&.mars {
-		animation-duration: 18s;
-	}
-	&.jupiter {
-		animation-duration: 22s;
-	}
-	&.saturn-body {
-		animation-duration: 28s;
-	}
-	&.uranus {
-		animation-duration: 32s;
-	}
-	&.neptune {
-		animation-duration: 36s;
-	}
-}
-
 @keyframes fadeIn {
 	to {
 		opacity: 1;
