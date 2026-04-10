@@ -52,8 +52,14 @@ planets.forEach((planet) => {
 
 		focusPlanetOrbitState('paused');
 		focusPlanetDim(planet);
-		focusCamera(planet);
 		showPanel(planet);
+
+		if (planet.dataset.planet === 'sun') {
+			orbitariumCamera.style.transform = `translate(0, 0) scale(1.2)`;
+			return;
+		}
+
+		focusCamera(planet);
 	});
 });
 
