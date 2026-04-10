@@ -17,15 +17,15 @@
 	--uranus-orbit-size: calc(1400px * var(--planet-scale));
 	--neptune-orbit-size: calc(1650px * var(--planet-scale));
 
-	--mercury-orbit-time: calc(8s * var(--planet-scale));
-	--venus-orbit-time: calc(12s * var(--planet-scale));
-	--earth-orbit-time: calc(16s * var(--planet-scale));
-	--moon-orbit-time: calc(8s * var(--planet-scale));
-	--mars-orbit-time: calc(20s * var(--planet-scale));
-	--jupiter-orbit-time: calc(28s * var(--planet-scale));
-	--saturn-orbit-time: calc(36s * var(--planet-scale));
-	--uranus-orbit-time: calc(46s * var(--planet-scale));
-	--neptune-orbit-time: calc(58s * var(--planet-scale));
+	--mercury-orbit-time: calc(10s * var(--planet-scale));
+	--venus-orbit-time: calc(14s * var(--planet-scale));
+	--earth-orbit-time: calc(18s * var(--planet-scale));
+	--moon-orbit-time: calc(10s * var(--planet-scale));
+	--mars-orbit-time: calc(22s * var(--planet-scale));
+	--jupiter-orbit-time: calc(30s * var(--planet-scale));
+	--saturn-orbit-time: calc(38s * var(--planet-scale));
+	--uranus-orbit-time: calc(48s * var(--planet-scale));
+	--neptune-orbit-time: calc(60s * var(--planet-scale));
 
 	--mercury-size: calc(20px * var(--planet-scale));
 	--venus-size: calc(28px * var(--planet-scale));

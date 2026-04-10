@@ -37,6 +37,16 @@ document.body.addEventListener('click', (e) => {
 });
 
 planets.forEach((planet) => {
+	planet.addEventListener('mouseenter', () => {
+		if (activePlanet) return;
+		planet.closest('.orbit').style.animationPlayState = 'paused';
+	});
+
+	planet.addEventListener('mouseleave', () => {
+		if (activePlanet) return;
+		planet.closest('.orbit').style.animationPlayState = 'running';
+	});
+
 	planet.addEventListener('click', (e) => {
 		e.stopPropagation();
 		if (isIntroPlaying) return;
