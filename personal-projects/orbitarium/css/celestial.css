@@ -14,7 +14,7 @@
 		0 0 60px #ff9900,
 		0 0 120px #ff6600;
 	animation:
-		texture-shift 25s linear infinite,
+		texture-shift var(--sun-texture-shift-time) linear infinite,
 		sunPulse 6s ease-in-out infinite;
 
 	&::before {
@@ -211,29 +211,29 @@
 	animation: texture-shift linear infinite;
 
 	&.mercury {
-		animation-duration: 6s;
+		animation-duration: var(--mercury-texture-shift-time);
 	}
 	&.venus {
-		animation-duration: 10s;
+		animation-duration: var(--venus-texture-shift-time);
 		animation-direction: reverse;
 	}
 	&.earth {
-		animation-duration: 14s;
+		animation-duration: var(--earth-texture-shift-time);
 	}
 	&.mars {
-		animation-duration: 18s;
+		animation-duration: var(--mars-texture-shift-time);
 	}
 	&.jupiter {
-		animation-duration: 22s;
+		animation-duration: var(--jupiter-texture-shift-time);
 	}
 	&.saturn-body {
-		animation-duration: 28s;
+		animation-duration: var(--saturn-texture-shift-time);
 	}
 	&.uranus {
-		animation-duration: 32s;
+		animation-duration: var(--uranus-texture-shift-time);
 	}
 	&.neptune {
-		animation-duration: 36s;
+		animation-duration: var(--neptune-texture-shift-time);
 	}
 }
 

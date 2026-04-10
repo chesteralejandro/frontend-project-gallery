@@ -5,8 +5,6 @@
 	--sun-scale: 0.9;
 	--planet-scale: 0.9;
 
-	--sun-size: calc(220px * var(--sun-scale));
-
 	--mercury-orbit-size: calc(300px * var(--planet-scale));
 	--venus-orbit-size: calc(420px * var(--planet-scale));
 	--earth-orbit-size: calc(560px * var(--planet-scale));
@@ -27,6 +25,7 @@
 	--uranus-orbit-time: calc(48s * var(--planet-scale));
 	--neptune-orbit-time: calc(60s * var(--planet-scale));
 
+	--sun-size: calc(220px * var(--sun-scale));
 	--mercury-size: calc(20px * var(--planet-scale));
 	--venus-size: calc(28px * var(--planet-scale));
 	--earth-size: calc(32px * var(--planet-scale));
@@ -38,6 +37,16 @@
 	--saturn-ring-size: calc(110px * var(--planet-scale));
 	--uranus-size: calc(50px * var(--planet-scale));
 	--neptune-size: calc(48px * var(--planet-scale));
+
+	--sun-texture-shift-time: 25s;
+	--mercury-texture-shift-time: 6s;
+	--venus-texture-shift-time: 10s;
+	--earth-texture-shift-time: 14s;
+	--mars-texture-shift-time: 18s;
+	--jupiter-texture-shift-time: 22s;
+	--saturn-texture-shift-time: 28s;
+	--uranus-texture-shift-time: 32s;
+	--neptune-texture-shift-time: 36s;
 }
 
 *,
