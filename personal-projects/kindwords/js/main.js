@@ -1,3 +1,5 @@
+import capitalize from './utils/capitalize.js';
+
 const output = document.getElementById('output');
 const generateBtn = document.getElementById('btn-generate');
 const copyBtn = document.getElementById('btn-copy');
@@ -15,11 +17,6 @@ async function loadData() {
 	} catch (error) {
 		console.error('Failed to load JSON:', error.message);
 	}
-}
-
-function capitalize(word) {
-	if (!word) return '';
-	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
 function getWordsByCategory(category) {
