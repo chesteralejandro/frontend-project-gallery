@@ -14,9 +14,9 @@
 	--color-surface: #ffffff;
 	--color-primary: #f59e0b;
 
-	--color-text: #2d2a26;
-	--color-text-muted: #7a6f66;
-	--color-border: #f1e3d8;
+	--color-text: #4a2e0f;
+	--color-text-muted: #8a6a4a;
+	--color-border: #eadccf;
 
 	/* Spacing */
 	--space-sm: 8px;
@@ -80,6 +80,7 @@ body {
 	box-shadow: var(--shadow-sm);
 	padding: var(--space-lg);
 	margin-top: var(--space-lg);
+	border: 1px solid var(--color-border);
 
 	display: flex;
 	flex-direction: column;
@@ -230,7 +231,7 @@ body {
 }
 
 .btn-generate:hover {
-	opacity: 0.9;
+	opacity: 0.95;
 	transform: translateY(-1px);
 	box-shadow: var(--shadow-sm);
 }
@@ -252,7 +253,7 @@ body {
 }
 
 .output p + p {
-	margin-top: var(--space-sm);
+	margin-top: var(--space-md);
 }
 
 .output-placeholder {
