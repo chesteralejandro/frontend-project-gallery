@@ -251,6 +251,10 @@ body {
 	min-height: 120px;
 }
 
+.output p + p {
+	margin-top: var(--space-sm);
+}
+
 .output-placeholder {
 	color: var(--color-text-muted);
 	font-style: italic;

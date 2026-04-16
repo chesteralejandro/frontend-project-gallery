@@ -18,6 +18,7 @@ async function loadData() {
 }
 
 function capitalize(word) {
+	if (!word) return '';
 	return word.charAt(0).toUpperCase() + word.slice(1);
 }
 
@@ -30,30 +31,42 @@ function getWordsByCategory(category) {
 	return kindWordsData[category] || [];
 }
 
+function pickRandomUnique(arr, count) {
+	const copy = [...arr];
+	const result = [];
+
+	while (result.length < count && copy.length > 0) {
+		const index = Math.floor(Math.random() * copy.length);
+		result.push(copy.splice(index, 1)[0]);
+	}
+
+	return result;
+}
+
 function buildOutput(words, type, amount) {
 	if (!words.length) {
 		return `<span class="output-placeholder">No words found.</span>`;
 	}
 
-	const shuffled = [...words].sort(() => Math.random() - 0.5);
+	const picked = pickRandomUnique(words, amount);
 
 	if (type === 'sentences') {
-		return shuffled
-			.slice(0, amount)
-			.map((w) => capitalize(w) + '.')
-			.join(' ');
+		return picked.map((word) => capitalize(word)).join(' ');
 	}
 
-	// paragraphs mode (simple grouping for now)
-	const chunkSize = Math.ceil(words.length / amount);
+	const chunkSize = Math.ceil(picked.length / amount);
 
 	let paragraphs = [];
+
 	for (let i = 0; i < amount; i++) {
-		const chunk = shuffled.slice(i * chunkSize, (i + 1) * chunkSize);
-		paragraphs.push(chunk.join(', '));
+		const chunk = picked.slice(i * chunkSize, (i + 1) * chunkSize);
+
+		const line = chunk.map((word) => capitalize(word)).join(' ');
+
+		paragraphs.push(`<p>${line}</p>`);
 	}
 
-	return paragraphs.map((p) => `<p>${p}</p>`).join('');
+	return paragraphs.join('');
 }
 
 function generateKindWords() {
