@@ -14,6 +14,10 @@ async function loadData() {
 	try {
 		const response = await fetch('./data/kindwords.json');
 		kindWordsData = await response.json();
+
+		setTimeout(() => {
+			generateKindWords();
+		}, 100);
 	} catch (error) {
 		console.error('Failed to load JSON:', error.message);
 	}
