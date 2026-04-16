@@ -1,4 +1,9 @@
-import { TILES_CONTAINER, SCREENS, CHARACTERS } from './constants/elements.js';
+import {
+	TILES_CONTAINER,
+	SCREENS,
+	CHARACTERS,
+	MENU_BUTTONS,
+} from './constants/elements.js';
 import { TILE_LAYOUT_1 } from './constants/tilesLayouts.js';
 import { TILES_ELEMENTS } from './constants/tiles.js';
 import WHITE_CELL_CONFIG from './constants/whiteCellConfig.js';
@@ -56,14 +61,13 @@ function loop(time) {
 drawTilesLayout();
 loop();
 
+MENU_BUTTONS.START.addEventListener('click', () => {
+	SCREENS.START.classList.add('hidden');
+	SCREENS.GAME.classList.remove('hidden');
+	isGameStarted = true;
+});
+
 window.addEventListener('keydown', (e) => {
-	if (e.code === 'Enter') {
-		SCREENS.START.classList.add('hidden');
-		SCREENS.GAME.classList.remove('hidden');
-
-		isGameStarted = true;
-	}
-
 	if (!isGameStarted) return;
 
 	if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {

@@ -11,3 +11,9 @@ export const CHARACTERS = {
 	BACU: document.getElementById('bacu'),
 	GEMRU: document.getElementById('gemru'),
 };
+
+export const MENU_BUTTONS = {
+	START: document.getElementById('start-btn'),
+	HOW: document.getElementById('how-btn'),
+	EXIT: document.getElementById('exit-btn'),
+};
