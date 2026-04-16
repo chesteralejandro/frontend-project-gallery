@@ -1,6 +1,6 @@
-// UI elements
 const output = document.getElementById('output');
 const generateBtn = document.getElementById('btn-generate');
+const copyBtn = document.getElementById('btn-copy');
 const categorySelect = document.getElementById('category');
 const outputTypeSelect = document.getElementById('output-type');
 const amountInput = document.getElementById('amount');
@@ -83,10 +83,30 @@ function generateKindWords() {
 	output.innerHTML = result;
 }
 
-window.addEventListener('DOMContentLoaded', loadData);
+function getPlainTextFromOutput() {
+	const tempDiv = document.createElement('div');
+	tempDiv.innerHTML = output.innerHTML;
 
+	return tempDiv.innerText.trim();
+}
+
+async function copyToClipboard() {
+	const text = getPlainTextFromOutput();
+
+	if (!text || text.includes('Your kind words will appear here')) {
+		return;
+	}
+
+	try {
+		await navigator.clipboard.writeText(text);
+	} catch (err) {
+		console.error('Copy failed:', err);
+	}
+}
+
+window.addEventListener('DOMContentLoaded', loadData);
 amountInput.addEventListener('input', () => {
 	amountValue.textContent = amountInput.value;
 });
-
 generateBtn.addEventListener('click', generateKindWords);
+copyBtn.addEventListener('click', copyToClipboard);
