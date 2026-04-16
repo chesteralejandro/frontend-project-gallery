@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Honk:MORF@15&family=Lato:wght@400;700;900&family=Lora:ital,wght@0,400..700;1,400..700&family=Outfit:wght@100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+	/* Typography */
+	--font-primary: 'Lora', serif;
+	--font-secondary: 'DM Sans', system-ui, -apple-system, sans-serif;
+
+	/* Radius */
+	--radius-md: 10px;
+	--radius-lg: 16px;
+
+	/* Colors */
+	--color-bg: #fff8f2;
+	--color-surface: #ffffff;
+	--color-primary: #f59e0b;
+
+	--color-text: #2d2a26;
+	--color-text-muted: #7a6f66;
+	--color-border: #f1e3d8;
+
+	/* Spacing */
+	--space-sm: 8px;
+	--space-md: 16px;
+	--space-lg: 24px;
+
+	/* Shadow */
+	--shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+*,
+*::before,
+*::after {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
