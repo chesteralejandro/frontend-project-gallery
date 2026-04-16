@@ -104,9 +104,11 @@ async function copyToClipboard() {
 	}
 }
 
-window.addEventListener('DOMContentLoaded', loadData);
-amountInput.addEventListener('input', () => {
+function updateAmountText() {
 	amountValue.textContent = amountInput.value;
-});
+}
+
+window.addEventListener('DOMContentLoaded', loadData);
+amountInput.addEventListener('input', updateAmountText);
 generateBtn.addEventListener('click', generateKindWords);
 copyBtn.addEventListener('click', copyToClipboard);
