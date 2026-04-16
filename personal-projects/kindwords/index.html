@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>KindWords | Uplifting Placeholder Text Generator</title>
+	</head>
+	<body>
+		<header>
+			<h1 class="title">KindWords</h1>
+			<p class="subtitle">
+				Replace placeholder text with something a little kinder.
+			</p>
+		</header>
+		<main class="card">
+			<article class="controls">
+				<section class="control-group">
+					<label for="output-type">Output Type</label>
+					<select id="output-type">
+						<option value="sentences">Sentences</option>
+						<option value="paragraphs">Paragraphs</option>
+					</select>
+				</section>
+
+				<section class="control-group">
+					<label for="amount">Amount</label>
+					<div class="slider-row">
+						<input
+							type="range"
+							id="amount"
+							min="1"
+							max="15"
+							value="3"
+							step="1"
+						/>
+						<span id="slider-value">3</span>
+					</div>
+				</section>
+
+				<button class="btn-generate" id="btn-generate">
+					✦ Generate kind words
+				</button>
+			</article>
+
+			<article class="output" id="output">
+				<span class="output-placeholder">
+					Your kind words will appear here...
+				</span>
+			</article>
+
+			<button class="btn-copy" id="btn-copy">
+				<svg
+					width="14"
+					height="14"
+					viewBox="0 0 24 24"
+					fill="none"
+					stroke="currentColor"
+					stroke-width="2"
+					stroke-linecap="round"
+					stroke-linejoin="round"
+				>
+					<rect x="9" y="9" width="13" height="13" rx="2" />
+					<path
+						d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"
+					/>
+				</svg>
+				Copy to clipboard
+			</button>
+		</main>
+	</body>
+</html>
