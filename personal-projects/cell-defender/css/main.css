@@ -1,35 +1,33 @@
 @import url(https://fonts.googleapis.com/css?family=Press+Start+2P:regular);
 
 :root {
-	--white-400: #e6fff2;
-	--white-500: #ccffdd;
+	--white-400: #ffe9e9;
+	--white-500: #ffb3b3;
 
-	--green-300: #00ff88;
-	--green-400: #00cc66;
-	--green-700: #0b2b21;
-	--green-800: #061a14;
+	--red-300: #e46666;
+	--red-400: #c94f4f;
+	--red-700: #7a1f1f;
+	--red-800: #120505;
+
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 16px;
 
 	--color-start: var(--white-500);
-	--bg-body: radial-gradient(
+	--color-bg: radial-gradient(
 		circle at center,
-		var(--green-700),
-		var(--green-800)
+		var(--red-700),
+		var(--red-800)
 	);
-}
 
-:root {
+	--font-primary: 'Press Start 2P', monospace;
+
 	--rem: calc(1rem / 16);
-	--text-font: 'Press Start 2P', monospace;
-}
-
-:root {
 	--character-size: clamp(calc(19 * var(--rem)), 5vw, calc(50 * var(--rem)));
-
-	--vertical-tile-count: 11;
-	--horizontal-tile-count: 20;
-
-	--map-width: calc(var(--horizontal-tile-count) * var(--character-size));
-	--map-height: calc(var(--vertical-tile-count) * var(--character-size));
+	--tile-count-vertical: 11;
+	--tile-count-horizontal: 20;
+	--map-width: calc(var(--tile-count-horizontal) * var(--character-size));
+	--map-height: calc(var(--tile-count-vertical) * var(--character-size));
 }
 
 *,
@@ -42,11 +40,11 @@
 
 html {
 	font-size: 100%;
-	font-family: var(--text-font);
+	font-family: var(--font-primary);
 }
 
 body {
-	background: var(--bg-body);
+	background: var(--color-bg);
 	height: 100vh;
 	width: 100vw;
 	overflow: hidden;
@@ -59,7 +57,8 @@ body {
 	justify-content: center;
 }
 
-section.hidden {
+.start-screen.hidden,
+.game-screen.hidden {
 	display: none;
 }
 
@@ -69,127 +68,128 @@ section.hidden {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-
-	.title {
-		font-size: clamp(1.5rem, 5vw, 3.5rem);
-		letter-spacing: 4px;
-
-		text-shadow:
-			0 0 5px var(--green-300),
-			0 0 10px var(--green-300),
-			0 0 20px var(--green-400),
-			2px 2px #003322;
-
-		animation: pulseGlow 2s infinite;
-	}
-
-	.subtitle {
-		font-size: clamp(0.5rem, 5vw, 0.7rem);
-		margin-top: 15px;
-		color: #99ffcc;
-
-		text-shadow: 0 0 5px #00ffcc;
-	}
-
-	.menu-box {
-		margin-top: 40px;
-		padding: 20px;
-		border: 2px solid var(--green-300);
-		border-radius: 10px;
-
-		background: #00ff880d;
-		box-shadow: 0 0 15px rgba(0, 255, 136, 0.2);
-
-		font-size: 0.6rem;
-		line-height: 1.8;
-	}
-
-	.start-text {
-		margin-top: 50px;
-		font-size: clamp(0.6rem, 5vw, 0.8rem);
-		color: var(--color-start);
-
-		text-shadow: 0 0 8px var(--green-300);
-
-		animation: blink 1.2s infinite;
-	}
 }
 
-/* ==============================
-   Animations
-============================== */
-@keyframes blink {
-	50% {
-		opacity: 0.3;
-	}
+.title {
+	font-size: clamp(1.5rem, 5vw, 3.5rem);
+	letter-spacing: 4px;
+	text-shadow:
+		0 0 5px var(--red-300),
+		0 0 10px var(--red-300),
+		0 0 20px var(--red-400),
+		2px 2px #200b0b;
+	animation: pulseGlow 2s infinite;
 }
 
 @keyframes pulseGlow {
 	0% {
-		text-shadow: 0 0 5px var(--green-300);
+		text-shadow: 0 0 5px var(--red-300);
 	}
 	50% {
-		text-shadow: 0 0 25px var(--green-300);
+		text-shadow: 0 0 25px var(--red-300);
 	}
 	100% {
-		text-shadow: 0 0 5px var(--green-300);
+		text-shadow: 0 0 5px var(--red-300);
 	}
+}
+
+.subtitle {
+	font-size: clamp(0.5rem, 5vw, 0.7rem);
+	margin-top: 15px;
+	color: var(--white-500);
+	text-shadow: 0 0 5px var(--red-300);
+}
+
+.menu-box {
+	margin-top: 40px;
+	padding: 20px;
+	border: 2px solid var(--red-300);
+	border-radius: var(--radius-md);
+	background: #e466660d;
+	box-shadow: 0 0 15px rgba(228, 102, 102, 0.2);
+	font-size: 0.6rem;
+	line-height: 1.8;
+}
+
+.menu-buttons {
+	margin-top: 40px;
+	display: flex;
+	flex-direction: column;
+	gap: 15px;
+}
+
+.menu-btn {
+	font-family: var(--font-primary);
+	font-size: 0.7rem;
+	padding: 12px 20px;
+	border: 2px solid var(--red-300);
+	background: transparent;
+	color: var(--white-400);
+	cursor: pointer;
+	border-radius: var(--radius-sm);
+	transition: all 0.2s ease;
+}
+
+.menu-btn:hover {
+	background: var(--red-300);
+	color: #120505;
+	box-shadow: 0 0 10px var(--red-300);
 }
 
 .game-screen {
 	position: relative;
+	box-sizing: content-box;
 	width: var(--map-width);
 	height: var(--map-height);
-	outline: 1px solid var(--green-400);
+	border: 1px solid var(--red-400);
+	border-radius: var(--radius-lg);
+}
 
-	.tiles-container {
-		position: absolute;
-		top: 0;
-		left: 0;
-		z-index: -100;
+.tiles-container {
+	position: absolute;
+	top: 0;
+	left: 0;
+	z-index: -100;
+}
 
-		.tiles {
-			display: inline-block;
-			width: var(--character-size);
-			height: var(--character-size);
+.tiles {
+	display: inline-block;
+	width: var(--character-size);
+	height: var(--character-size);
 
-			&.wall {
-				background: url('../assets/images/moving-cell.gif') no-repeat
-					center/cover;
-			}
-
-			&.pill {
-				background: url('../assets/images/pill.png') no-repeat
-					center/cover;
-			}
-		}
-	}
-
-	.white-cell {
-		position: absolute;
-		z-index: 100;
-		width: var(--character-size);
-		height: var(--character-size);
-		background: url('../assets/images/white-blood.gif') no-repeat
+	&.wall {
+		background: url('../assets/images/moving-cell.gif') no-repeat
 			center/cover;
 	}
 
-	.enemy {
-		position: absolute;
-		z-index: 100;
-		width: var(--character-size);
-		height: var(--character-size);
+	&.pill {
+		background: url('../assets/images/pill.png') no-repeat center/cover;
+	}
+}
 
-		&.biru {
-			background: url('../assets/images/biru.gif') no-repeat center/cover;
-		}
+.white-cell {
+	position: absolute;
+	z-index: 100;
+	width: var(--character-size);
+	height: var(--character-size);
+	background: url('../assets/images/white-blood.gif') no-repeat center/cover;
+}
 
-		&.bacu {
-			background: url('../assets/images/bacu.gif') no-repeat center/cover;
-		}
+.enemy {
+	position: absolute;
+	z-index: 100;
+	width: var(--character-size);
+	height: var(--character-size);
 
-		&.gemru {
-			background: url('../assets/images/gemru.gif') no-repeat center/cover;
-		}
+	&.biru {
+		background: url('../assets/images/biru.gif') no-repeat center/cover;
+	}
+
+	&.bacu {
+		background: url('../assets/images/bacu.gif') no-repeat center/cover;
+	}
+
+	&.gemru {
+		background: url('../assets/images/gemru.gif') no-repeat center/cover;
 	}
 }
