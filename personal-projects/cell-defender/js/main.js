@@ -22,6 +22,7 @@ const bacu = new Enemy(BACU_CONFIG, CHARACTERS.BACU, TILE_LAYOUT_1);
 const gemru = new Enemy(GEMRU_CONFIG, CHARACTERS.GEMRU, TILE_LAYOUT_1);
 
 const enemies = [biru, bacu, gemru];
+let isGameStarted = false;
 
 function drawTilesLayout() {
 	let tilesString = '';
@@ -36,6 +37,11 @@ function drawTilesLayout() {
 }
 
 function loop(time) {
+	if (!isGameStarted) {
+		requestAnimationFrame(loop);
+		return;
+	}
+
 	whiteCell.update(time, TILE_LAYOUT_1, drawTilesLayout);
 	whiteCell.animate();
 
@@ -54,6 +60,8 @@ window.addEventListener('keydown', (e) => {
 	if (e.code === 'Enter') {
 		SCREENS.START.classList.add('hidden');
 		SCREENS.GAME.classList.remove('hidden');
+
+		isGameStarted = true;
 	}
 
 	if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
