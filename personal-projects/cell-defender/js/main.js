@@ -1,30 +1,17 @@
-import {
-	TILES_CONTAINER,
-	SCREENS,
-	CHARACTERS,
-	MENU_BUTTONS,
-} from './constants/elements.js';
+import ELEMENTS from './constants/elements.js';
 import { TILE_LAYOUT_1 } from './constants/tilesLayouts.js';
 import { TILES_ELEMENTS } from './constants/tiles.js';
 import WHITE_CELL_CONFIG from './constants/whiteCellConfig.js';
-import {
-	BIRU_CONFIG,
-	BACU_CONFIG,
-	GEMRU_CONFIG,
-} from './constants/enemyConfig.js';
+import ENEMY_CONFIG from './constants/enemyConfig.js';
 
 import WhiteCell from './entities/whiteCell.js';
 import Enemy from './entities/enemy.js';
 
 const whiteCell = new WhiteCell(
 	WHITE_CELL_CONFIG,
-	CHARACTERS.WHITE_CELL,
+	ELEMENTS.CHARACTERS.WHITE_CELL,
 	TILE_LAYOUT_1,
 );
-
-const biru = new Enemy(BIRU_CONFIG, CHARACTERS.BIRU, TILE_LAYOUT_1);
-const bacu = new Enemy(BACU_CONFIG, CHARACTERS.BACU, TILE_LAYOUT_1);
-const gemru = new Enemy(GEMRU_CONFIG, CHARACTERS.GEMRU, TILE_LAYOUT_1);
 
 const GAME_STATE = {
 	READY: 'ready',
@@ -34,7 +21,11 @@ const GAME_STATE = {
 
 let gameState = GAME_STATE.READY;
 
-const enemies = [biru, bacu, gemru];
+const enemies = [
+	new Enemy(ENEMY_CONFIG.BIRU, ELEMENTS.CHARACTERS.BIRU, TILE_LAYOUT_1),
+	new Enemy(ENEMY_CONFIG.BACU, ELEMENTS.CHARACTERS.BACU, TILE_LAYOUT_1),
+	new Enemy(ENEMY_CONFIG.GEMRU, ELEMENTS.CHARACTERS.GEMRU, TILE_LAYOUT_1),
+];
 
 function drawTilesLayout() {
 	let tilesString = '';
@@ -45,12 +36,12 @@ function drawTilesLayout() {
 		}
 	}
 
-	TILES_CONTAINER.innerHTML = tilesString;
+	ELEMENTS.TILES_CONTAINER.innerHTML = tilesString;
 }
 
 function showStartScreen() {
-	SCREENS.GAME.classList.add('hidden');
-	SCREENS.START.classList.remove('hidden');
+	ELEMENTS.SCREENS.GAME.classList.add('hidden');
+	ELEMENTS.SCREENS.START.classList.remove('hidden');
 
 	resetGame();
 }
@@ -119,16 +110,13 @@ function loop(time) {
 	requestAnimationFrame(loop);
 }
 
-drawTilesLayout();
-loop();
-
-MENU_BUTTONS.START.addEventListener('click', () => {
+ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
 	if (gameState === GAME_STATE.GAME_OVER) {
 		resetGame();
 	}
 
-	SCREENS.START.classList.add('hidden');
-	SCREENS.GAME.classList.remove('hidden');
+	ELEMENTS.SCREENS.START.classList.add('hidden');
+	ELEMENTS.SCREENS.GAME.classList.remove('hidden');
 
 	gameState = GAME_STATE.RUNNING;
 });
@@ -139,4 +127,9 @@ window.addEventListener('keydown', (e) => {
 	if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
 		whiteCell.changeDirection(e.code);
 	}
+});
+
+window.addEventListener('DOMContentLoaded', () => {
+	drawTilesLayout();
+	loop();
 });
