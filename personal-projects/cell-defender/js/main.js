@@ -3,6 +3,7 @@ import { TILE_LAYOUT_1 } from './constants/tilesLayouts.js';
 import { TILES_ELEMENTS } from './constants/tiles.js';
 import WHITE_CELL_CONFIG from './constants/whiteCellConfig.js';
 import ENEMY_CONFIG from './constants/enemyConfig.js';
+import GAME_CONFIG from './constants/gameConfig.js';
 
 import WhiteCell from './entities/whiteCell.js';
 import Enemy from './entities/enemy.js';
@@ -13,13 +14,7 @@ const whiteCell = new WhiteCell(
 	TILE_LAYOUT_1,
 );
 
-const GAME_STATE = {
-	READY: 'ready',
-	RUNNING: 'running',
-	GAME_OVER: 'game_over',
-};
-
-let gameState = GAME_STATE.READY;
+let gameState = GAME_CONFIG.STATE.READY;
 
 const enemies = [
 	new Enemy(ENEMY_CONFIG.BIRU, ELEMENTS.CHARACTERS.BIRU, TILE_LAYOUT_1),
@@ -47,7 +42,7 @@ function showStartScreen() {
 }
 
 function triggerGameOver() {
-	gameState = GAME_STATE.GAME_OVER;
+	gameState = GAME_CONFIG.STATE.GAME_OVER;
 
 	setTimeout(() => {
 		alert('Game Over! You were infected 💀');
@@ -56,7 +51,7 @@ function triggerGameOver() {
 }
 
 function resetGame() {
-	gameState = GAME_STATE.READY;
+	gameState = GAME_CONFIG.STATE.READY;
 
 	// reset player
 	whiteCell.x = WHITE_CELL_CONFIG.X;
@@ -81,7 +76,7 @@ function resetGame() {
 	TILE_LAYOUT_1.forEach((row, y) => {
 		row.forEach((tile, x) => {
 			if (tile === 0 && Math.random() < 0.2) {
-				TILE_LAYOUT_1[y][x] = 8; // restore pills loosely (simple reset)
+				TILE_LAYOUT_1[y][x] = 8;
 			}
 		});
 	});
@@ -90,7 +85,7 @@ function resetGame() {
 }
 
 function loop(time) {
-	if (gameState !== GAME_STATE.RUNNING) {
+	if (gameState !== GAME_CONFIG.STATE.RUNNING) {
 		requestAnimationFrame(loop);
 		return;
 	}
@@ -111,18 +106,18 @@ function loop(time) {
 }
 
 ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
-	if (gameState === GAME_STATE.GAME_OVER) {
+	if (gameState === GAME_CONFIG.STATE.GAME_OVER) {
 		resetGame();
 	}
 
 	ELEMENTS.SCREENS.START.classList.add('hidden');
 	ELEMENTS.SCREENS.GAME.classList.remove('hidden');
 
-	gameState = GAME_STATE.RUNNING;
+	gameState = GAME_CONFIG.STATE.RUNNING;
 });
 
 window.addEventListener('keydown', (e) => {
-	if (gameState !== GAME_STATE.RUNNING) return;
+	if (gameState !== GAME_CONFIG.STATE.RUNNING) return;
 
 	if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
 		whiteCell.changeDirection(e.code);
