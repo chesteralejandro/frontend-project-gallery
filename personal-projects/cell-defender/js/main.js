@@ -64,6 +64,8 @@ window.addEventListener('keydown', (e) => {
 		isGameStarted = true;
 	}
 
+	if (!isGameStarted) return;
+
 	if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
 		whiteCell.changeDirection(e.code);
 	}
