@@ -11,14 +11,17 @@ import Enemy from './entities/enemy.js';
 class Game {
 	constructor() {
 		this.state = GAME_CONFIG.STATE.READY;
+
 		this.originalMap = structuredClone(TILE_LAYOUT_1);
 		this.map = structuredClone(this.originalMap);
+
+		this.totalPills = this.countPills(this.map);
+		this.remainingPills = this.totalPills;
 
 		this.whiteCell = new WhiteCell(
 			WHITE_CELL_CONFIG,
 			ELEMENTS.CHARACTERS.WHITE_CELL,
 		);
-
 		this.enemies = [
 			new Enemy(ENEMY_CONFIG.BIRU, ELEMENTS.CHARACTERS.BIRU),
 			new Enemy(ENEMY_CONFIG.BACU, ELEMENTS.CHARACTERS.BACU),
@@ -54,6 +57,13 @@ class Game {
 		});
 
 		ELEMENTS.BUTTONS.RESTART.addEventListener('click', () => {
+			ELEMENTS.SCREENS.GAME_OVER.classList.add('hidden');
+			this.resetGame();
+			this.state = GAME_CONFIG.STATE.RUNNING;
+		});
+
+		ELEMENTS.BUTTONS.WIN_RESTART.addEventListener('click', () => {
+			ELEMENTS.SCREENS.WIN.classList.add('hidden');
 			this.resetGame();
 			this.state = GAME_CONFIG.STATE.RUNNING;
 		});
@@ -74,9 +84,15 @@ class Game {
 		ELEMENTS.SCREENS.GAME_OVER.classList.remove('hidden');
 	}
 
+	triggerWin() {
+		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
+
+		this.state = GAME_CONFIG.STATE.WIN;
+		ELEMENTS.SCREENS.WIN.classList.remove('hidden');
+	}
+
 	resetGame() {
 		this.state = GAME_CONFIG.STATE.READY;
-		ELEMENTS.SCREENS.GAME_OVER.classList.add('hidden');
 
 		// reset player
 		this.whiteCell.x = WHITE_CELL_CONFIG.X;
@@ -102,7 +118,9 @@ class Game {
 		});
 
 		// reset map (IMPORTANT — deep copy)
+		this.remainingPills = this.totalPills;
 		this.map = structuredClone(this.originalMap);
+
 		this.drawTilesLayout();
 	}
 
@@ -122,7 +140,14 @@ class Game {
 
 		if (this.map[this.whiteCell.y][this.whiteCell.x] === TILES_CODES.PILL) {
 			this.map[this.whiteCell.y][this.whiteCell.x] = TILES_CODES.NONE;
+			this.remainingPills--;
+
 			this.drawTilesLayout();
+
+			// 🏅 check win
+			if (this.remainingPills === 0) {
+				this.triggerWin();
+			}
 		}
 
 		if (
@@ -147,6 +172,18 @@ class Game {
 
 			return sameTile || crossedPath;
 		});
+	}
+
+	countPills(map) {
+		let count = 0;
+
+		for (const row of map) {
+			for (const tile of row) {
+				if (tile === TILES_CODES.PILL) count++;
+			}
+		}
+
+		return count;
 	}
 }
 
