@@ -1,6 +1,6 @@
 import ELEMENTS from './constants/elements.js';
 import { TILE_LAYOUT_1 } from './constants/tilesLayouts.js';
-import { TILES_ELEMENTS } from './constants/tiles.js';
+import { TILES_ELEMENTS, TILES_CODES } from './constants/tiles.js';
 import WHITE_CELL_CONFIG from './constants/whiteCellConfig.js';
 import ENEMY_CONFIG from './constants/enemyConfig.js';
 import GAME_CONFIG from './constants/gameConfig.js';
@@ -11,29 +11,17 @@ import Enemy from './entities/enemy.js';
 class Game {
 	constructor() {
 		this.state = GAME_CONFIG.STATE.READY;
+		this.map = TILE_LAYOUT_1;
 
 		this.whiteCell = new WhiteCell(
 			WHITE_CELL_CONFIG,
 			ELEMENTS.CHARACTERS.WHITE_CELL,
-			TILE_LAYOUT_1,
 		);
 
 		this.enemies = [
-			new Enemy(
-				ENEMY_CONFIG.BIRU,
-				ELEMENTS.CHARACTERS.BIRU,
-				TILE_LAYOUT_1,
-			),
-			new Enemy(
-				ENEMY_CONFIG.BACU,
-				ELEMENTS.CHARACTERS.BACU,
-				TILE_LAYOUT_1,
-			),
-			new Enemy(
-				ENEMY_CONFIG.GEMRU,
-				ELEMENTS.CHARACTERS.GEMRU,
-				TILE_LAYOUT_1,
-			),
+			new Enemy(ENEMY_CONFIG.BIRU, ELEMENTS.CHARACTERS.BIRU),
+			new Enemy(ENEMY_CONFIG.BACU, ELEMENTS.CHARACTERS.BACU),
+			new Enemy(ENEMY_CONFIG.GEMRU, ELEMENTS.CHARACTERS.GEMRU),
 		];
 
 		this.drawTilesLayout();
@@ -43,7 +31,7 @@ class Game {
 	drawTilesLayout() {
 		let tilesString = '';
 
-		for (const tileRow of TILE_LAYOUT_1) {
+		for (const tileRow of this.map) {
 			for (const tile of tileRow) {
 				tilesString += TILES_ELEMENTS[tile];
 			}
@@ -116,10 +104,10 @@ class Game {
 		});
 
 		// reset map (IMPORTANT — deep copy)
-		TILE_LAYOUT_1.forEach((row, y) => {
+		this.map.forEach((row, y) => {
 			row.forEach((tile, x) => {
 				if (tile === 0 && Math.random() < 0.2) {
-					TILE_LAYOUT_1[y][x] = 8;
+					this.map[y][x] = 8;
 				}
 			});
 		});
@@ -133,12 +121,17 @@ class Game {
 			return;
 		}
 
-		this.whiteCell.update(time, TILE_LAYOUT_1, this.drawTilesLayout);
+		this.whiteCell.update(time, this.map);
 		this.whiteCell.animate();
 
 		for (const enemy of this.enemies) {
-			enemy.update(time, TILE_LAYOUT_1, this.whiteCell);
+			enemy.update(time, this.map, this.whiteCell);
 			enemy.animate();
+		}
+
+		if (this.map[this.whiteCell.y][this.whiteCell.x] === TILES_CODES.PILL) {
+			this.map[this.whiteCell.y][this.whiteCell.x] = TILES_CODES.NONE;
+			this.drawTilesLayout();
 		}
 
 		if (

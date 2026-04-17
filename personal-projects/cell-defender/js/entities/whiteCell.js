@@ -1,9 +1,6 @@
-import { TILES_CODES } from '../constants/tiles.js';
-
 export default class WhiteCell {
-	constructor(WHITE_CELL_CONFIG, WHITE_CELL_ELEMENT, MAP) {
+	constructor(WHITE_CELL_CONFIG, WHITE_CELL_ELEMENT) {
 		this.element = WHITE_CELL_ELEMENT;
-		this.map = MAP;
 
 		this.x = WHITE_CELL_CONFIG.X;
 		this.y = WHITE_CELL_CONFIG.Y;
@@ -22,11 +19,11 @@ export default class WhiteCell {
 		this.lastMove = 0;
 	}
 
-	isWall(x, y) {
-		return this.map[y][x] === 1;
+	isWall(map, x, y) {
+		return map[y][x] === 1;
 	}
 
-	canMove(direction, tileLayout) {
+	canMove(direction, map) {
 		let testX = this.x;
 		let testY = this.y;
 
@@ -45,8 +42,8 @@ export default class WhiteCell {
 				break;
 		}
 
-		const maxX = tileLayout[0].length - 1;
-		const maxY = tileLayout.length - 1;
+		const maxX = map[0].length - 1;
+		const maxY = map.length - 1;
 
 		// Boundary Check
 		if (testX < 0 || testX > maxX || testY < 0 || testY > maxY) {
@@ -54,21 +51,18 @@ export default class WhiteCell {
 		}
 
 		// Wall Check
-		if (this.isWall(testX, testY)) return false;
+		if (this.isWall(map, testX, testY)) return false;
 
 		return true;
 	}
 
-	update(time, tileLayout, drawTilesLayout) {
+	update(time, map) {
 		if (time - this.lastMove < this.moveDelay) return;
 		this.lastMove = time;
 		this.prevX = this.x;
 		this.prevY = this.y;
 
-		if (
-			this.nextDirection &&
-			this.canMove(this.nextDirection, tileLayout)
-		) {
+		if (this.nextDirection && this.canMove(this.nextDirection, map)) {
 			this.currentDirection = this.nextDirection;
 			this.nextDirection = null;
 		}
@@ -95,21 +89,16 @@ export default class WhiteCell {
 				break;
 		}
 
-		const maxX = tileLayout[0].length - 1;
-		const maxY = tileLayout.length - 1;
+		const maxX = map[0].length - 1;
+		const maxY = map.length - 1;
 
 		// Boundary Check
 		if (nextX < 0 || nextX > maxX || nextY < 0 || nextY > maxY) return;
 		// Wall Check
-		if (this.isWall(nextX, nextY)) return;
+		if (this.isWall(map, nextX, nextY)) return;
 
 		this.x = nextX;
 		this.y = nextY;
-
-		if (this.map[this.y][this.x] === TILES_CODES.PILL) {
-			this.map[this.y][this.x] = TILES_CODES.NONE;
-			drawTilesLayout();
-		}
 	}
 
 	animate() {
