@@ -11,6 +11,8 @@ export default class Enemy {
 		// For Smooth Movement
 		this.renderX = this.x;
 		this.renderY = this.y;
+		this.prevX = this.x;
+		this.prevY = this.y;
 
 		this.direction = 'ArrowRight'; // default
 		this.opposites = {
@@ -115,6 +117,8 @@ export default class Enemy {
 	update(time, tileLayout, player) {
 		if (time - this.lastMove < this.moveDelay) return;
 		this.lastMove = time;
+		this.prevX = this.x;
+		this.prevY = this.y;
 
 		// 👻 choose smarter direction
 		this.direction = this.getBestDirection(player, tileLayout);

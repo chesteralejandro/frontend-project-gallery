@@ -12,6 +12,8 @@ export default class WhiteCell {
 
 		this.renderX = this.x;
 		this.renderY = this.y;
+		this.prevX = this.x;
+		this.prevY = this.y;
 
 		this.keys = WHITE_CELL_CONFIG.KEYS;
 		this.currentDirection = null;
@@ -60,6 +62,8 @@ export default class WhiteCell {
 	update(time, tileLayout, drawTilesLayout) {
 		if (time - this.lastMove < this.moveDelay) return;
 		this.lastMove = time;
+		this.prevX = this.x;
+		this.prevY = this.y;
 
 		if (
 			this.nextDirection &&

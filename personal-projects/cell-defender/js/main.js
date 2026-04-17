@@ -52,9 +52,30 @@ class Game {
 		ELEMENTS.TILES_CONTAINER.innerHTML = tilesString;
 	}
 
+	setListeners() {
+		ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
+			if (this.state === GAME_CONFIG.STATE.GAME_OVER) {
+				this.resetGame();
+			}
+
+			ELEMENTS.SCREENS.START.classList.add('hidden');
+			ELEMENTS.SCREENS.GAME.classList.remove('hidden');
+
+			this.state = GAME_CONFIG.STATE.RUNNING;
+		});
+
+		window.addEventListener('keydown', (e) => {
+			if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
+
+			if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
+				this.whiteCell.changeDirection(e.code);
+			}
+		});
+	}
+
 	showStartScreen() {
-		ELEMENTS.SCREENS.GAME.classList.add('hidden');
 		ELEMENTS.SCREENS.START.classList.remove('hidden');
+		ELEMENTS.SCREENS.GAME.classList.add('hidden');
 
 		this.resetGame();
 	}
@@ -118,33 +139,29 @@ class Game {
 		for (const enemy of this.enemies) {
 			enemy.update(time, TILE_LAYOUT_1, this.whiteCell);
 			enemy.animate();
+		}
 
-			if (enemy.x === this.whiteCell.x && enemy.y === this.whiteCell.y) {
-				this.triggerGameOver();
-			}
+		if (
+			this.state === GAME_CONFIG.STATE.RUNNING &&
+			this.checkCollision(this.whiteCell, this.enemies)
+		) {
+			this.triggerGameOver();
 		}
 
 		requestAnimationFrame((time) => this.loop(time));
 	}
 
-	setListeners() {
-		ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
-			if (this.state === GAME_CONFIG.STATE.GAME_OVER) {
-				this.resetGame();
-			}
+	checkCollision(player, enemies) {
+		return enemies.some((enemy) => {
+			const sameTile = enemy.x === player.x && enemy.y === player.y;
 
-			ELEMENTS.SCREENS.START.classList.add('hidden');
-			ELEMENTS.SCREENS.GAME.classList.remove('hidden');
+			const crossedPath =
+				enemy.x === player.prevX &&
+				enemy.y === player.prevY &&
+				enemy.prevX === player.x &&
+				enemy.prevY === player.y;
 
-			this.state = GAME_CONFIG.STATE.RUNNING;
-		});
-
-		window.addEventListener('keydown', (e) => {
-			if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
-
-			if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
-				this.whiteCell.changeDirection(e.code);
-			}
+			return sameTile || crossedPath;
 		});
 	}
 }
