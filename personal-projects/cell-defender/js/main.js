@@ -54,9 +54,7 @@ class Game {
 		});
 
 		ELEMENTS.BUTTONS.RESTART.addEventListener('click', () => {
-			ELEMENTS.SCREENS.GAME_OVER.classList.add('hidden');
 			this.resetGame();
-
 			this.state = GAME_CONFIG.STATE.RUNNING;
 		});
 
@@ -69,20 +67,16 @@ class Game {
 		});
 	}
 
-	showStartScreen() {
-		ELEMENTS.SCREENS.START.classList.remove('hidden');
-		ELEMENTS.SCREENS.GAME.classList.add('hidden');
-
-		this.resetGame();
-	}
-
 	triggerGameOver() {
+		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
+
 		this.state = GAME_CONFIG.STATE.GAME_OVER;
 		ELEMENTS.SCREENS.GAME_OVER.classList.remove('hidden');
 	}
 
 	resetGame() {
 		this.state = GAME_CONFIG.STATE.READY;
+		ELEMENTS.SCREENS.GAME_OVER.classList.add('hidden');
 
 		// reset player
 		this.whiteCell.x = WHITE_CELL_CONFIG.X;
