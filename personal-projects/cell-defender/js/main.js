@@ -94,7 +94,7 @@ function loop(time) {
 	whiteCell.animate();
 
 	for (const enemy of enemies) {
-		enemy.update(time, TILE_LAYOUT_1, whiteCell, triggerGameOver);
+		enemy.update(time, TILE_LAYOUT_1, whiteCell);
 		enemy.animate();
 
 		if (enemy.x === whiteCell.x && enemy.y === whiteCell.y) {
