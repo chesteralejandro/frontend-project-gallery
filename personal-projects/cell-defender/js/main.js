@@ -60,7 +60,7 @@ class Game {
 	}
 
 	triggerGameOver() {
-		this.gameState = GAME_CONFIG.STATE.GAME_OVER;
+		this.state = GAME_CONFIG.STATE.GAME_OVER;
 
 		setTimeout(() => {
 			alert('Game Over! You were infected 💀');
@@ -69,7 +69,7 @@ class Game {
 	}
 
 	resetGame() {
-		this.gameState = GAME_CONFIG.STATE.READY;
+		this.state = GAME_CONFIG.STATE.READY;
 
 		// reset player
 		this.whiteCell.x = WHITE_CELL_CONFIG.X;
@@ -107,7 +107,7 @@ class Game {
 	}
 
 	loop(time) {
-		if (this.gameState !== GAME_CONFIG.STATE.RUNNING) {
+		if (this.state !== GAME_CONFIG.STATE.RUNNING) {
 			requestAnimationFrame((time) => this.loop(time));
 			return;
 		}
@@ -129,18 +129,18 @@ class Game {
 
 	setListeners() {
 		ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
-			if (this.gameState === GAME_CONFIG.STATE.GAME_OVER) {
+			if (this.state === GAME_CONFIG.STATE.GAME_OVER) {
 				this.resetGame();
 			}
 
 			ELEMENTS.SCREENS.START.classList.add('hidden');
 			ELEMENTS.SCREENS.GAME.classList.remove('hidden');
 
-			this.gameState = GAME_CONFIG.STATE.RUNNING;
+			this.state = GAME_CONFIG.STATE.RUNNING;
 		});
 
 		window.addEventListener('keydown', (e) => {
-			if (this.gameState !== GAME_CONFIG.STATE.RUNNING) return;
+			if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
 
 			if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
 				this.whiteCell.changeDirection(e.code);
