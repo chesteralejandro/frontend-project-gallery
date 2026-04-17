@@ -8,123 +8,148 @@ import GAME_CONFIG from './constants/gameConfig.js';
 import WhiteCell from './entities/whiteCell.js';
 import Enemy from './entities/enemy.js';
 
-const whiteCell = new WhiteCell(
-	WHITE_CELL_CONFIG,
-	ELEMENTS.CHARACTERS.WHITE_CELL,
-	TILE_LAYOUT_1,
-);
+class Game {
+	constructor() {
+		this.state = GAME_CONFIG.STATE.READY;
 
-let gameState = GAME_CONFIG.STATE.READY;
+		this.whiteCell = new WhiteCell(
+			WHITE_CELL_CONFIG,
+			ELEMENTS.CHARACTERS.WHITE_CELL,
+			TILE_LAYOUT_1,
+		);
 
-const enemies = [
-	new Enemy(ENEMY_CONFIG.BIRU, ELEMENTS.CHARACTERS.BIRU, TILE_LAYOUT_1),
-	new Enemy(ENEMY_CONFIG.BACU, ELEMENTS.CHARACTERS.BACU, TILE_LAYOUT_1),
-	new Enemy(ENEMY_CONFIG.GEMRU, ELEMENTS.CHARACTERS.GEMRU, TILE_LAYOUT_1),
-];
+		this.enemies = [
+			new Enemy(
+				ENEMY_CONFIG.BIRU,
+				ELEMENTS.CHARACTERS.BIRU,
+				TILE_LAYOUT_1,
+			),
+			new Enemy(
+				ENEMY_CONFIG.BACU,
+				ELEMENTS.CHARACTERS.BACU,
+				TILE_LAYOUT_1,
+			),
+			new Enemy(
+				ENEMY_CONFIG.GEMRU,
+				ELEMENTS.CHARACTERS.GEMRU,
+				TILE_LAYOUT_1,
+			),
+		];
 
-function drawTilesLayout() {
-	let tilesString = '';
-
-	for (const tileRow of TILE_LAYOUT_1) {
-		for (const tile of tileRow) {
-			tilesString += TILES_ELEMENTS[tile];
-		}
+		this.drawTilesLayout();
+		this.setListeners();
 	}
 
-	ELEMENTS.TILES_CONTAINER.innerHTML = tilesString;
-}
+	drawTilesLayout() {
+		let tilesString = '';
 
-function showStartScreen() {
-	ELEMENTS.SCREENS.GAME.classList.add('hidden');
-	ELEMENTS.SCREENS.START.classList.remove('hidden');
+		for (const tileRow of TILE_LAYOUT_1) {
+			for (const tile of tileRow) {
+				tilesString += TILES_ELEMENTS[tile];
+			}
+		}
 
-	resetGame();
-}
+		ELEMENTS.TILES_CONTAINER.innerHTML = tilesString;
+	}
 
-function triggerGameOver() {
-	gameState = GAME_CONFIG.STATE.GAME_OVER;
+	showStartScreen() {
+		ELEMENTS.SCREENS.GAME.classList.add('hidden');
+		ELEMENTS.SCREENS.START.classList.remove('hidden');
 
-	setTimeout(() => {
-		alert('Game Over! You were infected 💀');
-		showStartScreen();
-	}, 100);
-}
+		this.resetGame();
+	}
 
-function resetGame() {
-	gameState = GAME_CONFIG.STATE.READY;
+	triggerGameOver() {
+		this.gameState = GAME_CONFIG.STATE.GAME_OVER;
 
-	// reset player
-	whiteCell.x = WHITE_CELL_CONFIG.X;
-	whiteCell.y = WHITE_CELL_CONFIG.Y;
-	whiteCell.renderX = whiteCell.x;
-	whiteCell.renderY = whiteCell.y;
-	whiteCell.currentDirection = null;
-	whiteCell.nextDirection = null;
+		setTimeout(() => {
+			alert('Game Over! You were infected 💀');
+			this.showStartScreen();
+		}, 100);
+	}
 
-	// reset enemies
-	const configs = [BIRU_CONFIG, BACU_CONFIG, GEMRU_CONFIG];
+	resetGame() {
+		this.gameState = GAME_CONFIG.STATE.READY;
 
-	enemies.forEach((enemy, i) => {
-		enemy.x = configs[i].X;
-		enemy.y = configs[i].Y;
-		enemy.renderX = enemy.x;
-		enemy.renderY = enemy.y;
-		enemy.direction = 'ArrowRight';
-	});
+		// reset player
+		this.whiteCell.x = WHITE_CELL_CONFIG.X;
+		this.whiteCell.y = WHITE_CELL_CONFIG.Y;
+		this.whiteCell.renderX = this.whiteCell.x;
+		this.whiteCell.renderY = this.whiteCell.y;
+		this.whiteCell.currentDirection = null;
+		this.whiteCell.nextDirection = null;
 
-	// reset map (IMPORTANT — deep copy)
-	TILE_LAYOUT_1.forEach((row, y) => {
-		row.forEach((tile, x) => {
-			if (tile === 0 && Math.random() < 0.2) {
-				TILE_LAYOUT_1[y][x] = 8;
+		// reset enemies
+		const configs = [
+			ENEMY_CONFIG.BIRU,
+			ENEMY_CONFIG.BACU,
+			ENEMY_CONFIG.GEMRU,
+		];
+
+		this.enemies.forEach((enemy, i) => {
+			enemy.x = configs[i].X;
+			enemy.y = configs[i].Y;
+			enemy.renderX = enemy.x;
+			enemy.renderY = enemy.y;
+			enemy.direction = 'ArrowRight';
+		});
+
+		// reset map (IMPORTANT — deep copy)
+		TILE_LAYOUT_1.forEach((row, y) => {
+			row.forEach((tile, x) => {
+				if (tile === 0 && Math.random() < 0.2) {
+					TILE_LAYOUT_1[y][x] = 8;
+				}
+			});
+		});
+
+		this.drawTilesLayout();
+	}
+
+	loop(time) {
+		if (this.gameState !== GAME_CONFIG.STATE.RUNNING) {
+			requestAnimationFrame((time) => this.loop(time));
+			return;
+		}
+
+		this.whiteCell.update(time, TILE_LAYOUT_1, this.drawTilesLayout);
+		this.whiteCell.animate();
+
+		for (const enemy of this.enemies) {
+			enemy.update(time, TILE_LAYOUT_1, this.whiteCell);
+			enemy.animate();
+
+			if (enemy.x === this.whiteCell.x && enemy.y === this.whiteCell.y) {
+				this.triggerGameOver();
+			}
+		}
+
+		requestAnimationFrame((time) => this.loop(time));
+	}
+
+	setListeners() {
+		ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
+			if (this.gameState === GAME_CONFIG.STATE.GAME_OVER) {
+				this.resetGame();
+			}
+
+			ELEMENTS.SCREENS.START.classList.add('hidden');
+			ELEMENTS.SCREENS.GAME.classList.remove('hidden');
+
+			this.gameState = GAME_CONFIG.STATE.RUNNING;
+		});
+
+		window.addEventListener('keydown', (e) => {
+			if (this.gameState !== GAME_CONFIG.STATE.RUNNING) return;
+
+			if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
+				this.whiteCell.changeDirection(e.code);
 			}
 		});
-	});
-
-	drawTilesLayout();
+	}
 }
-
-function loop(time) {
-	if (gameState !== GAME_CONFIG.STATE.RUNNING) {
-		requestAnimationFrame(loop);
-		return;
-	}
-
-	whiteCell.update(time, TILE_LAYOUT_1, drawTilesLayout);
-	whiteCell.animate();
-
-	for (const enemy of enemies) {
-		enemy.update(time, TILE_LAYOUT_1, whiteCell);
-		enemy.animate();
-
-		if (enemy.x === whiteCell.x && enemy.y === whiteCell.y) {
-			triggerGameOver();
-		}
-	}
-
-	requestAnimationFrame(loop);
-}
-
-ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
-	if (gameState === GAME_CONFIG.STATE.GAME_OVER) {
-		resetGame();
-	}
-
-	ELEMENTS.SCREENS.START.classList.add('hidden');
-	ELEMENTS.SCREENS.GAME.classList.remove('hidden');
-
-	gameState = GAME_CONFIG.STATE.RUNNING;
-});
-
-window.addEventListener('keydown', (e) => {
-	if (gameState !== GAME_CONFIG.STATE.RUNNING) return;
-
-	if (Object.hasOwn(WHITE_CELL_CONFIG.KEYS, e.code)) {
-		whiteCell.changeDirection(e.code);
-	}
-});
 
 window.addEventListener('DOMContentLoaded', () => {
-	drawTilesLayout();
-	loop();
+	const game = new Game();
+	game.loop();
 });
