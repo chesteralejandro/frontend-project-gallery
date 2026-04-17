@@ -11,7 +11,8 @@ import Enemy from './entities/enemy.js';
 class Game {
 	constructor() {
 		this.state = GAME_CONFIG.STATE.READY;
-		this.map = TILE_LAYOUT_1;
+		this.originalMap = structuredClone(TILE_LAYOUT_1);
+		this.map = structuredClone(this.originalMap);
 
 		this.whiteCell = new WhiteCell(
 			WHITE_CELL_CONFIG,
@@ -104,14 +105,7 @@ class Game {
 		});
 
 		// reset map (IMPORTANT — deep copy)
-		this.map.forEach((row, y) => {
-			row.forEach((tile, x) => {
-				if (tile === 0 && Math.random() < 0.2) {
-					this.map[y][x] = 8;
-				}
-			});
-		});
-
+		this.map = structuredClone(this.originalMap);
 		this.drawTilesLayout();
 	}
 
