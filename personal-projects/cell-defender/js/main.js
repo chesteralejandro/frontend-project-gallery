@@ -42,13 +42,20 @@ class Game {
 	}
 
 	setListeners() {
-		ELEMENTS.MENU_BUTTONS.START.addEventListener('click', () => {
+		ELEMENTS.BUTTONS.START.addEventListener('click', () => {
 			if (this.state === GAME_CONFIG.STATE.GAME_OVER) {
 				this.resetGame();
 			}
 
 			ELEMENTS.SCREENS.START.classList.add('hidden');
 			ELEMENTS.SCREENS.GAME.classList.remove('hidden');
+
+			this.state = GAME_CONFIG.STATE.RUNNING;
+		});
+
+		ELEMENTS.BUTTONS.RESTART.addEventListener('click', () => {
+			ELEMENTS.SCREENS.GAME_OVER.classList.add('hidden');
+			this.resetGame();
 
 			this.state = GAME_CONFIG.STATE.RUNNING;
 		});
@@ -71,11 +78,7 @@ class Game {
 
 	triggerGameOver() {
 		this.state = GAME_CONFIG.STATE.GAME_OVER;
-
-		setTimeout(() => {
-			alert('Game Over! You were infected 💀');
-			this.showStartScreen();
-		}, 100);
+		ELEMENTS.SCREENS.GAME_OVER.classList.remove('hidden');
 	}
 
 	resetGame() {

@@ -3,6 +3,7 @@ const ELEMENTS = {
 	SCREENS: {
 		START: document.getElementById('start-screen'),
 		GAME: document.getElementById('game-screen'),
+		GAME_OVER: document.getElementById('game-over-screen'),
 	},
 	CHARACTERS: {
 		WHITE_CELL: document.getElementById('white-cell'),
@@ -10,10 +11,11 @@ const ELEMENTS = {
 		BACU: document.getElementById('bacu'),
 		GEMRU: document.getElementById('gemru'),
 	},
-	MENU_BUTTONS: {
+	BUTTONS: {
 		START: document.getElementById('start-btn'),
 		HOW: document.getElementById('how-btn'),
 		EXIT: document.getElementById('exit-btn'),
+		RESTART: document.getElementById('restart-btn'),
 	},
 };
 

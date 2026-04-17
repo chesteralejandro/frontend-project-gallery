@@ -58,7 +58,8 @@ body {
 }
 
 .start-screen.hidden,
-.game-screen.hidden {
+.game-screen.hidden,
+.game-over-screen.hidden {
 	display: none;
 }
 
@@ -192,4 +193,17 @@ body {
 	&.gemru {
 		background: url('../assets/images/gemru.gif') no-repeat center/cover;
 	}
+}
+
+.game-over-screen {
+	position: absolute;
+	inset: 0;
+	background: rgba(18, 5, 5, 0.9);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	color: var(--white-400);
+	z-index: 200;
 }
