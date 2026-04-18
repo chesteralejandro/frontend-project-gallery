@@ -7,6 +7,7 @@ class AudioManager {
 		this.sfx = {
 			pill: new Audio('./assets/audio/sfx/pill.mp3'),
 			enemySwallow: new Audio('./assets/audio/sfx/enemy_swallow.mp3'),
+			enemyTurn: new Audio('./assets/audio/sfx/enemy_turn.mp3'),
 			win: new Audio('./assets/audio/sfx/win.mp3'),
 			gameOver: new Audio('./assets/audio/sfx/game_over.mp3'),
 			hover: new Audio('./assets/audio/sfx/button_hover.mp3'),

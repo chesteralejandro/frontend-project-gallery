@@ -123,7 +123,14 @@ export default class Enemy {
 		this.prevY = this.y;
 
 		// 👻 choose smarter direction
-		this.direction = this.getBestDirection(player, map);
+		const newDirection = this.getBestDirection(player, map);
+
+		if (newDirection !== this.direction) {
+			// trigger callback if exists
+			this.playTurnAudio?.();
+		}
+
+		this.direction = newDirection;
 
 		let nextX = this.x;
 		let nextY = this.y;

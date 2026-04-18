@@ -33,6 +33,15 @@ class Game {
 			new Enemy(ENEMY_CONFIG.GEMRU, ELEMENTS.CHARACTERS.GEMRU),
 		];
 
+		this.enemies.forEach((enemy) => {
+			enemy.playTurnAudio = () => {
+				this.audio.playSFX('enemyTurn', {
+					overlap: true,
+					volume: 0.1,
+				});
+			};
+		});
+
 		this.updateScoreUI();
 		this.updateTilesUI();
 		this.setListeners();
