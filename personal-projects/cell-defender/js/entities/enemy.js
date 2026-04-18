@@ -1,7 +1,6 @@
 export default class Enemy {
-	constructor(config, element, map) {
+	constructor(config, element) {
 		this.element = element;
-		this.map = map;
 
 		this.x = config.X;
 		this.y = config.Y;
@@ -11,8 +10,12 @@ export default class Enemy {
 		// For Smooth Movement
 		this.renderX = this.x;
 		this.renderY = this.y;
+		this.prevX = this.x;
+		this.prevY = this.y;
 
-		this.direction = 'ArrowRight'; // default
+		// Default
+		this.direction = 'ArrowRight';
+
 		this.opposites = {
 			ArrowUp: 'ArrowDown',
 			ArrowDown: 'ArrowUp',
@@ -24,23 +27,23 @@ export default class Enemy {
 		this.lastMove = 0;
 	}
 
-	isWall(x, y) {
-		return this.map[y][x] === 1;
+	isWall(map, x, y) {
+		return map[y][x] === 1;
 	}
 
-	getValidDirections(tileLayout) {
+	getValidDirections(map) {
 		const directions = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
 		return directions.filter((dir) => {
 			// ❌ don't reverse unless no choice
 			if (dir === this.opposites[this.direction]) return false;
 
-			return this.canMove(dir, tileLayout);
+			return this.canMove(dir, map);
 		});
 	}
 
-	getBestDirection(player, tileLayout) {
-		const validDirs = this.getValidDirections(tileLayout);
+	getBestDirection(player, map) {
+		const validDirs = this.getValidDirections(map);
 
 		if (validDirs.length === 0) {
 			// allow reverse if stuck
@@ -72,7 +75,8 @@ export default class Enemy {
 			// distance to player
 			const dx = player.x - x;
 			const dy = player.y - y;
-			const distance = Math.abs(dx) + Math.abs(dy); // Manhattan distance
+			// Manhattan distance
+			const distance = Math.abs(dx) + Math.abs(dy);
 
 			if (distance < shortestDistance) {
 				shortestDistance = distance;
@@ -83,7 +87,7 @@ export default class Enemy {
 		return bestDir;
 	}
 
-	canMove(direction, tileLayout) {
+	canMove(direction, map) {
 		let x = this.x;
 		let y = this.y;
 
@@ -102,22 +106,31 @@ export default class Enemy {
 				break;
 		}
 
-		const maxX = tileLayout[0].length - 1;
-		const maxY = tileLayout.length - 1;
+		const maxX = map[0].length - 1;
+		const maxY = map.length - 1;
 
 		if (x < 0 || x > maxX || y < 0 || y > maxY) return false;
 
-		if (this.isWall(x, y)) return false;
+		if (this.isWall(map, x, y)) return false;
 
 		return true;
 	}
 
-	update(time, tileLayout, player) {
+	update(time, map, player) {
 		if (time - this.lastMove < this.moveDelay) return;
 		this.lastMove = time;
+		this.prevX = this.x;
+		this.prevY = this.y;
 
 		// 👻 choose smarter direction
-		this.direction = this.getBestDirection(player, tileLayout);
+		const newDirection = this.getBestDirection(player, map);
+
+		if (newDirection !== this.direction) {
+			// trigger callback if exists
+			this.playTurnAudio?.();
+		}
+
+		this.direction = newDirection;
 
 		let nextX = this.x;
 		let nextY = this.y;
@@ -141,12 +154,12 @@ export default class Enemy {
 				break;
 		}
 
-		const maxX = tileLayout[0].length - 1;
-		const maxY = tileLayout.length - 1;
+		const maxX = map[0].length - 1;
+		const maxY = map.length - 1;
 
 		if (nextX < 0 || nextX > maxX || nextY < 0 || nextY > maxY) return;
 
-		if (this.isWall(nextX, nextY)) {
+		if (this.isWall(map, nextX, nextY)) {
 			return;
 		}
 

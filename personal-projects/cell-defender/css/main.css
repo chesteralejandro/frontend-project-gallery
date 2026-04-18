@@ -58,7 +58,9 @@ body {
 }
 
 .start-screen.hidden,
-.game-screen.hidden {
+.game-screen.hidden,
+.game-over-overlay.hidden,
+.win-overlay.hidden {
 	display: none;
 }
 
@@ -143,6 +145,7 @@ body {
 	height: var(--map-height);
 	border: 1px solid var(--red-400);
 	border-radius: var(--radius-lg);
+	/* overflow: hidden; */
 }
 
 .tiles-container {
@@ -192,4 +195,42 @@ body {
 	&.gemru {
 		background: url('../assets/images/gemru.gif') no-repeat center/cover;
 	}
+}
+
+.score-ui {
+	position: absolute;
+	top: -1.1rem;
+	left: 10px;
+	font-size: 0.7rem;
+	color: var(--white-400);
+	z-index: 150;
+	text-shadow: 0 0 5px var(--red-300);
+}
+
+.game-over-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(18, 5, 5, 0.9);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	border-radius: var(--radius-lg);
+	color: var(--white-400);
+	z-index: 200;
+}
+
+.win-overlay {
+	position: absolute;
+	inset: 0;
+	background: rgba(5, 18, 5, 0.9);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 20px;
+	border-radius: var(--radius-lg);
+	color: var(--white-400);
+	z-index: 200;
 }

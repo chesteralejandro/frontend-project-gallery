@@ -32,12 +32,32 @@
 			</section>
 
 			<section id="game-screen" class="game-screen hidden">
+				<div id="score-ui" class="score-ui">Score: 0</div>
 				<div id="tiles-container" class="tiles-container">&nbsp;</div>
 
 				<article id="white-cell" class="white-cell">&nbsp;</article>
 				<article id="biru" class="enemy biru">&nbsp;</article>
 				<article id="bacu" class="enemy bacu">&nbsp;</article>
 				<article id="gemru" class="enemy gemru">&nbsp;</article>
+
+				<section
+					id="game-over-overlay"
+					class="game-over-overlay hidden"
+				>
+					<h2>GAME OVER</h2>
+					<p>You were infected 💀</p>
+					<p id="final-score">Score: 0</p>
+					<button id="restart-btn" class="menu-btn">Restart</button>
+				</section>
+
+				<section id="win-overlay" class="win-overlay hidden">
+					<h2>YOU WIN</h2>
+					<p>All infections cleared 🧬</p>
+					<p id="win-score">Score: 0</p>
+					<button id="win-restart-btn" class="menu-btn">
+						Play Again
+					</button>
+				</section>
 			</section>
 		</main>
 	</body>
