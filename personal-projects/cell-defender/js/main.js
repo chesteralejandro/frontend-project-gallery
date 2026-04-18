@@ -142,6 +142,9 @@ class Game {
 
 		if (this.map[this.whiteCell.y][this.whiteCell.x] === TILES_CODES.PILL) {
 			this.map[this.whiteCell.y][this.whiteCell.x] = TILES_CODES.NONE;
+
+			this.audio.playSFX('pill', { overlap: true, volume: 0.5 });
+
 			this.remainingPills--;
 			this.score += GAME_CONFIG.POINTS;
 
