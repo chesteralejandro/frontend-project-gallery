@@ -13,6 +13,11 @@ class Game {
 		this.state = GAME_CONFIG.STATE.READY;
 		this.score = GAME_CONFIG.SCORE;
 
+		this.bgm = new Audio('./assets/audio/bgm/arrival.mp3');
+		this.bgm.loop = true;
+		this.bgm.volume = 0.3;
+		this.bgmFadeInterval = null;
+
 		this.originalMap = structuredClone(TILE_LAYOUT_1);
 		this.map = structuredClone(this.originalMap);
 
@@ -60,18 +65,22 @@ class Game {
 			ELEMENTS.SCREENS.GAME.classList.remove('hidden');
 
 			this.state = GAME_CONFIG.STATE.RUNNING;
+
+			this.fadeInBGM(2000);
 		});
 
 		ELEMENTS.BUTTONS.RESTART.addEventListener('click', () => {
 			ELEMENTS.OVERLAYS.GAME_OVER.classList.add('hidden');
 			this.resetGame();
 			this.state = GAME_CONFIG.STATE.RUNNING;
+			this.fadeInBGM(2000);
 		});
 
 		ELEMENTS.BUTTONS.WIN_RESTART.addEventListener('click', () => {
 			ELEMENTS.OVERLAYS.WIN.classList.add('hidden');
 			this.resetGame();
 			this.state = GAME_CONFIG.STATE.RUNNING;
+			this.fadeInBGM(2000);
 		});
 
 		window.addEventListener('keydown', (e) => {
@@ -159,6 +168,8 @@ class Game {
 	triggerGameOver() {
 		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
 
+		this.fadeOutBGM(1000);
+
 		this.updateFinalScoreUI();
 		this.state = GAME_CONFIG.STATE.GAME_OVER;
 		ELEMENTS.OVERLAYS.GAME_OVER.classList.remove('hidden');
@@ -166,6 +177,8 @@ class Game {
 
 	triggerWin() {
 		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
+
+		this.fadeOutBGM(1000);
 
 		this.updateFinalScoreUI();
 		this.state = GAME_CONFIG.STATE.WIN;
@@ -201,6 +214,37 @@ class Game {
 		}
 
 		return count;
+	}
+
+	fadeInBGM(duration = 1000) {
+		this.bgm.volume = 0;
+		this.bgm.play();
+
+		const step = 0.05;
+		const intervalTime = duration * step;
+
+		this.bgmFadeInterval = setInterval(() => {
+			if (this.bgm.volume < 0.5) {
+				this.bgm.volume = Math.min(this.bgm.volume + step, 0.5);
+			} else {
+				clearInterval(this.bgmFadeInterval);
+			}
+		}, intervalTime);
+	}
+
+	fadeOutBGM(duration = 1000) {
+		const step = 0.05;
+		const intervalTime = duration * step;
+
+		this.bgmFadeInterval = setInterval(() => {
+			if (this.bgm.volume > 0) {
+				this.bgm.volume = Math.max(this.bgm.volume - step, 0);
+			} else {
+				clearInterval(this.bgmFadeInterval);
+				this.bgm.pause();
+				this.bgm.currentTime = 0;
+			}
+		}, intervalTime);
 	}
 }
 
