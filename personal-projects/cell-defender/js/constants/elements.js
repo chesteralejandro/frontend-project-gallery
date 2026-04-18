@@ -1,6 +1,8 @@
 const ELEMENTS = {
 	TILES_CONTAINER: document.getElementById('tiles-container'),
 	SCORE: document.getElementById('score-ui'),
+	FINAL_SCORE: document.getElementById('final-score'),
+	WIN_SCORE: document.getElementById('win-score'),
 	SCREENS: {
 		START: document.getElementById('start-screen'),
 		GAME: document.getElementById('game-screen'),

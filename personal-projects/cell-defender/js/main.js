@@ -30,20 +30,24 @@ class Game {
 		];
 
 		this.updateScoreUI();
-		this.drawTilesLayout();
+		this.updateTilesUI();
 		this.setListeners();
 	}
 
-	drawTilesLayout() {
-		let tilesString = '';
+	updateScoreUI() {
+		ELEMENTS.SCORE.textContent = `Score: ${this.score}`;
+	}
+
+	updateTilesUI() {
+		let tilesUIString = '';
 
 		for (const tileRow of this.map) {
 			for (const tile of tileRow) {
-				tilesString += TILES_ELEMENTS[tile];
+				tilesUIString += TILES_ELEMENTS[tile];
 			}
 		}
 
-		ELEMENTS.TILES_CONTAINER.innerHTML = tilesString;
+		ELEMENTS.TILES_CONTAINER.innerHTML = tilesUIString;
 	}
 
 	setListeners() {
@@ -79,20 +83,6 @@ class Game {
 		});
 	}
 
-	triggerGameOver() {
-		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
-
-		this.state = GAME_CONFIG.STATE.GAME_OVER;
-		ELEMENTS.OVERLAYS.GAME_OVER.classList.remove('hidden');
-	}
-
-	triggerWin() {
-		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
-
-		this.state = GAME_CONFIG.STATE.WIN;
-		ELEMENTS.OVERLAYS.WIN.classList.remove('hidden');
-	}
-
 	resetGame() {
 		this.state = GAME_CONFIG.STATE.READY;
 
@@ -124,7 +114,8 @@ class Game {
 		this.map = structuredClone(this.originalMap);
 
 		this.updateScoreUI();
-		this.drawTilesLayout();
+		this.updateTilesUI();
+		this.updateFinalScoreUI();
 	}
 
 	loop(time) {
@@ -147,7 +138,7 @@ class Game {
 			this.score += GAME_CONFIG.POINTS;
 
 			this.updateScoreUI();
-			this.drawTilesLayout();
+			this.updateTilesUI();
 
 			// 🏅 check win
 			if (this.remainingPills === 0) {
@@ -165,8 +156,25 @@ class Game {
 		requestAnimationFrame((time) => this.loop(time));
 	}
 
-	updateScoreUI() {
-		ELEMENTS.SCORE.textContent = `Score: ${this.score}`;
+	triggerGameOver() {
+		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
+
+		this.updateFinalScoreUI();
+		this.state = GAME_CONFIG.STATE.GAME_OVER;
+		ELEMENTS.OVERLAYS.GAME_OVER.classList.remove('hidden');
+	}
+
+	triggerWin() {
+		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
+
+		this.updateFinalScoreUI();
+		this.state = GAME_CONFIG.STATE.WIN;
+		ELEMENTS.OVERLAYS.WIN.classList.remove('hidden');
+	}
+
+	updateFinalScoreUI() {
+		ELEMENTS.FINAL_SCORE.textContent = `Final Score: ${this.score}`;
+		ELEMENTS.WIN_SCORE.textContent = `Final Score: ${this.score}`;
 	}
 
 	checkCollision(player, enemies) {
