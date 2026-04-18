@@ -145,7 +145,7 @@ body {
 	height: var(--map-height);
 	border: 1px solid var(--red-400);
 	border-radius: var(--radius-lg);
-	overflow: hidden;
+	/* overflow: hidden; */
 }
 
 .tiles-container {
@@ -197,6 +197,16 @@ body {
 	}
 }
 
+.score-ui {
+	position: absolute;
+	top: -1.1rem;
+	left: 10px;
+	font-size: 0.7rem;
+	color: var(--white-400);
+	z-index: 150;
+	text-shadow: 0 0 5px var(--red-300);
+}
+
 .game-over-overlay {
 	position: absolute;
 	inset: 0;
@@ -206,6 +216,7 @@ body {
 	align-items: center;
 	justify-content: center;
 	gap: 20px;
+	border-radius: var(--radius-lg);
 	color: var(--white-400);
 	z-index: 200;
 }
@@ -219,6 +230,7 @@ body {
 	align-items: center;
 	justify-content: center;
 	gap: 20px;
+	border-radius: var(--radius-lg);
 	color: var(--white-400);
 	z-index: 200;
 }

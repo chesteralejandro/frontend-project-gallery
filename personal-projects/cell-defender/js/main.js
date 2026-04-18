@@ -11,6 +11,7 @@ import Enemy from './entities/enemy.js';
 class Game {
 	constructor() {
 		this.state = GAME_CONFIG.STATE.READY;
+		this.score = GAME_CONFIG.SCORE;
 
 		this.originalMap = structuredClone(TILE_LAYOUT_1);
 		this.map = structuredClone(this.originalMap);
@@ -28,6 +29,7 @@ class Game {
 			new Enemy(ENEMY_CONFIG.GEMRU, ELEMENTS.CHARACTERS.GEMRU),
 		];
 
+		this.updateScoreUI();
 		this.drawTilesLayout();
 		this.setListeners();
 	}
@@ -117,10 +119,11 @@ class Game {
 			enemy.direction = 'ArrowRight';
 		});
 
-		// reset map (IMPORTANT — deep copy)
+		this.score = GAME_CONFIG.SCORE;
 		this.remainingPills = this.totalPills;
 		this.map = structuredClone(this.originalMap);
 
+		this.updateScoreUI();
 		this.drawTilesLayout();
 	}
 
@@ -141,7 +144,9 @@ class Game {
 		if (this.map[this.whiteCell.y][this.whiteCell.x] === TILES_CODES.PILL) {
 			this.map[this.whiteCell.y][this.whiteCell.x] = TILES_CODES.NONE;
 			this.remainingPills--;
+			this.score += GAME_CONFIG.POINTS;
 
+			this.updateScoreUI();
 			this.drawTilesLayout();
 
 			// 🏅 check win
@@ -158,6 +163,10 @@ class Game {
 		}
 
 		requestAnimationFrame((time) => this.loop(time));
+	}
+
+	updateScoreUI() {
+		ELEMENTS.SCORE.textContent = `Score: ${this.score}`;
 	}
 
 	checkCollision(player, enemies) {
