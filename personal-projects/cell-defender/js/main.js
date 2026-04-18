@@ -170,7 +170,9 @@ class Game {
 	triggerGameOver() {
 		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
 
-		this.audio.fadeOutBGM(1000);
+		this.audio.playSFX('enemySwallow', { volume: 0.7 });
+		this.audio.fadeOutBGM(800);
+		this.audio.playSFX('gameOver', { volume: 0.7 });
 
 		this.updateFinalScoreUI();
 		this.state = GAME_CONFIG.STATE.GAME_OVER;

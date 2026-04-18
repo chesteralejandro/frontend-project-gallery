@@ -5,8 +5,8 @@ class AudioManager {
 		this.bgm.volume = 0.3;
 
 		this.sfx = {
-			pill: new Audio('./assets/audio/sfx/white_cell_swallow.mp3'),
-			enemy: new Audio('./assets/audio/sfx/enemy_swallow.mp3'),
+			pill: new Audio('./assets/audio/sfx/pill.mp3'),
+			enemySwallow: new Audio('./assets/audio/sfx/enemy_swallow.mp3'),
 			win: new Audio('./assets/audio/sfx/win.mp3'),
 			gameOver: new Audio('./assets/audio/sfx/game_over.mp3'),
 			hover: new Audio('./assets/audio/sfx/button_hover.mp3'),
