@@ -98,6 +98,27 @@ class Game {
 				this.whiteCell.changeDirection(e.code);
 			}
 		});
+
+		const menuButtons = Object.values(ELEMENTS.BUTTONS);
+
+		let lastHoverSound = 0;
+
+		menuButtons.forEach((button) => {
+			if (!button) return;
+
+			button.addEventListener('mouseenter', () => {
+				const now = performance.now();
+
+				if (now - lastHoverSound > 100) {
+					this.audio.playSFX('hover', {
+						overlap: true,
+						volume: 0.3,
+						rate: 1.2,
+					});
+					lastHoverSound = now;
+				}
+			});
+		});
 	}
 
 	resetGame() {

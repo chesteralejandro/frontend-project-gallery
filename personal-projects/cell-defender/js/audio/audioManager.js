@@ -18,7 +18,7 @@ class AudioManager {
 		this.enabled = {
 			bgm: true,
 			sfx: true,
-			enemyTurn: false,
+			enemyTurn: true,
 		};
 	}
 
