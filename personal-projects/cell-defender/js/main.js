@@ -182,7 +182,10 @@ class Game {
 	triggerWin() {
 		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
 
-		this.audio.fadeOutBGM(1000);
+		this.audio.fadeOutBGM(1200);
+		setTimeout(() => {
+			this.audio.playSFX('win', { volume: 0.7 });
+		}, 400);
 
 		this.updateFinalScoreUI();
 		this.state = GAME_CONFIG.STATE.WIN;
