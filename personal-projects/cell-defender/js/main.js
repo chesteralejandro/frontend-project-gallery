@@ -57,13 +57,13 @@ class Game {
 		});
 
 		ELEMENTS.BUTTONS.RESTART.addEventListener('click', () => {
-			ELEMENTS.SCREENS.GAME_OVER.classList.add('hidden');
+			ELEMENTS.OVERLAYS.GAME_OVER.classList.add('hidden');
 			this.resetGame();
 			this.state = GAME_CONFIG.STATE.RUNNING;
 		});
 
 		ELEMENTS.BUTTONS.WIN_RESTART.addEventListener('click', () => {
-			ELEMENTS.SCREENS.WIN.classList.add('hidden');
+			ELEMENTS.OVERLAYS.WIN.classList.add('hidden');
 			this.resetGame();
 			this.state = GAME_CONFIG.STATE.RUNNING;
 		});
@@ -81,14 +81,14 @@ class Game {
 		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
 
 		this.state = GAME_CONFIG.STATE.GAME_OVER;
-		ELEMENTS.SCREENS.GAME_OVER.classList.remove('hidden');
+		ELEMENTS.OVERLAYS.GAME_OVER.classList.remove('hidden');
 	}
 
 	triggerWin() {
 		if (this.state !== GAME_CONFIG.STATE.RUNNING) return;
 
 		this.state = GAME_CONFIG.STATE.WIN;
-		ELEMENTS.SCREENS.WIN.classList.remove('hidden');
+		ELEMENTS.OVERLAYS.WIN.classList.remove('hidden');
 	}
 
 	resetGame() {

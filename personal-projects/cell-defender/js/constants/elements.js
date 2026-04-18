@@ -3,8 +3,10 @@ const ELEMENTS = {
 	SCREENS: {
 		START: document.getElementById('start-screen'),
 		GAME: document.getElementById('game-screen'),
-		GAME_OVER: document.getElementById('game-over-screen'),
-		WIN: document.getElementById('win-screen'),
+	},
+	OVERLAYS: {
+		GAME_OVER: document.getElementById('game-over-overlay'),
+		WIN: document.getElementById('win-overlay'),
 	},
 	CHARACTERS: {
 		WHITE_CELL: document.getElementById('white-cell'),
