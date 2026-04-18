@@ -14,6 +14,12 @@ class AudioManager {
 		};
 
 		this.fadeInterval = null;
+
+		this.enabled = {
+			bgm: true,
+			sfx: true,
+			enemyTurn: false,
+		};
 	}
 
 	// ---------- BGM ----------
@@ -53,7 +59,11 @@ class AudioManager {
 	}
 
 	// ---------- SFX ----------
-	playSFX(name, { overlap = false, volume = 0.6 } = {}) {
+	playSFX(name, options = {}) {
+		if (!this.enabled.sfx) return;
+		if (name === 'enemyTurn' && !this.enabled.enemyTurn) return;
+
+		const { overlap = false, volume = 0.6, rate = 1 } = options;
 		const sound = this.sfx[name];
 		if (!sound) return;
 
