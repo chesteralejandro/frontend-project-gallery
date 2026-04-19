@@ -7,40 +7,40 @@
 		<link rel="stylesheet" href="./css/main.css" />
 	</head>
 	<body>
-		<header>
+		<header class="app-header">
 			<h1 class="title">SVGPalette</h1>
 			<p class="tagline">
 				Paste, preview, recolor, and download SVGs instantly.
 			</p>
 		</header>
 
-		<main>
-			<article class="panel">
+		<main class="app-body">
+			<div class="editor-panel">
 				<section>
-					<h2>SVG Code</h2>
+					<label for="svg-input">SVG Code</label>
 					<textarea
 						class="svg-input"
 						id="svg-input"
 						placeholder="Paste your SVG code here..."
 					></textarea>
 				</section>
+			</div>
 
-				<button id="btn-download">Download SVG</button>
-			</article>
-
-			<article class="panel">
+			<div class="preview-panel">
 				<section>
 					<h2>Preview</h2>
-					<article id="svg-preview">&nbsp;</article>
+					<div id="svg-preview"></div>
 				</section>
 				<section>
-					<h3>Colors</h3>
-					<div id="color-pickers">&nbsp;</div>
+					<h2>Colors</h2>
+					<div id="color-pickers"></div>
 				</section>
-			</article>
+
+				<button id="btn-download">Download SVG</button>
+			</div>
 		</main>
 
-		<footer>
+		<footer class="app-footer">
 			<p>Built for fast SVG editing</p>
 		</footer>
 	</body>
