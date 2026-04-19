@@ -16,28 +16,22 @@ function renderSVG(svgCode) {
 	preview.innerHTML = svgCode;
 }
 
-function extractColors(svgCode) {
-	const hexColorRegex = /#([0-9a-fA-F]{3,6})\b/g;
+function extractSVGColors(svgCode) {
+	const attrRegex = /(fill|stroke)="([^"]+)"/g;
 
-	const matches = svgCode.match(hexColorRegex);
+	const colors = [];
+	let match;
 
-	if (!matches) {
-		return [];
+	while ((match = attrRegex.exec(svgCode)) !== null) {
+		const value = match[2];
+
+		// Skip "none"
+		if (value === 'none') continue;
+
+		colors.push(value);
 	}
 
-	const uniqueColors = [...new Set(matches)];
-
-	return uniqueColors;
-}
-
-function detectSpecialColors(svgCode) {
-	const specials = [];
-
-	if (svgCode.includes('currentColor')) {
-		specials.push('currentColor');
-	}
-
-	return specials;
+	return [...new Set(colors)];
 }
 
 function renderColorPickers(colors) {
@@ -98,9 +92,12 @@ svgInput.addEventListener('input', (e) => {
 
 	renderSVG(svgCode);
 
-	const colors = extractColors(svgCode);
-	renderColorPickers(colors);
+	const allColors = extractSVGColors(svgCode);
 
-	const specials = detectSpecialColors(svgCode);
-	console.log('SPECIAL:', specials);
+	const hexColors = allColors.filter((c) => c.startsWith('#'));
+	const specialColors = allColors.filter((c) => !c.startsWith('#'));
+
+	renderColorPickers(hexColors);
+
+	console.log('SPECIAL:', specialColors);
 });

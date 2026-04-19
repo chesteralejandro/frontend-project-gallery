@@ -1,5 +1,4 @@
 function ensureSVGNamespace(svgCode) {
-	console.log('Success');
 	if (!svgCode.includes('xmlns=')) {
 		return svgCode.replace(
 			'<svg',
