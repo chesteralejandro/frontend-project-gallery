@@ -13,6 +13,20 @@ function renderSVG(svgCode) {
 	preview.innerHTML = svgCode;
 }
 
+function extractColors(svgCode) {
+	const hexColorRegex = /#([0-9a-fA-F]{3,6})\b/g;
+
+	const matches = svgCode.match(hexColorRegex);
+
+	if (!matches) {
+		return [];
+	}
+
+	const uniqueColors = [...new Set(matches)];
+
+	return uniqueColors;
+}
+
 svgInput.addEventListener('input', (e) => {
 	const svgCode = e.target.value.trim();
 
@@ -27,4 +41,7 @@ svgInput.addEventListener('input', (e) => {
 	}
 
 	renderSVG(svgCode);
+
+	const colors = extractColors(svgCode);
+	console.log(colors);
 });
