@@ -16,6 +16,10 @@ function renderSVG(svgCode) {
 	preview.innerHTML = svgCode;
 }
 
+function escapeRegex(str) {
+	return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function extractSVGColors(svgCode) {
 	const attrRegex = /(fill|stroke)="([^"]+)"/g;
 
@@ -66,6 +70,27 @@ function renderColorPickers(colors) {
 		wrapper.appendChild(label);
 
 		colorPickers.appendChild(wrapper);
+
+		let currentColor = color;
+
+		input.addEventListener('input', (e) => {
+			const newColor = e.target.value;
+
+			updateSVGColor(currentColor, newColor);
+
+			// Update reference so next change works
+			currentColor = newColor;
+		});
+
+		input.addEventListener('change', () => {
+			// re-sync UI after user finishes picking
+			const allColors = extractSVGColors(svgInput.value);
+			const hexColors = allColors.filter((c) =>
+				/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
+			);
+
+			renderColorPickers(hexColors);
+		});
 	});
 }
 
@@ -76,9 +101,18 @@ function normalizeHex(hex) {
 	return hex;
 }
 
+function updateSVGColor(oldColor, newColor) {
+	const regex = new RegExp(escapeRegex(oldColor), 'g');
+	let updatedSVG = svgInput.value.replace(regex, newColor);
+
+	svgInput.value = updatedSVG;
+	renderSVG(updatedSVG);
+}
+
 svgInput.addEventListener('input', (e) => {
 	let svgCode = e.target.value.trim();
 	svgCode = ensureSVGNamespace(svgCode);
+	svgInput.value = svgCode;
 
 	if (!svgCode) {
 		showMessage('No SVG to display');
@@ -94,7 +128,9 @@ svgInput.addEventListener('input', (e) => {
 
 	const allColors = extractSVGColors(svgCode);
 
-	const hexColors = allColors.filter((c) => c.startsWith('#'));
+	const hexColors = allColors.filter((c) =>
+		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
+	);
 	const specialColors = allColors.filter((c) => !c.startsWith('#'));
 
 	renderColorPickers(hexColors);
