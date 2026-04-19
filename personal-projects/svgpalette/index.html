@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SVGPalette</title>
+		<link rel="stylesheet" href="./css/main.css" />
+	</head>
+	<body>
+		<header>
+			<h1 class="title">SVGPalette</h1>
+			<p class="tagline">
+				Paste, preview, recolor, and download SVGs instantly.
+			</p>
+		</header>
+
+		<main>
+			<article class="panel">
+				<section>
+					<h2>SVG Code</h2>
+					<textarea
+						class="svg-input"
+						id="svg-input"
+						placeholder="Paste your SVG code here..."
+					></textarea>
+				</section>
+
+				<button id="btn-download">Download SVG</button>
+			</article>
+
+			<article class="panel">
+				<section>
+					<h2>Preview</h2>
+					<article id="svg-preview">&nbsp;</article>
+				</section>
+				<section>
+					<h3>Colors</h3>
+					<div id="color-pickers">&nbsp;</div>
+				</section>
+			</article>
+		</main>
+
+		<footer>
+			<p>Built for fast SVG editing</p>
+		</footer>
+	</body>
+</html>
