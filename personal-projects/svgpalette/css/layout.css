@@ -4,6 +4,13 @@ body {
 	min-height: 100vh;
 }
 
+h2,
+h3,
+label {
+	display: block;
+	margin-bottom: var(--space-sm);
+}
+
 #app-body {
 	flex: 1;
 	display: flex;
