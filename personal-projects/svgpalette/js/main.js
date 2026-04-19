@@ -1,5 +1,6 @@
 const svgInput = document.getElementById('svg-input');
 const preview = document.getElementById('svg-preview');
+const colorPickers = document.getElementById('color-pickers');
 
 function showMessage(message) {
 	preview.innerHTML = `<p style="color:#6B7280">${message}</p>`;
@@ -37,6 +38,48 @@ function detectSpecialColors(svgCode) {
 	return specials;
 }
 
+function renderColorPickers(colors) {
+	// Clear previous UI
+	colorPickers.innerHTML = '';
+
+	if (colors.length === 0) {
+		colorPickers.innerHTML = `
+      <p id="placeholder">
+        No colors detected yet. Paste an SVG to edit its colors.
+      </p>
+    `;
+		return;
+	}
+
+	colors.forEach((color) => {
+		const wrapper = document.createElement('div');
+		wrapper.style.display = 'flex';
+		wrapper.style.alignItems = 'center';
+		wrapper.style.gap = '8px';
+
+		const input = document.createElement('input');
+		input.type = 'color';
+		input.value = normalizeHex(color);
+
+		const label = document.createElement('span');
+		label.textContent = color;
+		label.style.fontFamily = 'JetBrains Mono';
+		label.style.fontSize = '12px';
+
+		wrapper.appendChild(input);
+		wrapper.appendChild(label);
+
+		colorPickers.appendChild(wrapper);
+	});
+}
+
+function normalizeHex(hex) {
+	if (hex.length === 4) {
+		return '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
+	}
+	return hex;
+}
+
 svgInput.addEventListener('input', (e) => {
 	const svgCode = e.target.value.trim();
 
@@ -53,8 +96,8 @@ svgInput.addEventListener('input', (e) => {
 	renderSVG(svgCode);
 
 	const colors = extractColors(svgCode);
-	const specials = detectSpecialColors(svgCode);
+	renderColorPickers(colors);
 
-	console.log('HEX:', colors);
+	const specials = detectSpecialColors(svgCode);
 	console.log('SPECIAL:', specials);
 });
