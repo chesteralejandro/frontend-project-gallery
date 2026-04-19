@@ -42,6 +42,15 @@ label {
 	padding: var(--space-md);
 }
 
+#svg-preview svg {
+	max-width: 100%;
+	max-height: 300px;
+	width: 100%;
+	height: auto;
+	display: block;
+	margin: 0 auto;
+}
+
 #btn-download {
 	margin-top: auto;
 }
