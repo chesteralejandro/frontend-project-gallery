@@ -27,6 +27,16 @@ function extractColors(svgCode) {
 	return uniqueColors;
 }
 
+function detectSpecialColors(svgCode) {
+	const specials = [];
+
+	if (svgCode.includes('currentColor')) {
+		specials.push('currentColor');
+	}
+
+	return specials;
+}
+
 svgInput.addEventListener('input', (e) => {
 	const svgCode = e.target.value.trim();
 
@@ -43,5 +53,8 @@ svgInput.addEventListener('input', (e) => {
 	renderSVG(svgCode);
 
 	const colors = extractColors(svgCode);
-	console.log(colors);
+	const specials = detectSpecialColors(svgCode);
+
+	console.log('HEX:', colors);
+	console.log('SPECIAL:', specials);
 });
