@@ -2,6 +2,8 @@ const svgInput = document.getElementById('svg-input');
 const preview = document.getElementById('svg-preview');
 const colorPickers = document.getElementById('color-pickers');
 
+import ensureSVGNamespace from './helpers/ensureSVGNamespace.js';
+
 function showMessage(message) {
 	preview.innerHTML = `<p style="color:#6B7280">${message}</p>`;
 }
@@ -81,7 +83,8 @@ function normalizeHex(hex) {
 }
 
 svgInput.addEventListener('input', (e) => {
-	const svgCode = e.target.value.trim();
+	let svgCode = e.target.value.trim();
+	svgCode = ensureSVGNamespace(svgCode);
 
 	if (!svgCode) {
 		showMessage('No SVG to display');
