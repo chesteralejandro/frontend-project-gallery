@@ -38,11 +38,10 @@ function extractSVGColors(svgCode) {
 	return [...new Set(colors)];
 }
 
-function renderColorPickers(colors) {
-	// Clear previous UI
+function renderColorPickers(colors = [], specialColors = []) {
 	colorPickers.innerHTML = '';
 
-	if (colors.length === 0) {
+	if (colors.length === 0 && specialColors.length === 0) {
 		colorPickers.innerHTML = `
       <p id="placeholder">
         No colors detected yet. Paste an SVG to edit its colors.
@@ -85,13 +84,59 @@ function renderColorPickers(colors) {
 		input.addEventListener('change', () => {
 			// re-sync UI after user finishes picking
 			const allColors = extractSVGColors(svgInput.value);
+			const specialColors = allColors.filter((c) => c === 'currentColor');
 			const hexColors = allColors.filter((c) =>
 				/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
 			);
 
-			renderColorPickers(hexColors);
+			renderColorPickers(hexColors, specialColors);
 		});
 	});
+
+	specialColors.forEach((color) => {
+		const wrapper = document.createElement('div');
+		wrapper.style.display = 'flex';
+		wrapper.style.alignItems = 'center';
+		wrapper.style.gap = '8px';
+
+		const label = document.createElement('span');
+		label.textContent = 'currentColor';
+		label.style.fontFamily = 'JetBrains Mono';
+		label.style.fontSize = '12px';
+
+		const button = document.createElement('button');
+		button.textContent = 'Convert';
+		button.style.padding = '4px 8px';
+		button.style.cursor = 'pointer';
+
+		button.addEventListener('click', () => {
+			convertCurrentColor();
+		});
+
+		wrapper.appendChild(label);
+		wrapper.appendChild(button);
+
+		colorPickers.appendChild(wrapper);
+	});
+}
+
+function convertCurrentColor(defaultColor = '#ffffff') {
+	let svgCode = svgInput.value;
+
+	// Replace ALL currentColor with default
+	svgCode = svgCode.replace(/currentColor/g, defaultColor);
+
+	svgInput.value = svgCode;
+	renderSVG(svgCode);
+
+	// Re-run full pipeline
+	const allColors = extractSVGColors(svgCode);
+	const specialColors = allColors.filter((c) => c === 'currentColor');
+	const hexColors = allColors.filter((c) =>
+		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
+	);
+
+	renderColorPickers(hexColors, specialColors);
 }
 
 function normalizeHex(hex) {
@@ -127,13 +172,10 @@ svgInput.addEventListener('input', (e) => {
 	renderSVG(svgCode);
 
 	const allColors = extractSVGColors(svgCode);
-
+	const specialColors = allColors.filter((c) => c === 'currentColor');
 	const hexColors = allColors.filter((c) =>
 		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
 	);
-	const specialColors = allColors.filter((c) => !c.startsWith('#'));
 
-	renderColorPickers(hexColors);
-
-	console.log('SPECIAL:', specialColors);
+	renderColorPickers(hexColors, specialColors);
 });
