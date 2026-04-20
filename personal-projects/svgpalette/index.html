@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SVGPalette</title>
+		<link href="./css/main.css" rel="stylesheet" />
+		<script src="./js/main.js" type="module" defer></script>
+	</head>
+	<body>
+		<header id="app-header">
+			<h1 id="title">SVGPalette</h1>
+			<p id="tagline">
+				Paste, preview, recolor, and download SVGs instantly.
+			</p>
+		</header>
+
+		<main id="app-body">
+			<div id="editor-panel">
+				<section>
+					<label for="svg-input">SVG Code</label>
+					<textarea
+						id="svg-input"
+						placeholder="Paste your SVG code here..."
+					></textarea>
+				</section>
+			</div>
+
+			<div id="preview-panel">
+				<section>
+					<h2>Preview</h2>
+					<div id="svg-preview"></div>
+				</section>
+				<section>
+					<h2>Colors</h2>
+					<div id="color-pickers">
+						<p id="placeholder">
+							No colors detected yet. Paste an SVG to edit its
+							colors.
+						</p>
+					</div>
+				</section>
+
+				<button id="btn-download">Download SVG</button>
+			</div>
+		</main>
+
+		<footer id="app-footer">
+			<p>Built for fast SVG editing</p>
+		</footer>
+	</body>
+</html>
