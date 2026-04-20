@@ -155,23 +155,22 @@ function updateSVGColor(oldColor, newColor) {
 }
 
 svgInput.addEventListener('input', (e) => {
-	let svgCode = e.target.value.trim();
-	svgCode = ensureSVGNamespace(svgCode);
-	svgInput.value = svgCode;
+	const svgCode = e.target.value.trim();
+	const svgWithNamespace = ensureSVGNamespace(svgCode);
 
-	if (!svgCode) {
-		showMessage('No SVG to display');
-		return;
+	svgInput.value = svgWithNamespace;
+
+	if (!svgWithNamespace) {
+		return showMessage('No SVG to display');
 	}
 
-	if (!isValidSVG(svgCode)) {
-		showMessage('Invalid SVG');
-		return;
+	if (!isValidSVG(svgWithNamespace)) {
+		return showMessage('Invalid SVG');
 	}
 
-	renderSVG(svgCode);
+	renderSVG(svgWithNamespace);
 
-	const allColors = extractSVGColors(svgCode);
+	const allColors = extractSVGColors(svgWithNamespace);
 	const specialColors = allColors.filter((c) => c === 'currentColor');
 	const hexColors = allColors.filter((c) =>
 		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
