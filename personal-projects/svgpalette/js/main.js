@@ -1,4 +1,5 @@
 import ELEMENTS from './constants/elements.js';
+import PLACEHOLDER_ELEMENT from './constants/placeholderElement.js';
 
 import ensureSVGNamespace from './helpers/ensureSVGNamespace.js';
 import showPreviewSVG from './helpers/showPreviewSVG.js';
@@ -72,6 +73,23 @@ function uploadSVG() {
 	renderColorPickers(hexColors, specialColors);
 }
 
+function clearSVGInput() {
+	ELEMENTS.svgInput.value = '';
+
+	// Reset preview
+	showPreviewMessage('No SVG to display');
+
+	// Reset color pickers
+	ELEMENTS.colorPickers.innerHTML = PLACEHOLDER_ELEMENT;
+
+	// Optional: reset filename
+	if (ELEMENTS.filenameInput) {
+		ELEMENTS.filenameInput.value = '';
+	}
+}
+
+ELEMENTS.btnClear.addEventListener('click', clearSVGInput);
+
 function extractSVGColors(svgCode) {
 	const attrRegex = /(fill|stroke)="([^"]+)"/g;
 
@@ -93,12 +111,7 @@ function renderColorPickers(colors = [], specialColors = []) {
 	ELEMENTS.colorPickers.innerHTML = '';
 
 	if (colors.length === 0 && specialColors.length === 0) {
-		ELEMENTS.colorPickers.innerHTML = `
-      <p id="placeholder">
-        No colors detected yet. Paste an SVG to edit its colors.
-      </p>
-    `;
-		return;
+		return (ELEMENTS.colorPickers.innerHTML = PLACEHOLDER_ELEMENT);
 	}
 
 	colors.forEach((color) => {

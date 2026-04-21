@@ -90,3 +90,23 @@ label {
 #btn-download:active {
 	transform: scale(0.98);
 }
+
+#editor-actions {
+	display: flex;
+	justify-content: flex-end;
+	margin-bottom: var(--space-xs);
+}
+
+#btn-clear {
+	background: transparent;
+	color: var(--color-text-muted);
+	font-size: 0.8rem;
+	padding: 4px 8px;
+	border-radius: var(--radius-sm);
+	transition: var(--transition-fast);
+}
+
+#btn-clear:hover {
+	background-color: var(--color-border);
+	color: var(--color-text-primary);
+}
