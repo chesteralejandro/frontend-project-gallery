@@ -116,9 +116,7 @@ function renderColorPickers(colors = [], specialColors = []) {
 
 	colors.forEach((color) => {
 		const wrapper = document.createElement('div');
-		wrapper.style.display = 'flex';
-		wrapper.style.alignItems = 'center';
-		wrapper.style.gap = '8px';
+		wrapper.className = 'color-item';
 
 		const input = document.createElement('input');
 		input.type = 'color';
@@ -126,8 +124,7 @@ function renderColorPickers(colors = [], specialColors = []) {
 
 		const label = document.createElement('span');
 		label.textContent = color;
-		label.style.fontFamily = 'JetBrains Mono';
-		label.style.fontSize = '12px';
+		label.className = 'color-label';
 
 		wrapper.appendChild(input);
 		wrapper.appendChild(label);
@@ -159,19 +156,15 @@ function renderColorPickers(colors = [], specialColors = []) {
 
 	specialColors.forEach((color) => {
 		const wrapper = document.createElement('div');
-		wrapper.style.display = 'flex';
-		wrapper.style.alignItems = 'center';
-		wrapper.style.gap = '8px';
+		wrapper.className = 'color-item';
 
 		const label = document.createElement('span');
 		label.textContent = 'currentColor';
-		label.style.fontFamily = 'JetBrains Mono';
-		label.style.fontSize = '12px';
+		label.className = 'color-label';
 
 		const button = document.createElement('button');
 		button.textContent = 'Convert';
-		button.style.padding = '4px 8px';
-		button.style.cursor = 'pointer';
+		button.className = 'color-convert-btn';
 
 		button.addEventListener('click', () => {
 			convertCurrentColor();

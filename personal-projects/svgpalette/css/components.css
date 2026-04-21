@@ -110,3 +110,33 @@ label {
 	background-color: var(--color-border);
 	color: var(--color-text-primary);
 }
+
+/* Color Picker Item */
+.color-item {
+	display: flex;
+	align-items: center;
+	gap: var(--space-sm);
+}
+
+/* Color Label */
+.color-label {
+	font-family: var(--font-code);
+	font-size: 0.75rem;
+	color: var(--color-text-secondary);
+}
+
+/* Convert Button */
+.color-convert-btn {
+	padding: 4px 8px;
+	font-size: 0.75rem;
+	border-radius: var(--radius-sm);
+	background-color: var(--color-border);
+	color: var(--color-text-primary);
+	cursor: pointer;
+	transition: var(--transition-fast);
+}
+
+.color-convert-btn:hover {
+	background-color: var(--color-accent);
+	color: #000;
+}
