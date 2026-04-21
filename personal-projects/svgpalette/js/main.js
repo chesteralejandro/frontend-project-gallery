@@ -7,6 +7,31 @@ import isValidSVG from './helpers/isValidSVG.js';
 import escapeRegex from './helpers/escapeRegex.js';
 import normalizeHex from './helpers/normalizeHex.js';
 
+function downloadSVG() {
+	const svgContent = ELEMENTS.svgInput.value.trim();
+
+	if (!svgContent) {
+		return showPreviewMessage('Nothing to download');
+	}
+
+	if (!isValidSVG(svgContent)) {
+		return showPreviewMessage('Invalid SVG. Cannot download.');
+	}
+
+	const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+	const url = URL.createObjectURL(blob);
+
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = 'svgpalette.svg';
+
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+
+	URL.revokeObjectURL(url);
+}
+
 function extractSVGColors(svgCode) {
 	const attrRegex = /(fill|stroke)="([^"]+)"/g;
 
@@ -133,6 +158,7 @@ function updateSVGColor(oldColor, newColor) {
 	showPreviewSVG(updatedSVG);
 }
 
+ELEMENTS.btnDownload.addEventListener('click', downloadSVG);
 ELEMENTS.svgInput.addEventListener('input', (e) => {
 	const svgCode = e.target.value.trim();
 	const svgWithNamespace = ensureSVGNamespace(svgCode);
