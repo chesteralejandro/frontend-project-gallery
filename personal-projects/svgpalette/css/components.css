@@ -54,6 +54,26 @@ label {
 	padding: var(--space-md);
 }
 
+#filename-wrapper {
+	display: flex;
+	flex-direction: column;
+	gap: var(--space-xs);
+}
+
+#filename-input {
+	font-family: var(--font-code);
+	background-color: var(--color-surface);
+	border: 1px solid var(--color-border);
+	border-radius: var(--radius-md);
+	padding: var(--space-sm);
+	color: var(--color-text-primary);
+	outline: none;
+}
+
+#filename-input:focus {
+	border-color: var(--color-accent);
+}
+
 #btn-download {
 	background-color: var(--color-accent);
 	color: #000;

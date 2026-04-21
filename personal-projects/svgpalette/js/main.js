@@ -6,6 +6,7 @@ import showPreviewMessage from './helpers/showPreviewMessage.js';
 import isValidSVG from './helpers/isValidSVG.js';
 import escapeRegex from './helpers/escapeRegex.js';
 import normalizeHex from './helpers/normalizeHex.js';
+import sanitizeFilename from './helpers/sanitizeFilename.js';
 
 function downloadSVG() {
 	const svgContent = ELEMENTS.svgInput.value.trim();
@@ -18,12 +19,26 @@ function downloadSVG() {
 		return showPreviewMessage('Invalid SVG. Cannot download.');
 	}
 
+	let filename = ELEMENTS.filenameInput.value.trim();
+
+	// fallback filename
+	if (!filename) {
+		filename = 'svgpalette';
+	}
+
+	filename = sanitizeFilename(filename);
+
+	// ensure .svg extension
+	if (!filename.endsWith('.svg')) {
+		filename += '.svg';
+	}
+
 	const blob = new Blob([svgContent], { type: 'image/svg+xml' });
 	const url = URL.createObjectURL(blob);
 
 	const a = document.createElement('a');
 	a.href = url;
-	a.download = 'svgpalette.svg';
+	a.download = filename;
 
 	document.body.appendChild(a);
 	a.click();

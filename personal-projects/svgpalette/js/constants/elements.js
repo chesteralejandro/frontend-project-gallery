@@ -3,6 +3,7 @@ const ELEMENTS = {
 	preview: document.getElementById('svg-preview'),
 	colorPickers: document.getElementById('color-pickers'),
 	btnDownload: document.getElementById('btn-download'),
+	filenameInput: document.getElementById('filename-input'),
 };
 
 export default ELEMENTS;
