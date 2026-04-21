@@ -32,6 +32,31 @@ function downloadSVG() {
 	URL.revokeObjectURL(url);
 }
 
+function uploadSVG() {
+	const svgContent = ELEMENTS.svgInput.value.trim();
+	const svgWithNamespace = ensureSVGNamespace(svgContent);
+
+	if (!svgWithNamespace) {
+		return showPreviewMessage('No SVG to display');
+	}
+
+	if (!isValidSVG(svgWithNamespace)) {
+		return showPreviewMessage('Invalid SVG');
+	}
+
+	ELEMENTS.svgInput.value = svgWithNamespace;
+
+	showPreviewSVG(svgWithNamespace);
+
+	const allColors = extractSVGColors(svgWithNamespace);
+	const specialColors = allColors.filter((c) => c === 'currentColor');
+	const hexColors = allColors.filter((c) =>
+		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
+	);
+
+	renderColorPickers(hexColors, specialColors);
+}
+
 function extractSVGColors(svgCode) {
 	const attrRegex = /(fill|stroke)="([^"]+)"/g;
 
@@ -159,27 +184,4 @@ function updateSVGColor(oldColor, newColor) {
 }
 
 ELEMENTS.btnDownload.addEventListener('click', downloadSVG);
-ELEMENTS.svgInput.addEventListener('input', (e) => {
-	const svgCode = e.target.value.trim();
-	const svgWithNamespace = ensureSVGNamespace(svgCode);
-
-	ELEMENTS.svgInput.value = svgWithNamespace;
-
-	if (!svgWithNamespace) {
-		return showPreviewMessage('No SVG to display');
-	}
-
-	if (!isValidSVG(svgWithNamespace)) {
-		return showPreviewMessage('Invalid SVG');
-	}
-
-	showPreviewSVG(svgWithNamespace);
-
-	const allColors = extractSVGColors(svgWithNamespace);
-	const specialColors = allColors.filter((c) => c === 'currentColor');
-	const hexColors = allColors.filter((c) =>
-		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
-	);
-
-	renderColorPickers(hexColors, specialColors);
-});
+ELEMENTS.svgInput.addEventListener('input', uploadSVG);
