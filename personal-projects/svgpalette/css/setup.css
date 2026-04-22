@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,100..900&family=JetBrains+Mono:wght@100..800&display=swap');
+
+/* =========================
+   DESIGN TOKENS
+========================= */
+
+:root {
+	/* Base Background System */
+	--bg-0: #0b1220;
+	--bg-1: #0f172a;
+	--bg-2: #111827;
+
+	/* Borders */
+	--border: #1f2937;
+	--border-soft: rgba(255, 255, 255, 0.06);
+
+	/* Text */
+	--text-1: #f9fafb;
+	--text-2: #cbd5e1;
+	--text-3: #6b7280;
+
+	/* Accent  */
+	--accent: #60a5fa;
+	--accent-hover: #3b82f6;
+	--accent-soft: rgba(96, 165, 250, 0.15);
+
+	/* Status colors */
+	--success: #34d399;
+	--warning: #fbbf24;
+	--danger: #f87171;
+
+	/* Typography */
+	--font-ui: 'Inter', sans-serif;
+	--font-code: 'JetBrains Mono', monospace;
+
+	/* Spacing system */
+	--space-1: 4px;
+	--space-2: 8px;
+	--space-3: 12px;
+	--space-4: 16px;
+	--space-5: 24px;
+	--space-6: 32px;
+	--space-7: 48px;
+
+	/* Radius */
+	--radius-sm: 6px;
+	--radius-md: 10px;
+	--radius-lg: 14px;
+	--radius-xl: 18px;
+
+	/* Shadows (subtle, modern) */
+	--shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+	--shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
+
+	/* Transitions */
+	--t-fast: 0.15s ease;
+	--t-normal: 0.25s ease;
+}
+
+/* =========================
+   RESET / BASE
+========================= */
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	font-family: var(--font-ui);
+	background: var(--bg-0);
+	color: var(--text-1);
+	line-height: 1.5;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+	font-weight: 600;
+	color: var(--text-1);
+}
+
+h2 {
+	font-size: 0.95rem;
+	color: var(--text-2);
+	margin-bottom: var(--space-1);
+}
+
+p {
+	color: var(--text-2);
+}
+
+textarea {
+	font-family: var(--font-code);
+	background: var(--bg-1);
+	color: var(--text-1);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	padding: var(--space-4);
+	outline: none;
+	resize: none;
+	transition:
+		border var(--t-fast),
+		box-shadow var(--t-fast);
+}
+
+textarea:focus {
+	border-color: var(--accent);
+	box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* Buttons base */
+button {
+	font-family: var(--font-ui);
+	cursor: pointer;
+	border: none;
+}
+
+.btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-2);
+
+	font-family: var(--font-ui);
+	border-radius: var(--radius-md);
+	cursor: pointer;
+
+	transition: var(--t-fast);
+}
+
+.btn img {
+	width: 16px;
+	height: 16px;
+}
+
+.btn-ghost {
+	background: transparent;
+	color: var(--text-3);
+	padding: var(--space-2) var(--space-3);
+}
+
+.btn-ghost:hover {
+	background: var(--border-soft);
+	color: var(--text-1);
+}
+
+.btn-primary {
+	background: var(--accent);
+	color: #0b1220;
+	padding: var(--space-3) var(--space-4);
+	font-weight: 600;
+	box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+	background: var(--accent-hover);
+	transform: translateY(-1px);
+}
+
+.btn-primary:active {
+	transform: translateY(0);
+}

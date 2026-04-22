@@ -7,7 +7,9 @@
 		<link href="./css/main.css" rel="stylesheet" />
 		<script src="./js/main.js" type="module" defer></script>
 	</head>
+
 	<body>
+		<!-- Header -->
 		<header id="app-header">
 			<h1 id="title">SVGPalette</h1>
 			<p id="tagline">
@@ -15,37 +17,43 @@
 			</p>
 		</header>
 
-		<main id="app-body">
-			<div id="editor-panel">
-				<section>
+		<!-- Main App -->
+		<main id="app">
+			<!-- STEP 1: INPUT -->
+			<section class="app-section" id="section-input">
+				<div class="section-header">
 					<label for="svg-input">SVG Code</label>
+					<button id="btn-clear" class="btn btn-ghost">
+						<img src="./assets/icons/clear.svg" alt="" />
+						<span>Clear</span>
+					</button>
+				</div>
 
-					<div id="editor-actions">
-						<button id="btn-clear">Clear</button>
-					</div>
+				<textarea
+					id="svg-input"
+					placeholder="Paste your SVG code here..."
+				></textarea>
+			</section>
 
-					<textarea
-						id="svg-input"
-						placeholder="Paste your SVG code here..."
-					></textarea>
-				</section>
-			</div>
+			<!-- STEP 2: PREVIEW -->
+			<section class="app-section" id="section-preview">
+				<h2>Preview</h2>
+				<div id="svg-preview"></div>
+			</section>
 
-			<div id="preview-panel">
-				<section>
-					<h2>Preview</h2>
-					<div id="svg-preview"></div>
-				</section>
-				<section>
-					<h2>Colors</h2>
-					<div id="color-pickers">
-						<p id="placeholder">
-							No colors detected yet. Paste an SVG to edit its
-							colors.
-						</p>
-					</div>
-				</section>
+			<!-- STEP 3: COLORS -->
+			<section class="app-section" id="section-colors">
+				<h2>Colors</h2>
 
+				<div id="color-pickers">
+					<p id="placeholder">
+						No colors detected yet. Paste an SVG to edit its colors.
+					</p>
+				</div>
+			</section>
+
+			<!-- STEP 4: EXPORT -->
+			<section class="app-section" id="section-export">
 				<div id="filename-wrapper">
 					<label for="filename-input">Filename</label>
 					<input
@@ -54,10 +62,15 @@
 						placeholder="svgpalette"
 					/>
 				</div>
-				<button id="btn-download">Download SVG</button>
-			</div>
+
+				<button id="btn-download" class="btn btn-primary">
+					<img src="./assets/icons/download.svg" alt="" />
+					<span>Download SVG</span>
+				</button>
+			</section>
 		</main>
 
+		<!-- Footer -->
 		<footer id="app-footer">
 			<p>Built for fast SVG editing</p>
 		</footer>
