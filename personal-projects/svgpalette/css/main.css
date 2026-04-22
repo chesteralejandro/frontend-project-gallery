@@ -129,6 +129,36 @@ label {
 	background: transparent;
 }
 
+.preview-empty {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: var(--space-3);
+
+	text-align: center;
+	color: var(--text-3);
+}
+
+/* Icon */
+#svg-preview .preview-icon {
+	width: 28px;
+	height: 28px;
+	opacity: 0.5;
+}
+
+/* Main message */
+.preview-title {
+	font-size: 0.9rem;
+	color: var(--text-2);
+}
+
+/* Secondary hint */
+.preview-hint {
+	font-size: 0.8rem;
+	color: var(--text-3);
+}
+
 .color-item {
 	display: flex;
 	align-items: center;

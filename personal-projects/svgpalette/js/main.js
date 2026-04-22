@@ -1,5 +1,4 @@
 import ELEMENTS from './constants/elements.js';
-import PLACEHOLDER_ELEMENT from './constants/placeholderElement.js';
 
 import ensureSVGNamespace from './helpers/ensureSVGNamespace.js';
 import showPreviewSVG from './helpers/showPreviewSVG.js';
@@ -8,6 +7,7 @@ import isValidSVG from './helpers/isValidSVG.js';
 import escapeRegex from './helpers/escapeRegex.js';
 import normalizeHex from './helpers/normalizeHex.js';
 import sanitizeFilename from './helpers/sanitizeFilename.js';
+import showColorsMessage from './helpers/showColorsMessage.js';
 
 function downloadSVG() {
 	const svgContent = ELEMENTS.svgInput.value.trim();
@@ -80,7 +80,7 @@ function clearSVGInput() {
 	showPreviewMessage('No SVG to display');
 
 	// Reset color pickers
-	ELEMENTS.colorPickers.innerHTML = PLACEHOLDER_ELEMENT;
+	showColorsMessage();
 
 	// Optional: reset filename
 	if (ELEMENTS.filenameInput) {
@@ -111,7 +111,7 @@ function renderColorPickers(colors = [], specialColors = []) {
 	ELEMENTS.colorPickers.innerHTML = '';
 
 	if (colors.length === 0 && specialColors.length === 0) {
-		return (ELEMENTS.colorPickers.innerHTML = PLACEHOLDER_ELEMENT);
+		return showColorsMessage();
 	}
 
 	colors.forEach((color) => {
@@ -203,6 +203,13 @@ function updateSVGColor(oldColor, newColor) {
 	ELEMENTS.svgInput.value = updatedSVG;
 	showPreviewSVG(updatedSVG);
 }
+
+function initApp() {
+	showPreviewMessage('No SVG to display');
+	showColorsMessage();
+}
+
+initApp();
 
 ELEMENTS.btnDownload.addEventListener('click', downloadSVG);
 ELEMENTS.svgInput.addEventListener('input', uploadSVG);
