@@ -1,24 +1,94 @@
-const svgInput = document.getElementById('svg-input');
-const preview = document.getElementById('svg-preview');
-const colorPickers = document.getElementById('color-pickers');
+import ELEMENTS from './constants/elements.js';
 
 import ensureSVGNamespace from './helpers/ensureSVGNamespace.js';
+import showPreviewSVG from './helpers/showPreviewSVG.js';
+import showPreviewMessage from './helpers/showPreviewMessage.js';
+import isValidSVG from './helpers/isValidSVG.js';
+import escapeRegex from './helpers/escapeRegex.js';
+import normalizeHex from './helpers/normalizeHex.js';
+import sanitizeFilename from './helpers/sanitizeFilename.js';
+import showColorsMessage from './helpers/showColorsMessage.js';
 
-function showMessage(message) {
-	preview.innerHTML = `<p style="color:#6B7280">${message}</p>`;
+function downloadSVG() {
+	const svgContent = ELEMENTS.svgInput.value.trim();
+
+	if (!svgContent) {
+		return showPreviewMessage('Nothing to download');
+	}
+
+	if (!isValidSVG(svgContent)) {
+		return showPreviewMessage('Invalid SVG. Cannot download.');
+	}
+
+	let filename = ELEMENTS.filenameInput.value.trim();
+
+	// fallback filename
+	if (!filename) {
+		filename = 'svgpalette';
+	}
+
+	filename = sanitizeFilename(filename);
+
+	// ensure .svg extension
+	if (!filename.endsWith('.svg')) {
+		filename += '.svg';
+	}
+
+	const blob = new Blob([svgContent], { type: 'image/svg+xml' });
+	const url = URL.createObjectURL(blob);
+
+	const a = document.createElement('a');
+	a.href = url;
+	a.download = filename;
+
+	document.body.appendChild(a);
+	a.click();
+	document.body.removeChild(a);
+
+	URL.revokeObjectURL(url);
 }
 
-function isValidSVG(svgCode) {
-	return svgCode.startsWith('<svg') && svgCode.endsWith('</svg>');
+function uploadSVG() {
+	const svgContent = ELEMENTS.svgInput.value.trim();
+	const svgWithNamespace = ensureSVGNamespace(svgContent);
+
+	if (!svgWithNamespace) {
+		return showPreviewMessage('No SVG to display');
+	}
+
+	if (!isValidSVG(svgWithNamespace)) {
+		return showPreviewMessage('Invalid SVG');
+	}
+
+	ELEMENTS.svgInput.value = svgWithNamespace;
+
+	showPreviewSVG(svgWithNamespace);
+
+	const allColors = extractSVGColors(svgWithNamespace);
+	const specialColors = allColors.filter((c) => c === 'currentColor');
+	const hexColors = allColors.filter((c) =>
+		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
+	);
+
+	renderColorPickers(hexColors, specialColors);
 }
 
-function renderSVG(svgCode) {
-	preview.innerHTML = svgCode;
+function clearSVGInput() {
+	ELEMENTS.svgInput.value = '';
+
+	// Reset preview
+	showPreviewMessage('No SVG to display');
+
+	// Reset color pickers
+	showColorsMessage();
+
+	// Optional: reset filename
+	if (ELEMENTS.filenameInput) {
+		ELEMENTS.filenameInput.value = '';
+	}
 }
 
-function escapeRegex(str) {
-	return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
+ELEMENTS.btnClear.addEventListener('click', clearSVGInput);
 
 function extractSVGColors(svgCode) {
 	const attrRegex = /(fill|stroke)="([^"]+)"/g;
@@ -29,7 +99,6 @@ function extractSVGColors(svgCode) {
 	while ((match = attrRegex.exec(svgCode)) !== null) {
 		const value = match[2];
 
-		// Skip "none"
 		if (value === 'none') continue;
 
 		colors.push(value);
@@ -39,22 +108,15 @@ function extractSVGColors(svgCode) {
 }
 
 function renderColorPickers(colors = [], specialColors = []) {
-	colorPickers.innerHTML = '';
+	ELEMENTS.colorPickers.innerHTML = '';
 
 	if (colors.length === 0 && specialColors.length === 0) {
-		colorPickers.innerHTML = `
-      <p id="placeholder">
-        No colors detected yet. Paste an SVG to edit its colors.
-      </p>
-    `;
-		return;
+		return showColorsMessage();
 	}
 
 	colors.forEach((color) => {
 		const wrapper = document.createElement('div');
-		wrapper.style.display = 'flex';
-		wrapper.style.alignItems = 'center';
-		wrapper.style.gap = '8px';
+		wrapper.className = 'color-item';
 
 		const input = document.createElement('input');
 		input.type = 'color';
@@ -62,13 +124,12 @@ function renderColorPickers(colors = [], specialColors = []) {
 
 		const label = document.createElement('span');
 		label.textContent = color;
-		label.style.fontFamily = 'JetBrains Mono';
-		label.style.fontSize = '12px';
+		label.className = 'color-label';
 
 		wrapper.appendChild(input);
 		wrapper.appendChild(label);
 
-		colorPickers.appendChild(wrapper);
+		ELEMENTS.colorPickers.appendChild(wrapper);
 
 		let currentColor = color;
 
@@ -83,7 +144,7 @@ function renderColorPickers(colors = [], specialColors = []) {
 
 		input.addEventListener('change', () => {
 			// re-sync UI after user finishes picking
-			const allColors = extractSVGColors(svgInput.value);
+			const allColors = extractSVGColors(ELEMENTS.svgInput.value);
 			const specialColors = allColors.filter((c) => c === 'currentColor');
 			const hexColors = allColors.filter((c) =>
 				/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
@@ -95,19 +156,15 @@ function renderColorPickers(colors = [], specialColors = []) {
 
 	specialColors.forEach((color) => {
 		const wrapper = document.createElement('div');
-		wrapper.style.display = 'flex';
-		wrapper.style.alignItems = 'center';
-		wrapper.style.gap = '8px';
+		wrapper.className = 'color-item';
 
 		const label = document.createElement('span');
 		label.textContent = 'currentColor';
-		label.style.fontFamily = 'JetBrains Mono';
-		label.style.fontSize = '12px';
+		label.className = 'color-label';
 
 		const button = document.createElement('button');
 		button.textContent = 'Convert';
-		button.style.padding = '4px 8px';
-		button.style.cursor = 'pointer';
+		button.className = 'color-convert-btn';
 
 		button.addEventListener('click', () => {
 			convertCurrentColor();
@@ -116,18 +173,18 @@ function renderColorPickers(colors = [], specialColors = []) {
 		wrapper.appendChild(label);
 		wrapper.appendChild(button);
 
-		colorPickers.appendChild(wrapper);
+		ELEMENTS.colorPickers.appendChild(wrapper);
 	});
 }
 
 function convertCurrentColor(defaultColor = '#ffffff') {
-	let svgCode = svgInput.value;
+	let svgCode = ELEMENTS.svgInput.value;
 
 	// Replace ALL currentColor with default
 	svgCode = svgCode.replace(/currentColor/g, defaultColor);
 
-	svgInput.value = svgCode;
-	renderSVG(svgCode);
+	ELEMENTS.svgInput.value = svgCode;
+	showPreviewSVG(svgCode);
 
 	// Re-run full pipeline
 	const allColors = extractSVGColors(svgCode);
@@ -139,43 +196,20 @@ function convertCurrentColor(defaultColor = '#ffffff') {
 	renderColorPickers(hexColors, specialColors);
 }
 
-function normalizeHex(hex) {
-	if (hex.length === 4) {
-		return '#' + hex[1] + hex[1] + hex[2] + hex[2] + hex[3] + hex[3];
-	}
-	return hex;
-}
-
 function updateSVGColor(oldColor, newColor) {
 	const regex = new RegExp(escapeRegex(oldColor), 'g');
-	let updatedSVG = svgInput.value.replace(regex, newColor);
+	let updatedSVG = ELEMENTS.svgInput.value.replace(regex, newColor);
 
-	svgInput.value = updatedSVG;
-	renderSVG(updatedSVG);
+	ELEMENTS.svgInput.value = updatedSVG;
+	showPreviewSVG(updatedSVG);
 }
 
-svgInput.addEventListener('input', (e) => {
-	let svgCode = e.target.value.trim();
-	svgCode = ensureSVGNamespace(svgCode);
-	svgInput.value = svgCode;
+function initApp() {
+	showPreviewMessage('No SVG to display');
+	showColorsMessage();
+}
 
-	if (!svgCode) {
-		showMessage('No SVG to display');
-		return;
-	}
+initApp();
 
-	if (!isValidSVG(svgCode)) {
-		showMessage('Invalid SVG');
-		return;
-	}
-
-	renderSVG(svgCode);
-
-	const allColors = extractSVGColors(svgCode);
-	const specialColors = allColors.filter((c) => c === 'currentColor');
-	const hexColors = allColors.filter((c) =>
-		/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(c),
-	);
-
-	renderColorPickers(hexColors, specialColors);
-});
+ELEMENTS.btnDownload.addEventListener('click', downloadSVG);
+ELEMENTS.svgInput.addEventListener('input', uploadSVG);
