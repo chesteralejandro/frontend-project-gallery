@@ -2,6 +2,7 @@ const getElements = () => ({
 	SPLASH_SCREEN: document.querySelector('.splash-screen'),
 	GAME_SCREEN: document.getElementById('game-screen'),
 	PANEL_OVERLAY: document.getElementById('panel-screen-overlay'),
+	GAME_CANVAS: document.getElementById('game-canvas'),
 
 	BUTTONS: {
 		START_GAME: document.getElementById('btn-start-game'),
