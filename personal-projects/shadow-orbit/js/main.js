@@ -1,5 +1,7 @@
 import getElements from './constants/elements.js';
+
 import controller from './systems/controller.js';
+import renderer from './systems/renderer.js';
 
 const ELEMENTS = getElements();
 const ctx = ELEMENTS.GAME_CANVAS.getContext('2d');
@@ -49,10 +51,10 @@ function closeGame() {
 
 function gameLoop() {
 	const canvas = ELEMENTS.GAME_CANVAS;
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+	renderer.clearGameScreen(ctx, canvas);
 	updatePlayer();
-	drawPlayer();
+	renderer.drawPlayer(ctx, player);
 
 	requestAnimationFrame(gameLoop);
 }
@@ -73,11 +75,6 @@ function updatePlayer() {
 	if (player.y < 0) player.y = 0;
 	if (player.y + player.size > canvas.height)
 		player.y = canvas.height - player.size;
-}
-
-function drawPlayer() {
-	ctx.fillStyle = '#00aeef';
-	ctx.fillRect(player.x, player.y, player.size, player.size);
 }
 
 function resizeCanvas() {
