@@ -1,14 +1,13 @@
-const btnHowTo = document.getElementById('btn-how-to');
-const btnClosePanel = document.getElementById('btn-close-panel');
-const btnExitGame = document.getElementById('btn-exit');
-const panelOverlay = document.getElementById('panel-screen-overlay');
+import ELEMENTS from '../js/constants/elements.js';
 
-btnExitGame.addEventListener('click', () => window.close());
+ELEMENTS.BUTTONS.EXIT_GAME.addEventListener('click', () => {
+	window.close();
+});
 
-btnHowTo.addEventListener('click', () =>
-	panelOverlay.classList.remove('hidden'),
+ELEMENTS.BUTTONS.HOW_TO.addEventListener('click', () =>
+	ELEMENTS.PANEL_OVERLAY.classList.remove('hidden'),
 );
 
-btnClosePanel.addEventListener('click', () =>
-	panelOverlay.classList.add('hidden'),
+ELEMENTS.BUTTONS.CLOSE_PANEL.addEventListener('click', () =>
+	ELEMENTS.PANEL_OVERLAY.classList.add('hidden'),
 );
