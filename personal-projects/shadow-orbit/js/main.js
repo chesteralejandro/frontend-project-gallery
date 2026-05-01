@@ -1,5 +1,9 @@
 import ELEMENTS from '../js/constants/elements.js';
 
+ELEMENTS.BUTTONS.START_GAME.addEventListener('click', () => {
+	console.log('Start mission');
+});
+
 ELEMENTS.BUTTONS.EXIT_GAME.addEventListener('click', () => {
 	window.close();
 });
