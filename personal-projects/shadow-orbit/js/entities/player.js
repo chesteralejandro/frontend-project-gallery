@@ -2,8 +2,18 @@ class Player {
 	constructor() {
 		this.x = 0;
 		this.y = 0;
-		this.size = 20;
+		this.size = 60;
 		this.speed = 4;
+
+		this.image = new Image();
+		this.image.src = './assets/images/player_ship.png';
+
+		this.sprite = {
+			x: 175,
+			y: 65,
+			width: 310,
+			height: 275,
+		};
 	}
 
 	init(canvas) {

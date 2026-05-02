@@ -33,8 +33,7 @@ class Game {
 
 		this.player.update(this.canvas, this.controller);
 
-		const { x, y, size } = this.player;
-		this.renderer.drawPlayer(this.ctx, { x, y, size });
+		this.renderer.drawPlayer(this.ctx, this.player);
 
 		requestAnimationFrame(() => this.loop());
 	}
