@@ -5,8 +5,6 @@ class Renderer {
 
 	drawPlayer(ctx, player) {
 		if (!player.image.complete) return;
-		ctx.strokeStyle = 'red';
-		ctx.strokeRect(player.x, player.y, player.size, player.size);
 
 		ctx.drawImage(
 			player.image,
@@ -20,8 +18,8 @@ class Renderer {
 			// destination (on canvas)
 			player.x,
 			player.y,
-			player.size,
-			player.size,
+			player.width,
+			player.height,
 		);
 	}
 }

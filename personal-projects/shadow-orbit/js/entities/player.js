@@ -2,7 +2,8 @@ class Player {
 	constructor() {
 		this.x = 0;
 		this.y = 0;
-		this.size = 60;
+		this.width = 68;
+		this.height = 60;
 		this.speed = 4;
 
 		this.image = new Image();
@@ -17,8 +18,8 @@ class Player {
 	}
 
 	init(canvas) {
-		this.x = canvas.width / 2 - this.size / 2;
-		this.y = canvas.height - 60;
+		this.x = canvas.width / 2 - this.width / 2;
+		this.y = canvas.height - this.height - 20;
 	}
 
 	update(canvas, controller) {
@@ -29,12 +30,12 @@ class Player {
 
 		// boundaries
 		if (this.x < 0) this.x = 0;
-		if (this.x + this.size > canvas.width)
-			this.x = canvas.width - this.size;
+		if (this.x + this.width > canvas.width)
+			this.x = canvas.width - this.width;
 
 		if (this.y < 0) this.y = 0;
-		if (this.y + this.size > canvas.height)
-			this.y = canvas.height - this.size;
+		if (this.y + this.height > canvas.height)
+			this.y = canvas.height - this.height;
 	}
 }
 
