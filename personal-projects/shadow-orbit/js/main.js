@@ -1,67 +1,47 @@
-const canvas = document.getElementById('starfield');
-const btnHowTo = document.getElementById('btn-how-to');
-const btnClosePanel = document.getElementById('btn-close-panel');
-const btnExitGame = document.getElementById('btn-exit');
-const panelOverlay = document.getElementById('panel-screen-overlay');
+import getElements from './constants/elements.js';
 
-const ctx = canvas.getContext('2d');
+import Game from './systems/game.js';
+import controller from './systems/controller.js';
+import renderer from './systems/renderer.js';
 
-const STAR_COLOR = 'white';
-const STAR_LAYERS = [
-	{ count: 80, speed: 0.3, size: 1 },
-	{ count: 50, speed: 0.6, size: 1.5 },
-	{ count: 30, speed: 1, size: 2 },
-];
+import player from './entities/player.js';
 
-const STARS = [];
+const ELEMENTS = getElements();
+const canvas = ELEMENTS.GAME_CANVAS;
+const ctx = ELEMENTS.GAME_CANVAS.getContext('2d');
+const game = new Game(canvas, ctx, player, controller, renderer);
 
-STAR_LAYERS.forEach((layer) => {
-	for (let i = 0; i < layer.count; i++) {
-		STARS.push({
-			x: Math.random() * window.innerWidth,
-			y: Math.random() * window.innerHeight,
-			speed: layer.speed,
-			size: layer.size,
-		});
-	}
-});
-
-function setCanvasSize() {
-	canvas.width = window.innerWidth;
-	canvas.height = window.innerHeight;
+function startGame() {
+	showGameScreen();
+	game.resize();
+	game.start();
 }
 
-function animate() {
-	ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-	ctx.fillStyle = STAR_COLOR;
-
-	STARS.forEach((star) => {
-		star.y += star.speed;
-
-		if (star.y > canvas.height) {
-			star.y = 0;
-			star.x = Math.random() * canvas.width;
-		}
-
-		ctx.fillRect(star.x, star.y, star.size, star.size);
-	});
-
-	requestAnimationFrame(animate);
+function showGameScreen() {
+	ELEMENTS.SPLASH_SCREEN.classList.add('hidden');
+	ELEMENTS.GAME_SCREEN.classList.remove('hidden');
 }
 
-setCanvasSize();
-animate();
+function showMenu() {
+	ELEMENTS.GAME_SCREEN.classList.add('hidden');
+	ELEMENTS.SPLASH_SCREEN.classList.remove('hidden');
+}
 
-// Resize Fix
-window.addEventListener('resize', setCanvasSize);
+function openPanel() {
+	ELEMENTS.PANEL_OVERLAY.classList.remove('hidden');
+}
 
-btnExitGame.addEventListener('click', () => window.close());
+function closePanel() {
+	ELEMENTS.PANEL_OVERLAY.classList.add('hidden');
+}
 
-btnHowTo.addEventListener('click', () =>
-	panelOverlay.classList.remove('hidden'),
-);
+function closeGame() {
+	// window.close();
+	console.log('Shutting down...');
+}
 
-btnClosePanel.addEventListener('click', () =>
-	panelOverlay.classList.add('hidden'),
-);
+ELEMENTS.BUTTONS.START_GAME.addEventListener('click', startGame);
+ELEMENTS.BUTTONS.HOW_TO.addEventListener('click', openPanel);
+ELEMENTS.BUTTONS.CLOSE_PANEL.addEventListener('click', closePanel);
+ELEMENTS.BUTTONS.EXIT_GAME.addEventListener('click', closeGame);
+window.addEventListener('resize', () => game.resize());
